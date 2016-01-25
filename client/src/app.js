@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Nav from './components/nav/nav.cmp';
 //import Router from 'react-router';
 //import routes from './routes';
 
@@ -24,8 +25,8 @@ import ReactDOM from 'react-dom';
       }
     });
     ReactDOM.render(
-      <CommentBox />,
-      document.getElementById('content')
+      <Nav />,
+      document.getElementById('app')
     );
 
 
