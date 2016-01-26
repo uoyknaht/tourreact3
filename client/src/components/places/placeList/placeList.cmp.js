@@ -14,10 +14,13 @@ export default class PlaceList extends React.Component {
         return (
 
             <div>
-              <br/>
-                <br/>
-              <br/>
-              Place list
+              Place list: <br/>
+
+              <ul>
+                <li><Link to="/places/1">place 1</Link></li>
+                <li><Link to="/places/2">place 2</Link></li>
+              </ul>
+
             </div>
 
         );
