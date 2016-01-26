@@ -11,7 +11,7 @@ var appRoutes = (
   <Router history={hashHistory}>
     <Route path="/" component={App}>
       <Route path="places" component={PlaceList}/>
-      <Route path="places/:id" component={PlaceView}/>
+      <Route name="placeView" path="places/:id" component={PlaceView}/>
     </Route>
   </Router>
 );

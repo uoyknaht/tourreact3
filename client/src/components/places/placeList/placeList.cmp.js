@@ -11,15 +11,40 @@ export default class PlaceList extends React.Component {
 
     render() {
 
+      var places = [
+        {
+          _id: 1,
+          title: 'Raudondvario pilis'
+        },
+        {
+          _id: 2,
+          title: 'Netoniu kalnas'
+        },
+        {
+          _id: 3,
+          title: 'Lampedziu kempingas'
+        }
+      ];
+
+      var placesHtml = [];
+
+      places.forEach(function (place) {
+        placesHtml.push(
+          <Link to="/places/:id" params="{id: place._id}" className="list-group-item">
+            <h4 className="list-group-item-heading">{place.title}</h4>
+            <p className="list-group-item-text">...</p>
+          </Link>
+        );
+      });
+
         return (
 
             <div>
               Place list: <br/>
 
-              <ul>
-                <li><Link to="/places/1">place 1</Link></li>
-                <li><Link to="/places/2">place 2</Link></li>
-              </ul>
+              <div class="list-group">
+                {placesHtml}
+              </div>
 
             </div>
 
