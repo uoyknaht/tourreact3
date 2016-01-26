@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Nav from './components/nav/nav.cmp';
-//import Router from 'react-router';
-//import routes from './routes';
+import Home from './components/home/home.cmp';
+import PlaceList from './components/places/placeList/placeList.cmp';
+import Router from 'react-router';
+// import routes from './routes';
+import { DefaultRoute, Link, Route, RouteHandler, hashHistory  } from 'react-router';
 
 (function () {
 
@@ -14,20 +17,24 @@ import Nav from './components/nav/nav.cmp';
     //     React.render(<Handler params={params}/>, document.body);
     // });
 
-
-    var CommentBox = React.createClass({
-      render: function() {
+    const App = React.createClass({
+      render() {
         return (
-          <div className="commentBox">
-            Hello, world! I am a CommentBox.
+          <div>
+            <Nav />
+            <h1>App</h1>
+            {this.props.children}
           </div>
-        );
+        )
       }
-    });
-    ReactDOM.render(
-      <Nav />,
-      document.getElementById('app')
-    );
+    })
 
+    ReactDOM.render((
+      <Router history={hashHistory}>
+        <Route path="/" component={App}>
+          <Route path="places" component={PlaceList} />
+        </Route>
+      </Router>
+    ), document.getElementById('app'))
 
 })();
