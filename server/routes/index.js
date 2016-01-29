@@ -15,7 +15,7 @@ router.get('/api/places', function(req, res, next) {
     if (err) {
         return next(err);
     }
-console.log(places);
+    console.log(places);
     res.json(places);
   });
 });
