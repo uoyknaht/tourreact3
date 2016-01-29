@@ -3,18 +3,23 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  devtool: 'eval-source-map',
+  //devtool: 'eval-source-map',
+//  context: __dirname + '/client',
+  //context: __dirname + '/client/dist',
   entry: {
+    //javascript: './src/app.js',
+  //  html: './index.html',
     main: [
-      'webpack-dev-server/client?http://localhost:8080',
+      'webpack-dev-server/client?http://localhost:8080/client/',
       'webpack/hot/only-dev-server',
       './client/src/app.js'
     ]
   },
   output: {
     filename: 'app.js',
-    path: path.join(__dirname, 'client', 'dist'),
-    publicPath: '/client/dist/'
+    path: __dirname + '/client/dist',
+    //publicPath: '/client/dist/',
+    publicPath: 'http://localhost:8080/client/dist/'
   },
   resolve: {
     extensions: ['', '.js', '.jsx']
@@ -28,9 +33,15 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        include: path.join(__dirname, 'client', 'src'),
-        loader: 'react-hot!babel'
-      }
+      //  include: __dirname + '/src',
+        //include: __dirname +  '/src',
+        //loader: 'react-hot!babel'
+        loaders: ['react-hot', 'babel']
+      },
+      // {
+      //   test: /\.html$/,
+      //   loader: "file?name=[name].[ext]",
+      // }
     ]
   }
 }
