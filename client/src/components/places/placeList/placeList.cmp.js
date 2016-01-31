@@ -1,7 +1,8 @@
 import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
-import $ from 'jquery';
+import ApiService from '../../../services/api.srv';
+import {List} from 'immutable';
 
 export default class PlaceList extends React.Component {
 
@@ -29,11 +30,14 @@ export default class PlaceList extends React.Component {
 
     componentDidMount() {
       var _this = this;
-      $.get('http://localhost:8081/api/places', function(res) {
-        _this.setState({places: res});
-      });
 
-      // console.log(55555);
+      ApiService.get('http://localhost:8081/api/places').then((response) => {
+        _this.setState({places: response});
+      })
+    }
+
+    setPlaces(state, places) {
+      return state.set('places', List(places));
     }
 
     render() {
