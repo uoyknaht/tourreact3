@@ -3,7 +3,11 @@ import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import ApiService from '../../../services/api.srv';
 import {List} from 'immutable';
+import { bindActionCreators } from 'redux';
+import * as placeActions       from '../../../actions/placeActions';
+import { connect }            from 'react-redux';
 
+@connect(state => ({ places: state.places }))
 export default class PlaceList extends React.Component {
 
     constructor() {
@@ -42,7 +46,7 @@ export default class PlaceList extends React.Component {
 
     render() {
 
-
+      const { places, dispatch } = this.props;
 
 
 

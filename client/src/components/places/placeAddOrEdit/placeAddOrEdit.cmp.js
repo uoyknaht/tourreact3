@@ -16,7 +16,7 @@ export default class PlaceAddOrEdit extends React.Component {
 
       var _this = this;
 
-      var data = {
+      var place = {
           title: ReactDOM.findDOMNode(this.refs.title).value.trim(),
           address: ReactDOM.findDOMNode(this.refs.address).value.trim(),
           latitude: ReactDOM.findDOMNode(this.refs.latitude).value.trim(),
@@ -25,10 +25,12 @@ export default class PlaceAddOrEdit extends React.Component {
       }
 
       if (this.props.place) {
-          data._id = this.props.place._id;
+          place._id = this.props.place._id;
       }
 
-      console.log(data);
+      console.log(place);
+      this.props.addPlace(place);
+
       // PlaceActions.savePlace(data);
       // this.context.router.transitionTo('allPlaces');
     }
