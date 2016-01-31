@@ -30,6 +30,7 @@ export default class Nav extends React.Component {
                 <ul className="nav navbar-nav">
                   <li><Link to="/">Home</Link></li>
                   <li><Link to="/places">Places</Link></li>
+                  <li><Link to="/places/add">Add new place</Link></li>
 
                 <li className="dropdown">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown">Dropdown <span className="caret"></span></a>
