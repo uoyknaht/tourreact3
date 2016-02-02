@@ -4,18 +4,16 @@ import { render } from 'react-dom'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 // import app from './reducers'
-import * as reducers                    from 'reducers';
+import * as reducers                    from './reducers';
 import { syncHistory, routeReducer } from 'react-router-redux'
 import { fromJS }                       from 'immutable';
 
 // import appRoutes from './routes';
-import { DefaultRoute, Route } from 'react-router';
+import { DefaultRoute, Route, Router, browserHistory } from 'react-router';
 import App from './components/app/app.cmp';
 import PlaceList from './components/places/placeList/placeList.cmp';
 import PlaceView from './components/places/placeView/placeView.cmp';
 import PlaceAddOrEdit from './components/places/placeAddOrEdit/placeAddOrEdit.cmp';
-
-
 
 let initialState = {};
 
@@ -39,9 +37,7 @@ const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware)(createS
 const store = createStoreWithMiddleware(reducer);
 
 // Required for replaying actions from devtools to work
-reduxRouterMiddleware.listenForReplays(store)
-
-
+reduxRouterMiddleware.listenForReplays(store);
 
 ReactDOM.render((
   <Provider store={store}>
@@ -52,5 +48,5 @@ ReactDOM.render((
         <Route name="placeView" path="places/:id" component={PlaceView}/>
       </Route>
     </Router>
-  </Provider>,
-), document.getElementById('app'))
+  </Provider>
+), document.getElementById('app'));

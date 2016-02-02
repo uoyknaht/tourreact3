@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import * as placeActions       from '../../../actions/placeActions';
 import { connect }            from 'react-redux';
 
-@connect(state => ({ places: state.places }))
+//@connect(state => ({ places: state.places }))
 export default class PlaceList extends React.Component {
 
     constructor() {
