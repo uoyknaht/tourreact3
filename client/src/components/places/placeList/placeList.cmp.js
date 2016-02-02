@@ -54,7 +54,7 @@ export default class PlaceList extends React.Component {
 
       this.state.places.forEach(function (place) {
         placesHtml.push(
-          <Link to="/places/:id" params="{id: place._id}" className="list-group-item" key={place._id}>
+          <Link to={`/places/${place._id}`} className="list-group-item" key={place._id}>
             <h4 className="list-group-item-heading">{place.title}</h4>
             <p className="list-group-item-text">...</p>
           </Link>
