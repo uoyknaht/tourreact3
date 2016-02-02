@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
 import { Provider } from 'react-redux'
 // import app from './reducers'
 import * as reducers                    from './reducers';
@@ -23,18 +25,28 @@ Object
     initialState[key] = fromJS(initialState[key]);
    });
 
-const reducer = combineReducers(Object.assign({}, reducers, {
+const rootReducer = combineReducers(Object.assign({}, reducers, {
  routing: routeReducer
 }));
 
 // Sync dispatched route actions to the history
 const reduxRouterMiddleware = syncHistory(browserHistory);
-const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware)(createStore);
+const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware, thunkMiddleware)(createStore);
 
 
 // const store   = createStore(reducer, initialState);
 // let store = createStore(app)
-const store = createStoreWithMiddleware(reducer);
+const store = createStoreWithMiddleware(rootReducer);
+
+
+// const store = createStore(
+//   rootReducer,
+//   applyMiddleware(
+//     thunkMiddleware, // lets us dispatch() functions
+//     loggerMiddleware // neat middleware that logs actions
+//   )
+// )
+
 
 // Required for replaying actions from devtools to work
 reduxRouterMiddleware.listenForReplays(store);

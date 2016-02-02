@@ -4,7 +4,7 @@ import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import ApiService from '../../../services/api.srv';
 import {List} from 'immutable';
 import { bindActionCreators } from 'redux';
-import * as placeActions       from '../../../actions/placeActions';
+import { fetchPlaces } from '../../../actions/placeActions';
 import { connect }            from 'react-redux';
 
 //@connect(state => ({ places: state.places }))
@@ -33,23 +33,17 @@ export default class PlaceList extends React.Component {
     }
 
     componentDidMount() {
-      var _this = this;
-
-      ApiService.get('http://localhost:8081/api/places').then((response) => {
-        _this.setState({places: response});
-      })
+      this.props.fetchPlaces();
     }
 
-    setPlaces(state, places) {
-      return state.set('places', List(places));
-    }
+    // setPlaces(state, places) {
+    //   return state.set('places', List(places));
+    // }
 
     render() {
 
-      const { places, dispatch } = this.props;
-
-
-
+      // const { places, dispatch } = this.props;
+      let places = this.props.places || [];
       var placesHtml = [];
 
       this.state.places.forEach(function (place) {
@@ -76,3 +70,19 @@ export default class PlaceList extends React.Component {
     }
 
 }
+
+function mapStateToProps(state) {
+  return {
+    // places: state.get('places')
+    places: state.places
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchPlaces: () => dispatch(fetchPlaces())
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlaceList);

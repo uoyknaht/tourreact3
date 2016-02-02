@@ -1,12 +1,21 @@
 import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
+import { connect } from 'react-redux';
+import { getPlace } from '../../../actions/placeActions';
 
-export default class PlaceView extends React.Component {
+class PlaceView extends React.Component {
 
     constructor() {
         super();
         this.render = this.render.bind(this);
+    }
+
+    componentDidMount() {
+      const { dispatch } = this.props;
+      var _this = this;
+
+      dispatch(getPlace());
     }
 
     render() {
@@ -32,3 +41,12 @@ export default class PlaceView extends React.Component {
     // },
 
 }
+
+function mapStateToProps(state, ownProps) {
+  return {
+    place: state.place,
+    placeId: ownProps.params.id,
+  };
+}
+
+export default connect(mapStateToProps)(PlaceView);
