@@ -6,7 +6,8 @@ import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import { Provider } from 'react-redux'
 // import app from './reducers'
-import * as reducers                    from './reducers';
+// import * as reducers                    from './reducers';
+import appReducer                    from './reducers';
 import { syncHistory, routeReducer } from 'react-router-redux'
 import { fromJS }                       from 'immutable';
 
@@ -17,27 +18,45 @@ import PlaceList from './components/places/placeList/placeList.cmp';
 import PlaceView from './components/places/placeView/placeView.cmp';
 import PlaceAddOrEdit from './components/places/placeAddOrEdit/placeAddOrEdit.cmp';
 
-let initialState = {};
+let initialState = {
+  places: {
+    items:[
+    {
+      _id: 1,
+      title: 'Raudondvario pilis'
+    },
+    {
+      _id: 2,
+      title: 'Netoniu kalnas'
+    },
+    {
+      _id: 3,
+      title: 'Lampedziu kempingas'
+    }
+  ]
+  }
+};
 
-Object
-  .keys(initialState)
-  .forEach(key => {
-    initialState[key] = fromJS(initialState[key]);
-   });
+// Object
+//   .keys(initialState)
+//   .forEach(key => {
+//     initialState[key] = fromJS(initialState[key]);
+//    });
 
-const rootReducer = combineReducers(Object.assign({}, reducers, {
- routing: routeReducer
-}));
+   console.log(initialState);
+   console.log('---');
+
+
 
 // Sync dispatched route actions to the history
 const reduxRouterMiddleware = syncHistory(browserHistory);
-const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware, thunkMiddleware)(createStore);
+// const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware, thunkMiddleware)(createStore);
 
 
 // const store   = createStore(reducer, initialState);
 // let store = createStore(app)
-const store = createStoreWithMiddleware(rootReducer);
-
+// const store = createStoreWithMiddleware(rootReducer);
+const store = createStore(appReducer, initialState, applyMiddleware(reduxRouterMiddleware, thunkMiddleware));
 
 // const store = createStore(
 //   rootReducer,
