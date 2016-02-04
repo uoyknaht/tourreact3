@@ -13,7 +13,7 @@ export default class Nav extends React.Component {
 
         return (
 
-          <nav className="navbar navbar-default navbar-inverse" role="navigation">
+          <nav className="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
             <div className="container-fluid">
 
               <div className="navbar-header">

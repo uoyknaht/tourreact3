@@ -1,6 +1,7 @@
 
 var path = require('path');
 var webpack = require('webpack');
+require('es6-promise').polyfill();
 
 module.exports = {
   devtool: 'eval-source-map',
@@ -30,6 +31,10 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loaders: ['react-hot', 'babel']
+      },
+      {
+        test: /\.scss$/,
+        loader: 'style!css!sass'
       }
     ]
   }
