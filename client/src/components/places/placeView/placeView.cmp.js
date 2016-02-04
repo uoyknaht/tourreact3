@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect } from 'react-redux';
-import { getPlace } from '../../../actions/placeActions';
+import { fetchPlace } from '../../../actions/placeActions';
 
 class PlaceView extends React.Component {
 
@@ -12,41 +12,42 @@ class PlaceView extends React.Component {
     }
 
     componentDidMount() {
-      const { dispatch } = this.props;
-      var _this = this;
-
-      dispatch(getPlace());
+      const placeId = this.props.placeId;
+      this.props.fetchPlace(placeId);
     }
 
     render() {
 
-      var id = this.props.params.id;
+      if (this.props.isLoading) {
+        return <div>Loading...</div>
+      }
+
+      var place = this.props.place;
 
         return (
 
             <div>
-              Place view: {id}
+              Place view: {place.title}
             </div>
 
         );
     }
 
-    // componentDidMount() {
-    //   // from the path `/inbox/messages/:id`
-    //   const id = this.props.params.id
-    //
-    //   fetchMessage(id, function (err, message) {
-    //     this.setState({ id: id })
-    //   })
-    // },
-
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state,ownProps) {
   return {
-    place: state.place,
+    isLoading: state.places.isFetchingItem,
     placeId: ownProps.params.id,
-  };
+    place: state.places.activeItem
+  }
 }
 
-export default connect(mapStateToProps)(PlaceView);
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchPlace: (placeId) => dispatch(fetchPlace(placeId))
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlaceView);

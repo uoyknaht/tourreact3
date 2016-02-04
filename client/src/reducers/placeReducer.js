@@ -10,18 +10,33 @@ export default function placeReducer(state = defaultState, action) {
     case 'REQUEST_PLACES':
       console.log('request_places (reducer)');
       return state;
+
     case 'RECEIVED_PLACES':
       console.log('received_places (reducer)');
-console.log(action.places);
       var newState = {
         items: action.places
       };
 
       // return state.merge(newState);
+      return Object.assign({}, state, newState);
 
-      return newState;
+      case 'REQUEST_PLACE':
 
-      // return Object.assign({}, newState, state);
+        var newState = {
+          isFetchingItem: true
+        };
+
+        return Object.assign({}, state, newState);
+
+      case 'RECEIVED_PLACE':
+
+        var newState = {
+          isFetchingItem: false,
+          activeItem: action.place
+        };
+
+        // return state.merge(newState);
+        return Object.assign({}, state, newState);
 
     // case 'GET_PLACE':
     //   console.log(state);

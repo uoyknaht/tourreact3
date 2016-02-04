@@ -20,20 +20,25 @@ import PlaceAddOrEdit from './components/places/placeAddOrEdit/placeAddOrEdit.cm
 
 let initialState = {
   places: {
+    isFetchingItems: false,
+    areItemsFetched: false,
     items:[
-    {
-      _id: 1,
-      title: 'Raudondvario pilis'
-    },
-    {
-      _id: 2,
-      title: 'Netoniu kalnas'
-    },
-    {
-      _id: 3,
-      title: 'Lampedziu kempingas'
-    }
-  ]
+      {
+        _id: 1,
+        title: 'Raudondvario pilis'
+      },
+      {
+        _id: 2,
+        title: 'Netoniu kalnas'
+      },
+      {
+        _id: 3,
+        title: 'Lampedziu kempingas'
+      },
+    ],
+    activeItemId: null,
+    activeItem: null,
+    isFetchingItem: true
   }
 };
 

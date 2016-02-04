@@ -4,6 +4,7 @@ import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { fetchPlaces } from '../../../actions/placeActions';
 import { connect }            from 'react-redux';
+// import { routeActions } from 'react-router-redux'
 
 //@connect(state => ({ places: state.places }))
 class PlaceList extends React.Component {

@@ -30,11 +30,34 @@ export function receivedPlaces(places) {
   }
 }
 
-export function getPlace(placeId) {
-  console.log(555);
+export function requestPlace(placeId) {
+  console.log('requestPlace (action)');
   return {
-    type: 'GET_PLACE',
+    type: 'REQUEST_PLACE',
     placeId
+  }
+}
+
+export function fetchPlace(placeId) {
+  console.log('fetchPlace (action)');
+  return function (dispatch) {
+    dispatch(requestPlace());
+
+    // return fetch(`http://www.reddit.com/r/${subreddit}.json`)
+    return fetch(`http://localhost:8081/api/places/${placeId}`)
+      .then(response => response.json())
+      .then((json) => {
+        console.log('receivedPlace (action)');
+        dispatch(receivedPlace(json))
+      })
+  }
+}
+
+export function receivedPlace(place) {
+  console.log('receivedPlace (action)');
+  return {
+    type: 'RECEIVED_PLACE',
+    place
   }
 }
 

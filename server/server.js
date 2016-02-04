@@ -37,3 +37,16 @@ server.get('/api/places', function (req, res, next) {
 
   next();
 });
+
+server.get('/api/places/:id', function (req, res, next) {
+
+  Place.findById(req.params.id, function(err, place){
+    if (err) {
+        return next(err);
+    }
+    console.log(place);
+    res.json(place);
+  });
+
+  next();
+});
