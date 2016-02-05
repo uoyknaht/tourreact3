@@ -6,20 +6,21 @@ require('es6-promise').polyfill();
 module.exports = {
   devtool: 'eval-source-map',
   entry: {
-    main: [
+    app: [
       'webpack-dev-server/client?http://localhost:8080/',
       'webpack/hot/only-dev-server',
       './src/app.js'
-    ]
+    ],
+    //vendors: './src/css/bootstrap.css'
   },
   output: {
-    filename: 'app.js',
+    filename: '[name].js',
     path: __dirname + '/dist',
     //publicPath: '/client/dist/',
     publicPath: 'http://localhost:8080/dist/'
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx', '.css', '.scss']
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
@@ -35,6 +36,10 @@ module.exports = {
       {
         test: /\.scss$/,
         loader: 'style!css!sass'
+      },
+      {
+        test: /\.css$/,
+        loader: 'style!css'
       }
     ]
   }
