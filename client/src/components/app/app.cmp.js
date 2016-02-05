@@ -13,8 +13,17 @@ export default class App extends React.Component {
     render() {
       return (
         <div>
-          <Nav />
-          {this.props.children}
+            <Nav />
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-md-6">
+                        {this.props.children}
+                    </div>
+                    <div className="col-md-6">
+                        Map: TODO.
+                    </div>
+                </div>
+            </div>
         </div>
       )
     }

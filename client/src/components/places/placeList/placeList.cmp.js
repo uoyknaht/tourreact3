@@ -43,21 +43,11 @@ class PlaceList extends React.Component {
       });
 
         return (
-            <div className="container-fluid">
-              <div className="row">
 
-                <div className="col-md-6">
-                  <div className="list-group">
-                      {placesHtml}
-                  </div>
-                </div>
+          <div className="list-group">
+              {placesHtml}
+          </div>
 
-                <div className="col-md-6">
-                  Map: TODO
-                </div>
-
-              </div>
-            </div>
         );
     }
 
