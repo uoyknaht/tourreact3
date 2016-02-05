@@ -3,13 +3,20 @@ import ReactDOM from 'react-dom';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 
-export default class PlaceAddOrEdit extends React.Component {
+class PlaceAddOrEdit extends React.Component {
 
     constructor() {
         super();
+        this.componentDidMount = this.componentDidMount.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this._updateForm = this._updateForm.bind(this);
         this.render = this.render.bind(this);
     }
+
+    componentDidMount() {
+        this._updateForm(this.props.place);
+        //this.isFormOfTypeCreate = this.props.place ? false : true;
+    }    
 
     onSubmit(e) {
       e.preventDefault();
@@ -35,9 +42,24 @@ export default class PlaceAddOrEdit extends React.Component {
       // this.context.router.transitionTo('allPlaces');
     }
 
+    _updateForm(place) {
+        if (place) {
+            ReactDOM.findDOMNode(this.refs.title).value = place.title;
+            ReactDOM.findDOMNode(this.refs.address).value = place.address;
+            ReactDOM.findDOMNode(this.refs.latitude).value = place.latitude;
+            ReactDOM.findDOMNode(this.refs.longitude).value = place.longitude;
+        } else {
+            ReactDOM.findDOMNode(this.refs.title).value = '';
+            ReactDOM.findDOMNode(this.refs.address).value = '';
+            ReactDOM.findDOMNode(this.refs.latitude).value = '';
+            ReactDOM.findDOMNode(this.refs.longitude).value = '';     
+        }
+    }     
+
     render() {
 
-        var title = this.props.place ?'Edit place' : 'Add new place';
+        var place = this.props.place;
+        var title = place ?'Edit place' : 'Add new place';
 
         return (
 
@@ -99,3 +121,18 @@ export default class PlaceAddOrEdit extends React.Component {
     // },
 
 }
+
+function mapStateToProps(state,ownProps) {
+  return {
+    place: state.places.itemInEditMode
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    //fetchPlace: (placeId) => dispatch(fetchPlace(placeId))
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlaceAddOrEdit);

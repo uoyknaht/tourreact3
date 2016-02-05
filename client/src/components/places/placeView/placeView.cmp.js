@@ -32,25 +32,21 @@ class PlaceView extends React.Component {
 
         return (
 
-            <div className="container-fluid">
-
-              <div className="row">
-                <div className="col-md-6">
+            <div>
 
                   <div className="page-header">
                     <h1>{place.title} <small>Category</small></h1>
                   </div>
+                  <div>
+                    <Link to={`/places/${place._id}/edit`}>Edit</Link> | <a href="">Delete</a>
+                  </div>
+                  <br/>
 
                   <p>Address: {place.address}</p>
                   <p>Latitude: {place.latitude}</p>
                   <p>Longitude: {place.longitude}</p>
 
 
-
-
-                </div>
-                <div className="col-md-6"></div>
-              </div>
             </div>
 
         );
