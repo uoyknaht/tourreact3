@@ -4,6 +4,7 @@ import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect } from 'react-redux';
 import { fetchPlace, cleanActivePlace, deletePlace } from '../../../actions/placeActions';
 import { routeActions } from 'react-router-redux'
+import Loader from '../../loader/loader.cmp';
 
 function goToPlaceList() {
   routeActions.push('places');
@@ -36,13 +37,9 @@ class PlaceView extends React.Component {
     render() {
 
       if (this.props.isLoading) {
-        return <div>
-          <div className="progress">
-            <div className="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style={{width: 40 + '%'}}>
-            </div>
-          </div>
-
-        </div>
+        return (
+          <Loader />
+        );
       }
 
       var place = this.props.place;

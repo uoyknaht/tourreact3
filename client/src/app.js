@@ -1,3 +1,6 @@
+// import * as reducers                    from './reducers';
+//  const { places } = this.props;
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom'
@@ -5,14 +8,13 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import { Provider } from 'react-redux'
-// import app from './reducers'
-// import * as reducers                    from './reducers';
 import appReducer                    from './reducers';
 import { syncHistory, routeReducer } from 'react-router-redux'
 import { fromJS }                       from 'immutable';
 
 // import appRoutes from './routes';
 import { DefaultRoute, Route, Router, browserHistory } from 'react-router';
+import Immutable from 'immutable';
 import App from './components/app/app.cmp';
 import PlaceList from './components/places/placeList/placeList.cmp';
 import PlaceView from './components/places/placeView/placeView.cmp';
@@ -45,26 +47,20 @@ let initialState = {
   }
 };
 
+initialState = Immutable.fromJS(initialState);
+
 // Object
 //   .keys(initialState)
 //   .forEach(key => {
 //     initialState[key] = fromJS(initialState[key]);
 //    });
 
-   console.log(initialState);
-   console.log('---');
-
-
-
-// Sync dispatched route actions to the history
 const reduxRouterMiddleware = syncHistory(browserHistory);
-// const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware, thunkMiddleware)(createStore);
 
+const store = createStore(appReducer, applyMiddleware(reduxRouterMiddleware, thunkMiddleware));
 
-// const store   = createStore(reducer, initialState);
-// let store = createStore(app)
-// const store = createStoreWithMiddleware(rootReducer);
-const store = createStore(appReducer, initialState, applyMiddleware(reduxRouterMiddleware, thunkMiddleware));
+// use initial state when it's clear how to bootstrap it with immutable
+// const store = createStore(appReducer, initialState, applyMiddleware(reduxRouterMiddleware, thunkMiddleware));
 
 // const store = createStore(
 //   rootReducer,

@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { fetchPlaces } from '../../../actions/placeActions';
 import { connect }            from 'react-redux';
 // import { routeActions } from 'react-router-redux'
+import Loader from '../../loader/loader.cmp';
 
 //@connect(state => ({ places: state.places }))
 class PlaceList extends React.Component {
@@ -25,13 +26,15 @@ class PlaceList extends React.Component {
 
     render() {
 
-      //  const { places } = this.props;
       let places = this.props.places;
-      var placesHtml = [];
 
-      console.log(places);
-      console.log('---');
-      console.log('---');
+      if (!places) {
+        return (
+          <Loader />
+        );
+      }
+
+      var placesHtml = [];
 
       places.forEach(function (place) {
         placesHtml.push(
