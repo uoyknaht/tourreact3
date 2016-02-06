@@ -2,6 +2,7 @@ import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import Nav from '../nav/nav.cmp';
+import PageTitle from '../pageTitle/pageTitle.cmp';
 
 export default class App extends React.Component {
 
@@ -17,6 +18,7 @@ export default class App extends React.Component {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-6">
+                        <PageTitle />
                         {this.props.children}
                     </div>
                     <div className="col-md-6">
