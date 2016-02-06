@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect } from 'react-redux';
-import { fetchPlace } from '../../../actions/placeActions';
+import { fetchPlace, cleanActivePlace } from '../../../actions/placeActions';
 
 class PlaceView extends React.Component {
 
@@ -14,6 +14,10 @@ class PlaceView extends React.Component {
     componentDidMount() {
       const placeId = this.props.placeId;
       this.props.fetchPlace(placeId);
+    }
+
+    componentWillUnmount() {
+      this.props.cleanActivePlace();
     }
 
     render() {
@@ -29,6 +33,12 @@ class PlaceView extends React.Component {
       }
 
       var place = this.props.place;
+
+      if (!place) {
+        return (
+          <div></div>
+        );
+      }
 
         return (
 
@@ -64,7 +74,8 @@ function mapStateToProps(state,ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchPlace: (placeId) => dispatch(fetchPlace(placeId))
+    fetchPlace: (placeId) => dispatch(fetchPlace(placeId)),
+    cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit))
   }
 }
 

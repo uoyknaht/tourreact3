@@ -40,7 +40,8 @@ let initialState = {
     ],
     activeItemId: null,
     activeItem: null,
-    isFetchingItem: true
+    isFetchingItem: true,
+    itemInEditMode: null
   }
 };
 

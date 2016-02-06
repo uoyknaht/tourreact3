@@ -31,11 +31,29 @@ export default function placeReducer(state = defaultState, action) {
       case 'RECEIVED_PLACE':
 
         var newState = {
-          isFetchingItem: false,
-          activeItem: action.place
+          isFetchingItem: false
         };
 
+        if (action.isForEdit) {
+          newState.itemInEditMode = action.place;
+        } else {
+          newState.activeItem = action.place;
+        }
+
         // return state.merge(newState);
+        return Object.assign({}, state, newState);
+
+      case 'CLEAN_ACTIVE_PLACE':
+
+        var newState = {};
+
+        if (action.isForEdit) {
+          newState.itemInEditMode = null;
+        } else {
+          newState.activeItemId = null;
+          newState.activeItem = null;
+        }
+
         return Object.assign({}, state, newState);
 
     // case 'GET_PLACE':

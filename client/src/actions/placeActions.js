@@ -30,34 +30,43 @@ export function receivedPlaces(places) {
   }
 }
 
-export function requestPlace(placeId) {
+export function requestPlace(placeId, isForEdit) {
   console.log('requestPlace (action)');
   return {
     type: 'REQUEST_PLACE',
-    placeId
+    placeId,
+    isForEdit
   }
 }
 
-export function fetchPlace(placeId) {
+export function fetchPlace(placeId, isForEdit) {
   console.log('fetchPlace (action)');
   return function (dispatch) {
-    dispatch(requestPlace());
+    dispatch(requestPlace(isForEdit));
 
     // return fetch(`http://www.reddit.com/r/${subreddit}.json`)
     return fetch(`http://localhost:8081/api/places/${placeId}`)
       .then(response => response.json())
       .then((json) => {
-        console.log('receivedPlace (action)');
-        dispatch(receivedPlace(json))
+        dispatch(receivedPlace(json, isForEdit))
       })
   }
 }
 
-export function receivedPlace(place) {
+export function receivedPlace(place, isForEdit) {
   console.log('receivedPlace (action)');
   return {
     type: 'RECEIVED_PLACE',
-    place
+    place,
+    isForEdit
+  }
+}
+
+export function cleanActivePlace(isForEdit) {
+  console.log('cleanActivePlace (action)');
+  return {
+    type: 'CLEAN_ACTIVE_PLACE',
+    isForEdit
   }
 }
 

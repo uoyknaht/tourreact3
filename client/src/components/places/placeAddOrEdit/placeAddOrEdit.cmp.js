@@ -2,21 +2,39 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
+import { connect }            from 'react-redux';
+import { fetchPlace, cleanActivePlace } from '../../../actions/placeActions';
 
 class PlaceAddOrEdit extends React.Component {
 
     constructor() {
         super();
-        this.componentDidMount = this.componentDidMount.bind(this);
+        // this.componentDidMount = this.componentDidMount.bind(this);
+        // this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
+        // this.componentWillUnmount = this.componentWillUnmount.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this._updateForm = this._updateForm.bind(this);
         this.render = this.render.bind(this);
     }
 
     componentDidMount() {
-        this._updateForm(this.props.place);
+      const placeId = this.props.placeId;
+      this.props.fetchPlace(placeId, true);
+
+
+
         //this.isFormOfTypeCreate = this.props.place ? false : true;
-    }    
+    }
+
+     componentWillReceiveProps(newProps) {
+       if (!this.props.place && newProps.place) {
+         this._updateForm(newProps.place);
+       }
+     }
+
+     componentWillUnmount() {
+       this.props.cleanActivePlace(true);
+     }
 
     onSubmit(e) {
       e.preventDefault();
@@ -52,9 +70,9 @@ class PlaceAddOrEdit extends React.Component {
             ReactDOM.findDOMNode(this.refs.title).value = '';
             ReactDOM.findDOMNode(this.refs.address).value = '';
             ReactDOM.findDOMNode(this.refs.latitude).value = '';
-            ReactDOM.findDOMNode(this.refs.longitude).value = '';     
+            ReactDOM.findDOMNode(this.refs.longitude).value = '';
         }
-    }     
+    }
 
     render() {
 
@@ -122,17 +140,18 @@ class PlaceAddOrEdit extends React.Component {
 
 }
 
-function mapStateToProps(state,ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
-    place: state.places.itemInEditMode
+    place: state.places.itemInEditMode,
+    placeId: ownProps.params.id
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    //fetchPlace: (placeId) => dispatch(fetchPlace(placeId))
+    fetchPlace: (placeId, isForEdit) => dispatch(fetchPlace(placeId, isForEdit)),
+    cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit))
   }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceAddOrEdit);
