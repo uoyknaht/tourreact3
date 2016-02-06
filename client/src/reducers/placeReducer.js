@@ -3,18 +3,29 @@ import Immutable from 'immutable';
 // const defaultState = new Immutable.List();
 const defaultState = {};
 
+function getMergedState(newState, currentState) {
+  return Object.assign({}, currentState, newState);
+}
+
 export default function placeReducer(state = defaultState, action) {
 
   switch(action.type) {
 
     case 'REQUEST_PLACES':
       console.log('request_places (reducer)');
-      return state;
+
+      var newState = {
+        isFetchingItems: true
+      };
+
+      return getMergedState(newState, state);
 
     case 'RECEIVED_PLACES':
       console.log('received_places (reducer)');
       var newState = {
-        items: action.places
+        items: action.places,
+        isFetchingItems: false,
+        areItemsFetched: true
       };
 
       // return state.merge(newState);
@@ -26,7 +37,7 @@ export default function placeReducer(state = defaultState, action) {
           isFetchingItem: true
         };
 
-        return Object.assign({}, state, newState);
+        return getMergedState(newState, state);
 
       case 'RECEIVED_PLACE':
 
@@ -66,8 +77,17 @@ export default function placeReducer(state = defaultState, action) {
     // case 'EDIT_PLACE':
     //   return state.set(action.id, action.place);
     //
-    // case 'REMOVE_PLACE':
-    //   return state.delete(action.id);
+
+    case 'REMOVE_PLACE':
+// make with immutable
+      var places = state.places.items;
+      var removePlaceId = action.placeId;
+
+
+
+
+
+      return state.delete(action.id);
 
     default:
       return state;

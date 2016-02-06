@@ -83,9 +83,9 @@ ReactDOM.render((
     <Router history={browserHistory}>
       <Route path="/" component={App}>
         <Route path="places" component={PlaceList}/>
-        <Route name="placeAdd" path="places/add" component={PlaceAddOrEdit}/>
-        <Route name="placeEdit" path="places/:id/edit" component={PlaceAddOrEdit}/>
         <Route name="placeView" path="places/:id" component={PlaceView}/>
+        <Route name="placeCreate" path="places/actions/create" component={PlaceAddOrEdit}/>
+        <Route name="placeEdit" path="places/:id/edit" component={PlaceAddOrEdit}/>
       </Route>
     </Router>
   </Provider>

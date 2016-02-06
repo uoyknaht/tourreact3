@@ -2,12 +2,18 @@ import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect } from 'react-redux';
-import { fetchPlace, cleanActivePlace } from '../../../actions/placeActions';
+import { fetchPlace, cleanActivePlace, deletePlace } from '../../../actions/placeActions';
+import { routeActions } from 'react-router-redux'
+
+function goToPlaceList() {
+  routeActions.push('places');
+}
 
 class PlaceView extends React.Component {
 
     constructor() {
         super();
+        this.onDelete = this.onDelete.bind(this);
         this.render = this.render.bind(this);
     }
 
@@ -18,6 +24,13 @@ class PlaceView extends React.Component {
 
     componentWillUnmount() {
       this.props.cleanActivePlace();
+    }
+
+    onDelete() {
+      var placeId = this.props.place._id;
+      this.props.deletePlace(placeId);
+
+      //this.props.goToPlaceList();
     }
 
     render() {
@@ -48,7 +61,7 @@ class PlaceView extends React.Component {
                     <h1>{place.title} <small>Category</small></h1>
                   </div>
                   <div>
-                    <Link to={`/places/${place._id}/edit`}>Edit</Link> | <a href="">Delete</a>
+                    <Link to={`/places/${place._id}/edit`}>Edit</Link> | <a href="#" onClick={this.onDelete}>Delete</a>
                   </div>
                   <br/>
 
@@ -75,7 +88,9 @@ function mapStateToProps(state,ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchPlace: (placeId) => dispatch(fetchPlace(placeId)),
-    cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit))
+    cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit)),
+    deletePlace: (placeId) => dispatch(deletePlace(placeId)),
+    goToPlaceList: () => dispatch(goToPlaceList())
   }
 }
 

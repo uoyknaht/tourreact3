@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch'
+import apiService from '../services/api.srv'
 
 export function requestPlaces() {
   console.log('requestPlaces (action)');
@@ -7,9 +8,27 @@ export function requestPlaces() {
   }
 }
 
+function shouldFetchPlaces(state) {
+
+  if (state.places.isFetchingItems) {
+    return false;
+  }
+
+  if (state.places.areItemsFetched) {
+    return false;
+  }
+
+  return true;
+}
+
 export function fetchPlaces() {
   console.log('fetchPlaces (action)');
-  return function (dispatch) {
+  return function (dispatch, getState) {
+
+    if (!shouldFetchPlaces(getState())) {
+      return;
+    }
+
     dispatch(requestPlaces());
 
     // return fetch(`http://www.reddit.com/r/${subreddit}.json`)
@@ -70,24 +89,107 @@ export function cleanActivePlace(isForEdit) {
   }
 }
 
-export function addPlace(place) {
+export function requestCreatePlace() {
   return {
-    type: 'ADD_PLACE',
-    place
+    type: 'REQUEST_CREATE_PLACE',
+  };
+}
+
+export function createPlace(newPlace) {
+  return function (dispatch) {
+    dispatch(requestCreatePlace());
+
+    return fetch(`http://localhost:8081/api/places`, {
+          method: 'POST',
+          // headers: {
+          //   'Accept': 'application/json',
+          //   'Content-Type': 'application/json'
+          // },
+          body: newPlace
+        })
+        .then(response => response.json())
+        .then(json => dispatch(responseUpdatePlace(json)))
+        .catch(err => console.log(err));
   }
 }
 
-export function editPlace(id, place) {
+export function responseCreatePlace(createdPlace) {
+  console.log('responseCreatePlace (action)');
   return {
-    type: 'EDIT_PLACE',
-    id,
-    place
+    type: 'RESPONSE_CREATE_PLACE',
+    createdPlace
+  }
+}
+
+export function requestUpdatePlace() {
+  return {
+    type: 'REQUEST_UPDATE_PLACE',
   };
 }
 
-export function removePlace(id) {
+export function updatePlace(newPlace) {
+  return function (dispatch) {
+    dispatch(requestUpdatePlace());
+
+    return fetch(`http://localhost:8081/api/places/${newPlace._id}`, {
+          method: 'PUT',
+          // headers: {
+          //   'Accept': 'application/json',
+          //   'Content-Type': 'application/json'
+          // },
+          body: newPlace
+        })
+        .then(response => response.json())
+        .then(json => dispatch(responseUpdatePlace(json)))
+        .catch(err => console.log(err));
+  }
+}
+
+export function responseUpdatePlace(updatedPlace) {
+  console.log('responseUpdatePlace (action)');
   return {
-    type: 'REMOVE_PLACE',
-    id
+    type: 'RESPONSE_UPDATE_PLACE',
+    updatedPlace
+  }
+}
+
+///
+///
+///
+
+export function requestDeletePlace(placeId) {
+  return {
+    type: 'DELETE_PLACE',
+    placeId
   };
+}
+
+export function deletePlace(placeId) {
+  return function (dispatch) {
+    dispatch(requestDeletePlace(placeId));
+
+    return apiService.delete(`http://localhost:8081/api/places/${placeId}`)
+        .then(() => dispatch(responseDeletePlace(true)))
+        .catch(() => dispatch(responseDeletePlace(false)));
+
+  //   return fetch(`http://localhost:8081/api/places/${placeId}`, {
+  //         method: 'DELETE',
+  //         // headers: {
+  //         //   'Accept': 'application/json',
+  //         //   'Content-Type': 'application/json'
+  //         // },
+  //       })
+  //       .then(response => response.json())
+  //       .then(json => dispatch(responseDeletePlace()))
+  //       .catch(err => console.log(err));
+  // }
+  }
+}
+
+export function responseDeletePlace(isSuccess) {
+  console.log('responseDeletePlace (action)');
+  return {
+    type: 'RESPONSE_DELETE_PLACE',
+    isSuccess
+  }
 }

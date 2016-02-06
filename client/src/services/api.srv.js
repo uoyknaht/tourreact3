@@ -13,7 +13,22 @@ class ApiService {
   post() {
 
   }
-  
+
+  delete(url) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+          url: url,
+          type: 'DELETE',
+          success: () => {
+              resolve();
+          },
+          error: () => {
+            reject();
+          }
+      });
+    });
+  }
+
 }
 
 export default new ApiService();

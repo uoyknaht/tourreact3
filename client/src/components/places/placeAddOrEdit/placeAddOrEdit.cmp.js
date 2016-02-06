@@ -3,15 +3,12 @@ import ReactDOM from 'react-dom';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect }            from 'react-redux';
-import { fetchPlace, cleanActivePlace } from '../../../actions/placeActions';
+import { fetchPlace, cleanActivePlace, createPlace, updatePlace } from '../../../actions/placeActions';
 
 class PlaceAddOrEdit extends React.Component {
 
     constructor() {
         super();
-        // this.componentDidMount = this.componentDidMount.bind(this);
-        // this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
-        // this.componentWillUnmount = this.componentWillUnmount.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this._updateForm = this._updateForm.bind(this);
         this.render = this.render.bind(this);
@@ -19,11 +16,10 @@ class PlaceAddOrEdit extends React.Component {
 
     componentDidMount() {
       const placeId = this.props.placeId;
-      this.props.fetchPlace(placeId, true);
 
-
-
-        //this.isFormOfTypeCreate = this.props.place ? false : true;
+      if (placeId) {
+        this.props.fetchPlace(placeId, true);
+      }
     }
 
      componentWillReceiveProps(newProps) {
@@ -53,8 +49,12 @@ class PlaceAddOrEdit extends React.Component {
           place._id = this.props.place._id;
       }
 
-      console.log(place);
-      this.props.addPlace(place);
+      if (place._id) {
+        this.props.updatePlace(place);
+      } else {
+          this.props.createPlace(place);
+      }
+
 
       // PlaceActions.savePlace(data);
       // this.context.router.transitionTo('allPlaces');
@@ -150,7 +150,9 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchPlace: (placeId, isForEdit) => dispatch(fetchPlace(placeId, isForEdit)),
-    cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit))
+    cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit)),
+    createPlace: (place) => dispatch(createPlace(place)),
+    updatePlace: (place) => dispatch(updatePlace(place))
   }
 }
 

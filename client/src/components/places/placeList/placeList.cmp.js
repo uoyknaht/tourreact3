@@ -43,11 +43,14 @@ class PlaceList extends React.Component {
       });
 
         return (
-
-          <div className="list-group">
-              {placesHtml}
+          <div>
+            <Link to={`/places/actions/create`}>Create new</Link>
+            <br/>
+            <br/>
+              <div className="list-group">
+                  {placesHtml}
+              </div>
           </div>
-
         );
     }
 
