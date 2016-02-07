@@ -6,10 +6,6 @@ import { fetchPlace, cleanActivePlace, deletePlace } from '../../../actions/plac
 import { routeActions } from 'react-router-redux'
 import Loader from '../../loader/loader.cmp';
 
-function goToPlaceList() {
-  routeActions.push('places');
-}
-
 class PlaceView extends React.Component {
 
     constructor() {
@@ -27,16 +23,20 @@ class PlaceView extends React.Component {
       this.props.cleanActivePlace();
     }
 
+    componentWillReceiveProps(newProps) {
+      if (newProps.isDeleted && !this.props.isDeleted) {
+        this.props.dispatch(routeActions.push('/places'));
+      }
+    }
+
     onDelete() {
       var placeId = this.props.place._id;
       this.props.deletePlace(placeId);
-
-      //this.props.goToPlaceList();
     }
 
     render() {
 
-      if (this.props.isLoading) {
+      if (this.props.isLoading || this.props.isDeleting) {
         return (
           <Loader />
         );
@@ -77,6 +77,8 @@ class PlaceView extends React.Component {
 function mapStateToProps(state,ownProps) {
   return {
     isLoading: state.places.isFetchingItem,
+    isDeleting: state.places.isDeletingItem,
+    isDeleted: state.places.isItemDeleted,
     placeId: ownProps.params.id,
     place: state.places.activeItem
   }
@@ -87,7 +89,7 @@ function mapDispatchToProps(dispatch) {
     fetchPlace: (placeId) => dispatch(fetchPlace(placeId)),
     cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit)),
     deletePlace: (placeId) => dispatch(deletePlace(placeId)),
-    goToPlaceList: () => dispatch(goToPlaceList())
+    dispatch: dispatch
   }
 }
 

@@ -1,4 +1,5 @@
 import Immutable from 'immutable';
+import remove from 'lodash/remove';
 
 // let defaultState = Immutable.fromJS({
 //   places: Immutable.fromJS({
@@ -20,7 +21,10 @@ let defaultState = {
     activeItemId: null,
     activeItem: null,
     isFetchingItem: true,
-    itemInEditMode: null
+    itemInEditMode: null,
+    isUpdatingItem: false,
+    isDeletingItem: true,
+    isItemDeleted: false
   }
 };
 
@@ -85,6 +89,7 @@ export default function placeReducer(state = defaultState, action) {
         } else {
           newState.activeItemId = null;
           newState.activeItem = null;
+          newState.isItemDeleted = false;
         }
 
         return Object.assign({}, state, newState);
@@ -100,16 +105,32 @@ export default function placeReducer(state = defaultState, action) {
     //   return state.set(action.id, action.place);
     //
 
-    case 'REMOVE_PLACE':
-// make with immutable
-      var places = state.places.items;
+    case 'REQUEST_DELETE_PLACE':
+
+      var newState = {
+        isDeletingItem: true
+      };
+
+      return getMergedState(newState, state);
+
+    case 'RESPONSE_DELETE_PLACE':
+      console.log('RESPONSE_DELETE_PLACE (reducer)');
+// debugger;
       var removePlaceId = action.placeId;
+      var newState = {
+        isDeletingItem: false,
+        isItemDeleted: true
+      };
 
+      let mergedState = getMergedState(newState, state);
 
+      if (action.isSuccess) {
+        remove(mergedState.items, function (item) {
+          return item._id === removePlaceId;
+        });
+      }
 
-
-
-      return state.delete(action.id);
+      return mergedState;
 
     default:
       return state;

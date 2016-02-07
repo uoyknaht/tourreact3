@@ -158,7 +158,7 @@ export function responseUpdatePlace(updatedPlace) {
 
 export function requestDeletePlace(placeId) {
   return {
-    type: 'DELETE_PLACE',
+    type: 'REQUEST_DELETE_PLACE',
     placeId
   };
 }
@@ -168,8 +168,11 @@ export function deletePlace(placeId) {
     dispatch(requestDeletePlace(placeId));
 
     return apiService.delete(`http://localhost:8081/api/places/${placeId}`)
-        .then(() => dispatch(responseDeletePlace(true)))
-        .catch(() => dispatch(responseDeletePlace(false)));
+        .then( function() {
+          dispatch(responseDeletePlace(true, placeId));
+        })
+        .catch(() => dispatch(responseDeletePlace(false, placeId)));
+
 
   //   return fetch(`http://localhost:8081/api/places/${placeId}`, {
   //         method: 'DELETE',
@@ -185,10 +188,11 @@ export function deletePlace(placeId) {
   }
 }
 
-export function responseDeletePlace(isSuccess) {
+export function responseDeletePlace(isSuccess, placeId) {
   console.log('responseDeletePlace (action)');
   return {
     type: 'RESPONSE_DELETE_PLACE',
-    isSuccess
+    isSuccess,
+    placeId
   }
 }
