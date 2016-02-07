@@ -1,7 +1,28 @@
 import Immutable from 'immutable';
 
-// const defaultState = new Immutable.List();
-const defaultState = {};
+// let defaultState = Immutable.fromJS({
+//   places: Immutable.fromJS({
+//     isFetchingItems: false,
+//     areItemsFetched: false,
+//     items: Immutable.List([]),
+//     activeItemId: null,
+//     activeItem: null,
+//     isFetchingItem: true,
+//     itemInEditMode: null
+//   })
+// });
+
+let defaultState = {
+  places: {
+    isFetchingItems: false,
+    areItemsFetched: false,
+    items: [],
+    activeItemId: null,
+    activeItem: null,
+    isFetchingItem: true,
+    itemInEditMode: null
+  }
+};
 
 function getMergedState(newState, currentState) {
   return Object.assign({}, currentState, newState);
@@ -13,11 +34,13 @@ export default function placeReducer(state = defaultState, action) {
 
     case 'REQUEST_PLACES':
       console.log('request_places (reducer)');
+// debugger;
 
       var newState = {
         isFetchingItems: true
       };
 
+      // return Object.assign({}, state, newState);
       return getMergedState(newState, state);
 
     case 'RECEIVED_PLACES':
@@ -28,8 +51,7 @@ export default function placeReducer(state = defaultState, action) {
         areItemsFetched: true
       };
 
-      // return state.merge(newState);
-      return Object.assign({}, state, newState);
+      return getMergedState(newState, state);
 
       case 'REQUEST_PLACE':
 

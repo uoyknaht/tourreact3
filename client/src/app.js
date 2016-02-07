@@ -1,10 +1,31 @@
 // import * as reducers                    from './reducers';
 //  const { places } = this.props;
+// Object
+//   .keys(initialState)
+//   .forEach(key => {
+//     initialState[key] = fromJS(initialState[key]);
+//    });
+// const reducer = combineReducers(appReducer);
+
+// use initial state when it's clear how to bootstrap it with immutable
+// const store = createStore(appReducer, initialState, applyMiddleware(reduxRouterMiddleware, thunkMiddleware));
+
+// const store = createStore(
+//   rootReducer,
+//   applyMiddleware(
+//     thunkMiddleware, // lets us dispatch() functions
+//     loggerMiddleware // neat middleware that logs actions
+//   )
+// )
+
+// return state.merge(newState);
+// return state.mergeDeep(newState);
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom'
-import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware } from 'redux';
+// import { combineReducers } from 'redux-immutablejs';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import { Provider } from 'react-redux'
@@ -22,54 +43,8 @@ import PlaceAddOrEdit from './components/places/placeAddOrEdit/placeAddOrEdit.cm
 import './css/bootstrap.css';
 import './css/app.scss';
 
-let initialState = {
-  places: {
-    isFetchingItems: false,
-    areItemsFetched: false,
-    items:[
-      {
-        _id: 1,
-        title: 'Raudondvario pilis'
-      },
-      {
-        _id: 2,
-        title: 'Netoniu kalnas'
-      },
-      {
-        _id: 3,
-        title: 'Lampedziu kempingas'
-      },
-    ],
-    activeItemId: null,
-    activeItem: null,
-    isFetchingItem: true,
-    itemInEditMode: null
-  }
-};
-
-initialState = Immutable.fromJS(initialState);
-
-// Object
-//   .keys(initialState)
-//   .forEach(key => {
-//     initialState[key] = fromJS(initialState[key]);
-//    });
-
 const reduxRouterMiddleware = syncHistory(browserHistory);
-
 const store = createStore(appReducer, applyMiddleware(reduxRouterMiddleware, thunkMiddleware));
-
-// use initial state when it's clear how to bootstrap it with immutable
-// const store = createStore(appReducer, initialState, applyMiddleware(reduxRouterMiddleware, thunkMiddleware));
-
-// const store = createStore(
-//   rootReducer,
-//   applyMiddleware(
-//     thunkMiddleware, // lets us dispatch() functions
-//     loggerMiddleware // neat middleware that logs actions
-//   )
-// )
-
 
 // Required for replaying actions from devtools to work
 reduxRouterMiddleware.listenForReplays(store);

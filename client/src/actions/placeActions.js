@@ -9,7 +9,6 @@ export function requestPlaces() {
 }
 
 function shouldFetchPlaces(state) {
-
   if (state.places.isFetchingItems) {
     return false;
   }
@@ -24,7 +23,7 @@ function shouldFetchPlaces(state) {
 export function fetchPlaces() {
   console.log('fetchPlaces (action)');
   return function (dispatch, getState) {
-
+// debugger;
     if (!shouldFetchPlaces(getState())) {
       return;
     }

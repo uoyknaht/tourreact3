@@ -25,8 +25,8 @@ class PlaceList extends React.Component {
     // }
 
     render() {
-
       let places = this.props.places;
+      // debugger;
 
       if (!places) {
         return (
@@ -60,6 +60,7 @@ class PlaceList extends React.Component {
 }
 
 function mapStateToProps(state) {
+  // debugger;
   return {
     // places: state.get('places')
     places: state.places.items
