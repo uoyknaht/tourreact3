@@ -1,5 +1,6 @@
 import Immutable from 'immutable';
 import remove from 'lodash/remove';
+import notifierService from '../services/notifier.srv';
 
 // let defaultState = Immutable.fromJS({
 //   places: Immutable.fromJS({
@@ -128,6 +129,8 @@ export default function placeReducer(state = defaultState, action) {
         remove(mergedState.items, function (item) {
           return item._id === removePlaceId;
         });
+      } else {
+        notifierService.error('error removing place');
       }
 
       return mergedState;

@@ -41,6 +41,7 @@ import PlaceList from './components/places/placeList/placeList.cmp';
 import PlaceView from './components/places/placeView/placeView.cmp';
 import PlaceAddOrEdit from './components/places/placeAddOrEdit/placeAddOrEdit.cmp';
 import './css/bootstrap.css';
+import './css/toastr.scss';
 import './css/app.scss';
 
 const reduxRouterMiddleware = syncHistory(browserHistory);
