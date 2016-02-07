@@ -23,7 +23,7 @@ let defaultState = {
     activeItem: null,
     isFetchingItem: true,
     itemInEditMode: null,
-    isUpdatingItem: false,
+    isCreatingOrUpdatingItem: false,
     isDeletingItem: true,
     isItemDeleted: false
   }
@@ -35,13 +35,16 @@ function getMergedState(newState, currentState) {
 
 export default function placeReducer(state = defaultState, action) {
 
+  let newState;
+  let mergedState;
+
   switch(action.type) {
 
     case 'REQUEST_PLACES':
       console.log('request_places (reducer)');
 // debugger;
 
-      var newState = {
+      newState = {
         isFetchingItems: true
       };
 
@@ -50,7 +53,7 @@ export default function placeReducer(state = defaultState, action) {
 
     case 'RECEIVED_PLACES':
       console.log('received_places (reducer)');
-      var newState = {
+      newState = {
         items: action.places,
         isFetchingItems: false,
         areItemsFetched: true
@@ -60,7 +63,7 @@ export default function placeReducer(state = defaultState, action) {
 
       case 'REQUEST_PLACE':
 
-        var newState = {
+        newState = {
           isFetchingItem: true
         };
 
@@ -68,7 +71,7 @@ export default function placeReducer(state = defaultState, action) {
 
       case 'RECEIVED_PLACE':
 
-        var newState = {
+        newState = {
           isFetchingItem: false
         };
 
@@ -83,7 +86,7 @@ export default function placeReducer(state = defaultState, action) {
 
       case 'CLEAN_ACTIVE_PLACE':
 
-        var newState = {};
+        newState = {};
 
         if (action.isForEdit) {
           newState.itemInEditMode = null;
@@ -94,6 +97,38 @@ export default function placeReducer(state = defaultState, action) {
         }
 
         return Object.assign({}, state, newState);
+
+      ////////////////////
+      ////////////////////
+      ////////////////////
+
+      case 'REQUEST_CREATE_PLACE':
+
+        newState = {
+          isCreatingOrUpdatingItem: true
+        };
+
+        return getMergedState(newState, state);
+
+        case 'RESPONSE_CREATE_PLACE':
+
+          newState = {
+            isCreatingOrUpdatingItem: false
+          };
+
+          mergedState = getMergedState(newState, state);
+
+          if (!action.isSuccess) {
+            notifierService.error('error creating place');
+            return mergedState;
+          }
+
+          mergedState.items.push(action.createdPlace);
+
+          return mergedState;
+
+
+
 
     // case 'GET_PLACE':
     //   console.log(state);
@@ -108,7 +143,7 @@ export default function placeReducer(state = defaultState, action) {
 
     case 'REQUEST_DELETE_PLACE':
 
-      var newState = {
+      newState = {
         isDeletingItem: true
       };
 
@@ -118,12 +153,12 @@ export default function placeReducer(state = defaultState, action) {
       console.log('RESPONSE_DELETE_PLACE (reducer)');
 // debugger;
       var removePlaceId = action.placeId;
-      var newState = {
+      newState = {
         isDeletingItem: false,
         isItemDeleted: true
       };
 
-      let mergedState = getMergedState(newState, state);
+      mergedState = getMergedState(newState, state);
 
       if (action.isSuccess) {
         remove(mergedState.items, function (item) {

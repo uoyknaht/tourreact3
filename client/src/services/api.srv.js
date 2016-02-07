@@ -10,8 +10,21 @@ class ApiService {
     });
   }
 
-  post() {
-
+  post(url, data) {
+    return new Promise((resolve, reject) => {
+      $.post({
+          url: url,
+          data: data,
+          // dataType: 'json',
+          //contentType: 'application/x-www-form-urlencoded',
+          success: (response) => {
+              resolve(response);
+          },
+          error: () => {
+            reject();
+          }
+      });
+    });
   }
 
   delete(url) {

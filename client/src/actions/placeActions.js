@@ -98,25 +98,30 @@ export function createPlace(newPlace) {
   return function (dispatch) {
     dispatch(requestCreatePlace());
 
-    return fetch(`http://localhost:8081/api/places`, {
-          method: 'POST',
-          // headers: {
-          //   'Accept': 'application/json',
-          //   'Content-Type': 'application/json'
-          // },
-          body: newPlace
-        })
-        .then(response => response.json())
-        .then(json => dispatch(responseUpdatePlace(json)))
-        .catch(err => console.log(err));
+    return apiService.post(`http://localhost:8081/api/places`, newPlace)
+        .then(json => dispatch(responseCreatePlace(true, json)))
+        .catch(() => dispatch(responseCreatePlace(false)));
+
+    // return fetch(`http://localhost:8081/api/places`, {
+    //       method: 'POST',
+    //       headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json'
+    //       },
+    //       body: newPlace
+    //     })
+    //     .then(response => response.json())
+    //     .then(json => dispatch(responseUpdatePlace(json)))
+    //     .catch(err => console.log(err));
   }
 }
 
-export function responseCreatePlace(createdPlace) {
+export function responseCreatePlace(isSuccess, createdPlace) {
   console.log('responseCreatePlace (action)');
   return {
     type: 'RESPONSE_CREATE_PLACE',
-    createdPlace
+    createdPlace,
+    isSuccess
   }
 }
 
