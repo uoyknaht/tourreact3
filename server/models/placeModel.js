@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-require('./Category');
+require('./categoryModel');
 
 var PlaceSchema = new Schema({
   // _creator : { type: Schema.Types.ObjectId, ref: 'Category' },

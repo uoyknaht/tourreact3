@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-require('./Place');
+require('./placeModel');
 
 var CategorySchema = new Schema({
     // _creator : { type: String, ref: 'Place' },

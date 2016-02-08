@@ -1,8 +1,6 @@
 
 var mongoose = require('mongoose');
 var uriUtil = require('mongodb-uri');
-require('./models/Category');
-require('./models/Place');
 
 var options = {
     server: {

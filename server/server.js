@@ -4,15 +4,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var mongoose = require('mongoose');
 var uriUtil = require('mongodb-uri');
 var appConstants = require('../appConstants');
 
+require('./models/categoryModel');
+require('./models/placeModel');
 require('./db');
 
-var Place = mongoose.model('Place');
-var Category = mongoose.model('Category');
 var routes = require('./routes/placeRoutes');
 var app = express();
 var http = require('http').Server(app);
