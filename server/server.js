@@ -21,6 +21,13 @@ http.listen(appConstants.urls.apiPort, function() {
   console.log('%s listening at %s', http.name, http.url);
 });
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", appConstants.urls.webroot);
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  next();
+});
+
 // uncomment after placing your favicon in /public
 // app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
@@ -29,20 +36,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/', routes);
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
-
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-
-  next();
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -58,3 +51,4 @@ app.use(function(err, req, res, next) {
         error: err
     });
 });
+
