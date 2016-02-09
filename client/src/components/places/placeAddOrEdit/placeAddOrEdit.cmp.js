@@ -35,7 +35,7 @@ class PlaceAddOrEdit extends React.Component {
 
 
         if (newProps.lastCreatedItemId && newProps.lastCreatedItemId !== this.props.lastCreatedItemId) {
-            this.props.dispatch(routeActions.push('/places/`${newProps.lastCreatedItemId}`/edit'));
+           this.props.dispatch(routeActions.push(`/places/${newProps.lastCreatedItemId}/edit`));
         }
 
         // -. after creating place and click submit, redirecting to edit view
@@ -46,6 +46,7 @@ class PlaceAddOrEdit extends React.Component {
 
         if (!routeParams.id && newProps.routeParams.id) {
             console.log('redirected from create view to edit view');
+            this.props.fetchPlace(newProps.routeParams.id);
         }
 
 
@@ -186,7 +187,7 @@ class PlaceAddOrEdit extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    place: state.places.itemInEditMode,
+    place: state.places.itemInEditMode || state.places.isFetchingItem,
     placeId: ownProps.params.id,
     isLoading: state.places.isCreatingOrUpdatingItem,
     lastCreatedItemId: state.places.lastCreatedItemId
