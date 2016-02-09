@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
-import { clickMarker } from '../../../actions/mapActions';
+import { clickMarker, dragMarker } from '../../../actions/mapActions';
 import { connect }            from 'react-redux';
 // import React, {PropTypes, Component} from 'react/addons';
 import { routeActions } from 'react-router-redux';
@@ -22,6 +22,8 @@ class MapContainer extends React.Component {
     this._onMarkerMouseDown = this._onMarkerMouseDown.bind(this);
     this._onMarkerMouseUp = this._onMarkerMouseUp.bind(this);
     this._onMarkerMouseMove = this._onMarkerMouseMove.bind(this);
+
+    this._draggableMarker = null;
   }
 
   _onBoundsChange(center, zoom, bounds, marginBounds) {
@@ -36,20 +38,21 @@ class MapContainer extends React.Component {
   }
 
   _onMarkerMouseDown(markerId, marker, a) {
-    console.log(markerId);
-    console.log(marker);
-    console.log(a);
-      // this.props.dispatch(routeActions.push(`/places/${markerId}`));
+    this._draggableMarker = marker;
   }
 
-  _onMarkerMouseUp(markerId, marker) {
+  _onMarkerMouseUp(markerId, marker, dragData) {
+    this.props.dragMarker(markerId, dragData.lat, dragData.lng);
     // console.log(markerId);
       // this.props.dispatch(routeActions.push(`/places/${markerId}`));
   }
 
-  _onMarkerMouseMove(markerId, marker) {
-    // console.log(markerId);
-      // this.props.dispatch(routeActions.push(`/places/${markerId}`));
+  _onMarkerMouseMove(markerId, marker, dragData) {
+
+      // console.log(markerId);
+      // console.log(a);
+      // marker.lat = a.lat;
+      // marker.lng = a.lng;
   }
 
 
@@ -107,6 +110,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     clickMarker: (markerId) => dispatch(clickMarker(markerId)),
+    dragMarker: (markerId, newLat, newLng) => dispatch(dragMarker(markerId, newLat, newLng)),
     dispatch: dispatch
   }
 }

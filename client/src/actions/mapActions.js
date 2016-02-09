@@ -4,3 +4,12 @@ export function clickMarker() {
     type: 'CLICK_MARKER'
   }
 }
+
+export function dragMarker(markerId, newLat, newLng) {
+  return {
+    type: 'DRAG_MARKER',
+    markerId,
+    newLat,
+    newLng
+  }
+}

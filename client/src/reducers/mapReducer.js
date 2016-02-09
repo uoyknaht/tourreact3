@@ -59,6 +59,16 @@ export default function mapReducer(state = defaultState, action) {
 
       return getMergedState(newState, state);
 
+    case 'DRAG_MARKER':
+// console.log(action);
+debugger;
+      mergedState = getMergedState({}, state);
+      let marker = find(mergedState.markers, { id: action.markerId });
+      marker.lat = action.newLat;
+      marker.lng = action.newLng;
+
+      // console.log(action.newLat);
+      return mergedState;
 
     default:
       return state;
