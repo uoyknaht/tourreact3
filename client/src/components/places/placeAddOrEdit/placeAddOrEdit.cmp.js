@@ -17,7 +17,6 @@ class PlaceAddOrEdit extends React.Component {
     }
 
     componentDidMount() {
-        console.log('place add or edit cmp mounted');
 
       const placeId = this.props.placeId;
 
@@ -27,38 +26,18 @@ class PlaceAddOrEdit extends React.Component {
     }
 
      componentWillReceiveProps(newProps) {
-
-        console.log(newProps);
         let { routeParams } = this.props;
 
-        // -. if there was no place (was crreating, and response from server received with created place id)
+  
 
-
+        // redirecting after create place
         if (newProps.lastCreatedItemId && newProps.lastCreatedItemId !== this.props.lastCreatedItemId) {
-           this.props.dispatch(routeActions.push(`/places/${newProps.lastCreatedItemId}/edit`));
-        }
-
-        // -. after creating place and click submit, redirecting to edit view
-            // there is no place. Does it is when redirecting to edit?
-            // url is changed but component stays the same
-            // there was no routeParams.id, no it is
-
-
-        if (!routeParams.id && newProps.routeParams.id) {
-            console.log('redirected from create view to edit view');
-            this.props.fetchPlace(newProps.routeParams.id);
-        }
-
-
-
-        // -. coming from place list. 
-            //  id is always set
-            // At first there is no place. When it is received from server, place is set
-
-
-        // console.log(newProps);
+            console.log(1);
+           this.props.dispatch(routeActions.push(`/places/${newProps.lastCreatedItemId}`));
+        } 
+        // prefilling form data in after opening edit place
         else if (!this.props.place && newProps.place) {
-            console.log(newProps.place)
+            console.log(3);
          this._updateForm(newProps.place);
        }
      }
@@ -187,7 +166,7 @@ class PlaceAddOrEdit extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    place: state.places.itemInEditMode || state.places.isFetchingItem,
+    place: state.places.itemInEditMode,
     placeId: ownProps.params.id,
     isLoading: state.places.isCreatingOrUpdatingItem,
     lastCreatedItemId: state.places.lastCreatedItemId

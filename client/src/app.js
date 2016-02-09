@@ -21,6 +21,18 @@
 // return state.merge(newState);
 // return state.mergeDeep(newState);
 
+// return fetch(`http://localhost:8081/api/places`, {
+//       method: 'POST',
+//       headers: {
+//         'Accept': 'application/json',
+//         'Content-Type': 'application/json'
+//       },
+//       body: newPlace
+//     })
+//     .then(response => response.json())
+//     .then(json => dispatch(responseUpdatePlace(json)))
+//     .catch(err => console.log(err));
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom'

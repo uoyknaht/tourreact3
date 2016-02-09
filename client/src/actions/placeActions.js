@@ -2,7 +2,6 @@ import fetch from 'isomorphic-fetch'
 import apiService from '../services/api.srv'
 
 export function requestPlaces() {
-  console.log('requestPlaces (action)');
   return {
     type: 'REQUEST_PLACES'
   }
@@ -21,27 +20,22 @@ function shouldFetchPlaces(state) {
 }
 
 export function fetchPlaces() {
-  console.log('fetchPlaces (action)');
   return function (dispatch, getState) {
-// debugger;
     if (!shouldFetchPlaces(getState())) {
       return;
     }
 
     dispatch(requestPlaces());
 
-    // return fetch(`http://www.reddit.com/r/${subreddit}.json`)
     return fetch('http://localhost:8081/api/places')
       .then(response => response.json())
       .then((json) => {
-        console.log('receivedPlaces (action)');
         dispatch(receivedPlaces(json))
       })
   }
 }
 
 export function receivedPlaces(places) {
-  console.log('receivedPlaces (action)');
   return {
     type: 'RECEIVED_PLACES',
     places
@@ -49,7 +43,6 @@ export function receivedPlaces(places) {
 }
 
 export function requestPlace(placeId, isForEdit) {
-  console.log('requestPlace (action)');
   return {
     type: 'REQUEST_PLACE',
     placeId,
@@ -58,11 +51,9 @@ export function requestPlace(placeId, isForEdit) {
 }
 
 export function fetchPlace(placeId, isForEdit) {
-  console.log('fetchPlace (action)');
   return function (dispatch) {
     dispatch(requestPlace(isForEdit));
 
-    // return fetch(`http://www.reddit.com/r/${subreddit}.json`)
     return fetch(`http://localhost:8081/api/places/${placeId}`)
       .then(response => response.json())
       .then((json) => {
@@ -72,7 +63,6 @@ export function fetchPlace(placeId, isForEdit) {
 }
 
 export function receivedPlace(place, isForEdit) {
-  console.log('receivedPlace (action)');
   return {
     type: 'RECEIVED_PLACE',
     place,
@@ -81,7 +71,6 @@ export function receivedPlace(place, isForEdit) {
 }
 
 export function cleanActivePlace(isForEdit) {
-  console.log('cleanActivePlace (action)');
   return {
     type: 'CLEAN_ACTIVE_PLACE',
     isForEdit
@@ -101,23 +90,10 @@ export function createPlace(newPlace) {
     return apiService.post(`http://localhost:8081/api/places`, newPlace)
         .then(json => dispatch(responseCreatePlace(true, json)))
         .catch(() => dispatch(responseCreatePlace(false)));
-
-    // return fetch(`http://localhost:8081/api/places`, {
-    //       method: 'POST',
-    //       headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json'
-    //       },
-    //       body: newPlace
-    //     })
-    //     .then(response => response.json())
-    //     .then(json => dispatch(responseUpdatePlace(json)))
-    //     .catch(err => console.log(err));
   }
 }
 
 export function responseCreatePlace(isSuccess, createdPlace) {
-  console.log('responseCreatePlace (action)');
   return {
     type: 'RESPONSE_CREATE_PLACE',
     createdPlace,
@@ -150,16 +126,11 @@ export function updatePlace(newPlace) {
 }
 
 export function responseUpdatePlace(updatedPlace) {
-  console.log('responseUpdatePlace (action)');
   return {
     type: 'RESPONSE_UPDATE_PLACE',
     updatedPlace
   }
 }
-
-///
-///
-///
 
 export function requestDeletePlace(placeId) {
   return {
@@ -177,24 +148,10 @@ export function deletePlace(placeId) {
           dispatch(responseDeletePlace(true, placeId));
         })
         .catch(() => dispatch(responseDeletePlace(false, placeId)));
-
-
-  //   return fetch(`http://localhost:8081/api/places/${placeId}`, {
-  //         method: 'DELETE',
-  //         // headers: {
-  //         //   'Accept': 'application/json',
-  //         //   'Content-Type': 'application/json'
-  //         // },
-  //       })
-  //       .then(response => response.json())
-  //       .then(json => dispatch(responseDeletePlace()))
-  //       .catch(err => console.log(err));
-  // }
   }
 }
 
 export function responseDeletePlace(isSuccess, placeId) {
-  console.log('responseDeletePlace (action)');
   return {
     type: 'RESPONSE_DELETE_PLACE',
     isSuccess,

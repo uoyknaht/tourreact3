@@ -42,18 +42,13 @@ export default function placeReducer(state = defaultState, action) {
   switch(action.type) {
 
     case 'REQUEST_PLACES':
-      console.log('request_places (reducer)');
-// debugger;
-
       newState = {
         isFetchingItems: true
       };
 
-      // return Object.assign({}, state, newState);
       return getMergedState(newState, state);
 
     case 'RECEIVED_PLACES':
-      console.log('received_places (reducer)');
       newState = {
         items: action.places,
         isFetchingItems: false,
@@ -82,7 +77,6 @@ export default function placeReducer(state = defaultState, action) {
           newState.activeItem = action.place;
         }
 
-        // return state.merge(newState);
         return Object.assign({}, state, newState);
 
       case 'CLEAN_ACTIVE_PLACE':
@@ -111,7 +105,7 @@ export default function placeReducer(state = defaultState, action) {
 
         return getMergedState(newState, state);
 
-        case 'RESPONSE_CREATE_PLACE':
+    case 'RESPONSE_CREATE_PLACE':
 
           newState = {
             isCreatingOrUpdatingItem: false
@@ -124,7 +118,6 @@ export default function placeReducer(state = defaultState, action) {
             return mergedState;
           }
 
-          console.log(action.createdPlace._id);
           mergedState.lastCreatedItemId = action.createdPlace._id;
           mergedState.items.push(action.createdPlace);
 
@@ -153,9 +146,9 @@ export default function placeReducer(state = defaultState, action) {
       return getMergedState(newState, state);
 
     case 'RESPONSE_DELETE_PLACE':
-      console.log('RESPONSE_DELETE_PLACE (reducer)');
-// debugger;
+
       var removePlaceId = action.placeId;
+      
       newState = {
         isDeletingItem: false,
         isItemDeleted: true
