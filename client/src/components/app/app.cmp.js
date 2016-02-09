@@ -3,6 +3,7 @@ import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import Nav from '../nav/nav.cmp';
 import PageTitle from '../pageTitle/pageTitle.cmp';
+import MapContainer from '../map/mapContainer/mapContainer.cmp';
 
 export default class App extends React.Component {
 
@@ -23,6 +24,7 @@ export default class App extends React.Component {
                     </div>
                     <div className="col-md-6">
                         Map: TODO.
+                        <MapContainer />
                     </div>
                 </div>
             </div>
