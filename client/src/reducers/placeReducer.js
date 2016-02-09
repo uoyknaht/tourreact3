@@ -1,5 +1,7 @@
 import Immutable from 'immutable';
 import remove from 'lodash/remove';
+import find from 'lodash/find';
+import indexOf from 'lodash/indexOf';
 import notifierService from '../services/notifier.srv';
 
 // let defaultState = Immutable.fromJS({
@@ -25,6 +27,7 @@ let defaultState = {
     itemInEditMode: null,
     isCreatingOrUpdatingItem: false,
     lastCreatedItemId: null,
+    lastUpdatedItemId: null,
     isDeletingItem: true,
     isItemDeleted: false
   }
@@ -85,6 +88,8 @@ export default function placeReducer(state = defaultState, action) {
 
         if (action.isForEdit) {
           newState.itemInEditMode = null;
+          newState.lastCreatedItemId = null;
+          newState.lastUpdatedItemId = null;
         } else {
           newState.activeItemId = null;
           newState.activeItem = null;
@@ -97,7 +102,7 @@ export default function placeReducer(state = defaultState, action) {
       ////////////////////
       ////////////////////
 
-      case 'REQUEST_CREATE_PLACE':
+    case 'REQUEST_CREATE_PLACE':
 
         newState = {
           isCreatingOrUpdatingItem: true
@@ -123,19 +128,51 @@ export default function placeReducer(state = defaultState, action) {
 
           return mergedState;
 
+      ////////////////////
+      ////////////////////
+      ////////////////////
+
+    case 'REQUEST_UPDATE_PLACE':
+
+        newState = {
+          isCreatingOrUpdatingItem: true
+        };
+
+        return getMergedState(newState, state);
+
+
+    case 'RESPONSE_UPDATE_PLACE':
+    // debugger;
+
+          newState = {
+            isCreatingOrUpdatingItem: false,
+            lastCreatedItemId: action.updatedPlace._id
+          };
+
+          mergedState = getMergedState(newState, state);
+
+          var index = indexOf(mergedState.items, find(mergedState.items, { _id: action.updatedPlace._id }));
+          mergedState.items.splice(index, 1, action.updatedPlace);
+
+          return mergedState;
+
+    case 'RESPONSE_UPDATE_PLACE_ERROR':
+
+        newState = {
+          isCreatingOrUpdatingItem: false
+        };
+
+        notifierService.error('error updating place');
+
+        return getMergedState(newState, state);
+
+
+////////////////////
+////////////////////
+////////////////////
 
 
 
-    // case 'GET_PLACE':
-    //   console.log(state);
-    //   return state.concat(action.place);
-    //
-    // case 'ADD_PLACE':
-    //   return state.concat(action.place);
-    //
-    // case 'EDIT_PLACE':
-    //   return state.set(action.id, action.place);
-    //
 
     case 'REQUEST_DELETE_PLACE':
 
@@ -148,7 +185,7 @@ export default function placeReducer(state = defaultState, action) {
     case 'RESPONSE_DELETE_PLACE':
 
       var removePlaceId = action.placeId;
-      
+
       newState = {
         isDeletingItem: false,
         isItemDeleted: true

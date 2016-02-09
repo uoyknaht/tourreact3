@@ -54,12 +54,12 @@ router.post('/api/places', function(req, res, next) {
     });
 });
 
-router.put('/api/places/:id', function(req, res, next) {
+router.post('/api/places/:id/edit', function(req, res, next) {
+
     var id = req.params.id;
     var place = new Place(req.body);
-    var categories = req.body.categories;
 
-    Place.findByIdAndUpdate(id, { $set: place },  function(err, place){
+    Place.findByIdAndUpdate(id, place, { new: true },  function(err, newPlace){
         if (err) {
             return next(err);
         }
@@ -76,7 +76,7 @@ router.put('/api/places/:id', function(req, res, next) {
         //     }
         // });
 
-        res.json(place);
+        res.json(newPlace);
     });
 });
 

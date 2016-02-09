@@ -15,10 +15,24 @@ class ApiService {
       $.post({
           url: url,
           data: data,
-          // dataType: 'json',
-          //contentType: 'application/x-www-form-urlencoded',
           success: (response) => {
               resolve(response);
+          },
+          error: () => {
+            console.log(222);
+            reject();
+          }
+      });
+    });
+  }
+
+  put(url, data) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+          url: url,
+          type: 'PUT',
+          success: () => {
+              resolve();
           },
           error: () => {
             reject();

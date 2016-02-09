@@ -26,18 +26,17 @@ class PlaceAddOrEdit extends React.Component {
     }
 
      componentWillReceiveProps(newProps) {
-        let { routeParams } = this.props;
-
-  
-
+    
         // redirecting after create place
         if (newProps.lastCreatedItemId && newProps.lastCreatedItemId !== this.props.lastCreatedItemId) {
-            console.log(1);
+           this.props.dispatch(routeActions.push(`/places/${newProps.lastCreatedItemId}`));
+        } 
+        // redirecting after edit place
+        else if (newProps.lastUpdatedItemId && newProps.lastUpdatedItemId !== this.props.lastUpdatedItemId) {
            this.props.dispatch(routeActions.push(`/places/${newProps.lastCreatedItemId}`));
         } 
         // prefilling form data in after opening edit place
         else if (!this.props.place && newProps.place) {
-            console.log(3);
          this._updateForm(newProps.place);
        }
      }

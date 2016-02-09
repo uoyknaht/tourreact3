@@ -7,9 +7,9 @@ var bodyParser = require('body-parser');
 var uriUtil = require('mongodb-uri');
 var appConstants = require('../appConstants');
 
+require('./db');
 require('./models/categoryModel');
 require('./models/placeModel');
-require('./db');
 
 var routes = require('./routes/placeRoutes');
 var app = express();

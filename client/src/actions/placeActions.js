@@ -101,6 +101,10 @@ export function responseCreatePlace(isSuccess, createdPlace) {
   }
 }
 
+///
+///
+///
+
 export function requestUpdatePlace() {
   return {
     type: 'REQUEST_UPDATE_PLACE',
@@ -111,17 +115,10 @@ export function updatePlace(newPlace) {
   return function (dispatch) {
     dispatch(requestUpdatePlace());
 
-    return fetch(`http://localhost:8081/api/places/${newPlace._id}`, {
-          method: 'PUT',
-          // headers: {
-          //   'Accept': 'application/json',
-          //   'Content-Type': 'application/json'
-          // },
-          body: newPlace
-        })
-        .then(response => response.json())
+    // return apiService.put(`http://localhost:8081/api/places/${newPlace._id}`, newPlace)
+    return apiService.post(`http://localhost:8081/api/places/${newPlace._id}/edit`, newPlace)
         .then(json => dispatch(responseUpdatePlace(json)))
-        .catch(err => console.log(err));
+        .catch(err => dispatch(responseUpdatePlaceError()));
   }
 }
 
@@ -131,6 +128,17 @@ export function responseUpdatePlace(updatedPlace) {
     updatedPlace
   }
 }
+
+export function responseUpdatePlaceError(updatedPlace) {
+    // debugger;
+  return {
+    type: 'RESPONSE_UPDATE_PLACE_ERROR',
+  }
+}
+
+///
+///
+///
 
 export function requestDeletePlace(placeId) {
   return {
