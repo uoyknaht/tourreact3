@@ -33,6 +33,9 @@
 //     .then(json => dispatch(responseUpdatePlace(json)))
 //     .catch(err => console.log(err));
 
+// <Marker lat={59.955413} lng={30.337844} text={'A'} />
+// <Marker lat={59.724465} lng={30.080121} text={'A'} />
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom'
