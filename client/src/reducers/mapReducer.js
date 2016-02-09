@@ -7,14 +7,14 @@ import notifierService from '../services/notifier.srv';
 import getMergedState from './reducerHelpers';
 
 let defaultState = {
-  map: {
     zoom: 7,
     center: {
       lat: 55.44251502256722,
       lng: 23.74947999804681
     },
+    isDraggable: true,
+    areMarkersDraggable: false,
     markers: []
-  }
 };
 
 export default function mapReducer(state = defaultState, action) {
@@ -40,6 +40,25 @@ export default function mapReducer(state = defaultState, action) {
       });
 
       return getMergedState(newState, state);
+
+    case 'OPEN_PLACE_CREATE_OR_UPDATE_FORM':
+
+      newState = {
+        isDraggable: false,
+        areMarkersDraggable: true
+      };
+
+      return getMergedState(newState, state);
+
+    case 'CLOSE_PLACE_CREATE_OR_UPDATE_FORM':
+
+      newState = {
+        isDraggable: true,
+        areMarkersDraggable: false
+      };
+
+      return getMergedState(newState, state);
+
 
     default:
       return state;

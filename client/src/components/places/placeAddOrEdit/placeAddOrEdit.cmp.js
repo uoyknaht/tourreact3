@@ -4,7 +4,14 @@ import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect }            from 'react-redux';
 import { routeActions } from 'react-router-redux';
-import { fetchPlace, cleanActivePlace, createPlace, updatePlace } from '../../../actions/placeActions';
+import {
+  fetchPlace,
+  cleanActivePlace,
+  createPlace,
+  updatePlace,
+  openPlaceCreateOrUpdateForm,
+  closePlaceCreateOrUpdateForm
+} from '../../../actions/placeActions';
 import Loader from '../../loader/loader.cmp';
 
 class PlaceAddOrEdit extends React.Component {
@@ -17,6 +24,7 @@ class PlaceAddOrEdit extends React.Component {
     }
 
     componentDidMount() {
+      this.props.openPlaceCreateOrUpdateForm();
 
       const placeId = this.props.placeId;
 
@@ -26,15 +34,15 @@ class PlaceAddOrEdit extends React.Component {
     }
 
      componentWillReceiveProps(newProps) {
-    
+
         // redirecting after create place
         if (newProps.lastCreatedItemId && newProps.lastCreatedItemId !== this.props.lastCreatedItemId) {
            this.props.dispatch(routeActions.push(`/places/${newProps.lastCreatedItemId}`));
-        } 
+        }
         // redirecting after edit place
         else if (newProps.lastUpdatedItemId && newProps.lastUpdatedItemId !== this.props.lastUpdatedItemId) {
            this.props.dispatch(routeActions.push(`/places/${newProps.lastCreatedItemId}`));
-        } 
+        }
         // prefilling form data in after opening edit place
         else if (!this.props.place && newProps.place) {
          this._updateForm(newProps.place);
@@ -42,6 +50,7 @@ class PlaceAddOrEdit extends React.Component {
      }
 
      componentWillUnmount() {
+       this.props.closePlaceCreateOrUpdateForm();
        this.props.cleanActivePlace(true);
      }
 
@@ -67,8 +76,8 @@ class PlaceAddOrEdit extends React.Component {
       } else {
           this.props.createPlace(place);
       }
-    
-        
+
+
 
 //  SHOW LOADER!!!
 
@@ -178,6 +187,8 @@ function mapDispatchToProps(dispatch) {
     cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit)),
     createPlace: (place) => dispatch(createPlace(place)),
     updatePlace: (place) => dispatch(updatePlace(place)),
+    openPlaceCreateOrUpdateForm: () => dispatch(openPlaceCreateOrUpdateForm()),
+    closePlaceCreateOrUpdateForm: () => dispatch(closePlaceCreateOrUpdateForm()),
     dispatch: dispatch
   }
 }

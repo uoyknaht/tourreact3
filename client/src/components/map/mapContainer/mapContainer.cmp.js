@@ -18,7 +18,10 @@ class MapContainer extends React.Component {
   constructor(props) {
     super(props);
     this._onBoundsChange = this._onBoundsChange.bind(this);
-    this._onChildClick = this._onChildClick.bind(this);
+    this._onMarkerClick = this._onMarkerClick.bind(this);
+    this._onMarkerMouseDown = this._onMarkerMouseDown.bind(this);
+    this._onMarkerMouseUp = this._onMarkerMouseUp.bind(this);
+    this._onMarkerMouseMove = this._onMarkerMouseMove.bind(this);
   }
 
   _onBoundsChange(center, zoom, bounds, marginBounds) {
@@ -28,14 +31,27 @@ class MapContainer extends React.Component {
     // console.log(`new marginBounds: ${marginBounds}`);
   }
 
-  _onChildClick(markerId, marker) {
+  _onMarkerClick(markerId, marker) {
       this.props.dispatch(routeActions.push(`/places/${markerId}`));
-    // const markerId = childProps.marker.get('id');
-    // const index = this.props.markers.findIndex(m => m.get('id') === markerId);
-    // if (this.props.onChildClick) {
-    //   this.props.onChildClick(index);
-    // }
   }
+
+  _onMarkerMouseDown(markerId, marker, a) {
+    console.log(markerId);
+    console.log(marker);
+    console.log(a);
+      // this.props.dispatch(routeActions.push(`/places/${markerId}`));
+  }
+
+  _onMarkerMouseUp(markerId, marker) {
+    // console.log(markerId);
+      // this.props.dispatch(routeActions.push(`/places/${markerId}`));
+  }
+
+  _onMarkerMouseMove(markerId, marker) {
+    // console.log(markerId);
+      // this.props.dispatch(routeActions.push(`/places/${markerId}`));
+  }
+
 
   render() {
 
@@ -44,17 +60,17 @@ class MapContainer extends React.Component {
 
 // debugger;
 
-if (!this.props.markers) {
-  return (
-    <div></div>
-  );
-}
+  if (!this.props.markers) {
+    return (
+      <div></div>
+    );
+  }
 
   let  markersHtml = this.props.markers.map(marker => {
       return <Marker lat={marker.lat} lng={marker.lng} text={marker.title} key={marker.id} />
     });
 
-
+// console.log(this.props);
 
 
     return (
@@ -64,7 +80,12 @@ if (!this.props.markers) {
           defaultCenter={defaultMapCenter}
           defaultZoom={defaultMapZoom}
           onBoundsChange={this._onBoundsChange}
-          onChildClick={this._onChildClick} >
+          onChildClick={this._onMarkerClick}
+          draggable={this.props.isDraggable}
+          onChildMouseDown={this._onMarkerMouseDown}
+          onChildMouseUp={this._onMarkerMouseUp}
+          onChildMouseMove={this._onMarkerMouseMove}
+          >
           {markersHtml}
       </GoogleMap>
       </div>
@@ -78,6 +99,7 @@ function mapStateToProps(state) {
   return {
     center: state.map.center,
     zoom: state.map.zoom,
+    isDraggable: state.map.isDraggable,
     markers: state.map.markers
   }
 }

@@ -77,6 +77,18 @@ export function cleanActivePlace(isForEdit) {
   }
 }
 
+export function openPlaceCreateOrUpdateForm() {
+  return {
+    type: 'OPEN_PLACE_CREATE_OR_UPDATE_FORM',
+  };
+}
+
+export function closePlaceCreateOrUpdateForm() {
+  return {
+    type: 'CLOSE_PLACE_CREATE_OR_UPDATE_FORM',
+  };
+}
+
 export function requestCreatePlace() {
   return {
     type: 'REQUEST_CREATE_PLACE',
