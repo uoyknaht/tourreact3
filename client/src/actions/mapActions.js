@@ -1,7 +1,6 @@
-import apiService from '../services/api.srv'
 
-// export function requestPlaces() {
-//   return {
-//     type: 'REQUEST_PLACES'
-//   }
-// }
+export function clickMarker() {
+  return {
+    type: 'CLICK_MARKER'
+  }
+}
