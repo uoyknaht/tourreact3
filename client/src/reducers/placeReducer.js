@@ -24,6 +24,7 @@ let defaultState = {
     isFetchingItem: true,
     itemInEditMode: null,
     isCreatingOrUpdatingItem: false,
+    lastCreatedItemId: null,
     isDeletingItem: true,
     isItemDeleted: false
   }
@@ -123,6 +124,8 @@ export default function placeReducer(state = defaultState, action) {
             return mergedState;
           }
 
+          console.log(action.createdPlace._id);
+          mergedState.lastCreatedItemId = action.createdPlace._id;
           mergedState.items.push(action.createdPlace);
 
           return mergedState;

@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect }            from 'react-redux';
+import { routeActions } from 'react-router-redux';
 import { fetchPlace, cleanActivePlace, createPlace, updatePlace } from '../../../actions/placeActions';
+import Loader from '../../loader/loader.cmp';
 
 class PlaceAddOrEdit extends React.Component {
 
@@ -15,6 +17,8 @@ class PlaceAddOrEdit extends React.Component {
     }
 
     componentDidMount() {
+        console.log('place add or edit cmp mounted');
+
       const placeId = this.props.placeId;
 
       if (placeId) {
@@ -23,7 +27,37 @@ class PlaceAddOrEdit extends React.Component {
     }
 
      componentWillReceiveProps(newProps) {
-       if (!this.props.place && newProps.place) {
+
+        console.log(newProps);
+        let { routeParams } = this.props;
+
+        // -. if there was no place (was crreating, and response from server received with created place id)
+
+
+        if (newProps.lastCreatedItemId && newProps.lastCreatedItemId !== this.props.lastCreatedItemId) {
+            this.props.dispatch(routeActions.push('/places/`${newProps.lastCreatedItemId}`/edit'));
+        }
+
+        // -. after creating place and click submit, redirecting to edit view
+            // there is no place. Does it is when redirecting to edit?
+            // url is changed but component stays the same
+            // there was no routeParams.id, no it is
+
+
+        if (!routeParams.id && newProps.routeParams.id) {
+            console.log('redirected from create view to edit view');
+        }
+
+
+
+        // -. coming from place list. 
+            //  id is always set
+            // At first there is no place. When it is received from server, place is set
+
+
+        // console.log(newProps);
+        else if (!this.props.place && newProps.place) {
+            console.log(newProps.place)
          this._updateForm(newProps.place);
        }
      }
@@ -54,7 +88,10 @@ class PlaceAddOrEdit extends React.Component {
       } else {
           this.props.createPlace(place);
       }
+    
+        
 
+//  SHOW LOADER!!!
 
       // PlaceActions.savePlace(data);
       // this.context.router.transitionTo('allPlaces');
@@ -75,6 +112,13 @@ class PlaceAddOrEdit extends React.Component {
     }
 
     render() {
+
+        if (this.props.isLoading) {
+            return (
+              <Loader />
+            );
+        }
+
 
         var place = this.props.place;
         var title = place ?'Edit place' : 'Add new place';
@@ -143,7 +187,9 @@ class PlaceAddOrEdit extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     place: state.places.itemInEditMode,
-    placeId: ownProps.params.id
+    placeId: ownProps.params.id,
+    isLoading: state.places.isCreatingOrUpdatingItem,
+    lastCreatedItemId: state.places.lastCreatedItemId
   }
 }
 
@@ -152,7 +198,8 @@ function mapDispatchToProps(dispatch) {
     fetchPlace: (placeId, isForEdit) => dispatch(fetchPlace(placeId, isForEdit)),
     cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit)),
     createPlace: (place) => dispatch(createPlace(place)),
-    updatePlace: (place) => dispatch(updatePlace(place))
+    updatePlace: (place) => dispatch(updatePlace(place)),
+    dispatch: dispatch
   }
 }
 

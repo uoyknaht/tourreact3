@@ -3,7 +3,7 @@ import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect } from 'react-redux';
 import { fetchPlace, cleanActivePlace, deletePlace } from '../../../actions/placeActions';
-import { routeActions } from 'react-router-redux'
+import { routeActions } from 'react-router-redux';
 import Loader from '../../loader/loader.cmp';
 
 class PlaceView extends React.Component {
