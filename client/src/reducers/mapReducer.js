@@ -17,6 +17,15 @@ let defaultState = {
     markers: []
 };
 
+function getMarkerFromPlace(place) {
+    return {
+        id: place._id,
+        title: place.title,
+        lat: place.latitude,
+        lng: place.longitude        
+    };
+}
+
 export default function mapReducer(state = defaultState, action) {
 
   let newState;
@@ -31,15 +40,17 @@ export default function mapReducer(state = defaultState, action) {
       };
 
       forEach(action.places, place => {
-        newState.markers.push({
-          id: place._id,
-          title: place.title,
-          lat: place.latitude,
-          lng: place.longitude
-        })
+        newState.markers.push(getMarkerFromPlace(place))
       });
 
       return getMergedState(newState, state);
+
+    case 'RESPONSE_CREATE_PLACE':
+
+          mergedState = getMergedState({}, state);
+          mergedState.markers.push(getMarkerFromPlace(action.createdPlace));
+
+          return mergedState;
 
     case 'OPEN_PLACE_CREATE_OR_UPDATE_FORM':
 
@@ -60,8 +71,7 @@ export default function mapReducer(state = defaultState, action) {
       return getMergedState(newState, state);
 
     case 'DRAG_MARKER':
-// console.log(action);
-debugger;
+
       mergedState = getMergedState({}, state);
       let marker = find(mergedState.markers, { id: action.markerId });
       marker.lat = action.newLat;

@@ -4,13 +4,16 @@ class Marker extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+        marker: null
+    };
   }
 
   componentWillMount() {
 
     var map = window.map;
 
-    new google.maps.Marker({
+    var marker = new google.maps.Marker({
         position: {
             lat: this.props.lat,
             lng: this.props.lng
@@ -18,11 +21,20 @@ class Marker extends React.Component {
         map: map
     });
 
+    this.setState({
+        marker: marker
+    });
+
+  }
+
+  componentWillUnMount() {
+    var marker = this.state.marker;
+    marker = null;
   }
 
   render() {
     return (
-       <div></div>
+       <div>{this.props.text}</div>
     );
   }
 }

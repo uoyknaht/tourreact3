@@ -81,8 +81,8 @@ class MapContainer extends React.Component {
         <div style={{width: 500 + 'px', height: 500 + 'px'}}>
 
             <GoogleMap 
-                initialCenter={[54,24]}
-                initialZoom={8}>
+                initialCenter={[55,24]}
+                initialZoom={7}>
 
                 {markersHtml}
             </GoogleMap>
