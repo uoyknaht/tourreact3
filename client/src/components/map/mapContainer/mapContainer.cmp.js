@@ -6,8 +6,9 @@ import { connect }            from 'react-redux';
 // import React, {PropTypes, Component} from 'react/addons';
 import { routeActions } from 'react-router-redux';
 import shouldPureComponentUpdate from 'react-pure-render/function';
-import GoogleMap from 'google-map-react';
-import Marker from '../marker/marker.cmp';
+// import GoogleMap from 'google-map-react';
+import GoogleMap from '../../googleMap/map/map.cmp.js';
+// import Marker from '../marker/marker.cmp';
 
 
 
@@ -69,9 +70,9 @@ class MapContainer extends React.Component {
     );
   }
 
-  let  markersHtml = this.props.markers.map(marker => {
-      return <Marker lat={marker.lat} lng={marker.lng} text={marker.title} key={marker.id} />
-    });
+  // let  markersHtml = this.props.markers.map(marker => {
+  //     return <Marker lat={marker.lat} lng={marker.lng} text={marker.title} key={marker.id} />
+  //   });
 
 // console.log(this.props);
 
@@ -79,18 +80,11 @@ class MapContainer extends React.Component {
     return (
         <div style={{width: 500 + 'px', height: 500 + 'px'}}>
 
-       <GoogleMap
-          defaultCenter={defaultMapCenter}
-          defaultZoom={defaultMapZoom}
-          onBoundsChange={this._onBoundsChange}
-          onChildClick={this._onMarkerClick}
-          draggable={this.props.isDraggable}
-          onChildMouseDown={this._onMarkerMouseDown}
-          onChildMouseUp={this._onMarkerMouseUp}
-          onChildMouseMove={this._onMarkerMouseMove}
-          >
-          {markersHtml}
-      </GoogleMap>
+            <GoogleMap 
+                initialCenter={[54,24]}
+                initialZoom={8}>
+        
+          </GoogleMap>
       </div>
     );
   }
