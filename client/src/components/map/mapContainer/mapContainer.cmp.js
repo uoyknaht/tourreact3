@@ -8,7 +8,7 @@ import { routeActions } from 'react-router-redux';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 // import GoogleMap from 'google-map-react';
 import GoogleMap from '../../googleMap/map/map.cmp.js';
-// import Marker from '../marker/marker.cmp';
+import Marker from '../../googleMap/marker/marker.cmp.js';
 
 
 
@@ -70,9 +70,9 @@ class MapContainer extends React.Component {
     );
   }
 
-  // let  markersHtml = this.props.markers.map(marker => {
-  //     return <Marker lat={marker.lat} lng={marker.lng} text={marker.title} key={marker.id} />
-  //   });
+    let markersHtml = this.props.markers.map(marker => {
+        return <Marker lat={marker.lat} lng={marker.lng} text={marker.title} key={marker.id} />
+    });
 
 // console.log(this.props);
 
@@ -83,8 +83,9 @@ class MapContainer extends React.Component {
             <GoogleMap 
                 initialCenter={[54,24]}
                 initialZoom={8}>
-        
-          </GoogleMap>
+
+                {markersHtml}
+            </GoogleMap>
       </div>
     );
   }

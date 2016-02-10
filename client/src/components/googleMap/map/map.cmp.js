@@ -12,16 +12,13 @@ class GoogleMap extends React.Component {
         super();
         this.render = this.render.bind(this);
         this.state = {
+            isApiLoaded: false,
             map: {}
         };
     }
 
     componentDidMount() {
 
-      var script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = 'https://maps.googleapis.com/maps/api/js';
-      script.onload = () => {
         var map = new google.maps.Map(
             document.getElementById('google-map'), 
             {
@@ -30,10 +27,14 @@ class GoogleMap extends React.Component {
             }
         );
 
-        this.setState({map: map});
-      };
+        // TODO: find how to pass as props to marker cmp
+        window.map = map;
 
-      document.body.appendChild(script);
+        this.setState({
+            isApiLoaded: true,
+            map: map
+        });        
+
     }
 
     componentWillUnmount() {
@@ -44,13 +45,18 @@ class GoogleMap extends React.Component {
 
     }
 
-
     render() {
-        // var children = this.props.children;
+        
+        // if (!this.state.isApiLoaded) {
+        //     return (
+        //         <div></div>
+        //     );
+        // }
 
         return (
             <div>
-                <div id="google-map" className="google-map">a</div>
+                <div id="google-map" className="google-map"></div>
+                {this.props.children}
             </div>
         );
     }
@@ -98,3 +104,26 @@ export default GoogleMap;
 
 
 // export default connect(mapStateToProps, mapDispatchToProps)(PlaceView);
+
+
+
+      //   if (this.state.isApiLoaded) {
+      //       return;
+      //   }
+
+      // var script = document.createElement('script');
+      // script.type = 'text/javascript';
+      // script.src = 'https://maps.googleapis.com/maps/api/js';
+      // script.onload = () => {
+      //   var map = new google.maps.Map(
+      //       document.getElementById('google-map'), 
+      //       {
+      //           center: new google.maps.LatLng(this.props.initialCenter[0], this.props.initialCenter[1]),
+      //           zoom: this.props.initialZoom
+      //       }
+      //   );
+
+
+      // };
+
+      // document.body.appendChild(script);
