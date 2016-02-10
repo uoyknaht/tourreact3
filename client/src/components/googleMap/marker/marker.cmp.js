@@ -28,6 +28,7 @@ class Marker extends React.Component {
   }
 
   componentWillUnMount() {
+    console.log(111);
     var marker = this.state.marker;
     marker = null;
   }

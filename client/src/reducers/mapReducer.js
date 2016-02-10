@@ -1,4 +1,5 @@
 import Immutable from 'immutable';
+import update from 'react-addons-update';
 import remove from 'lodash/remove';
 import find from 'lodash/find';
 import indexOf from 'lodash/indexOf';
@@ -47,10 +48,31 @@ export default function mapReducer(state = defaultState, action) {
 
     case 'RESPONSE_CREATE_PLACE':
 
-          mergedState = getMergedState({}, state);
-          mergedState.markers.push(getMarkerFromPlace(action.createdPlace));
+        mergedState = getMergedState({}, state);
+        // mergedState.items = [...mergedState.markers, getMarkerFromPlace(action.createdPlace)];
+        mergedState.markers.push(getMarkerFromPlace(action.createdPlace));
 
-          return mergedState;
+        return mergedState;
+
+    case 'RESPONSE_DELETE_PLACE':
+
+
+
+
+        mergedState = getMergedState({}, state);
+
+        remove(mergedState.markers, function (marker) {
+            return marker.id === action.placeId;
+        });
+
+        return mergedState;
+
+
+
+
+
+
+
 
     case 'OPEN_PLACE_CREATE_OR_UPDATE_FORM':
 
