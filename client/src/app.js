@@ -39,6 +39,10 @@
 // push to array: return [...list, itemToPush];
 // https://egghead.io/lessons/javascript-redux-avoiding-array-mutations-with-concat-slice-and-spread
 
+
+// var index = mergedState.markers.
+// mergedState.markers = update(state.markers, {$splice: [[index, 1]]}); // => [1, 2, 3, 4]
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom'
