@@ -60,10 +60,8 @@ class PlaceList extends React.Component {
 }
 
 function mapStateToProps(state) {
-  // debugger;
   return {
-    // places: state.get('places')
-    places: state.places.items
+    places: state.getIn(['places', 'items']) ? state.getIn(['places', 'items']).toJS() : []
   }
 }
 
@@ -72,6 +70,5 @@ function mapDispatchToProps(dispatch) {
     fetchPlaces: () => dispatch(fetchPlaces())
   }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceList);

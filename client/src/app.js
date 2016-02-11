@@ -43,6 +43,39 @@
 // var index = mergedState.markers.
 // mergedState.markers = update(state.markers, {$splice: [[index, 1]]}); // => [1, 2, 3, 4]
 
+// https://github.com/gajus/redux-immutable-examples/blob/master/src/app/store.js
+
+// export function next(state) {
+//   const entries = state.get('entries');
+//   return state.merge({
+//     vote: Map({pair: entries.take(2)}),
+//     entries: entries.skip(2)
+//   });
+// }
+
+// export function vote(state, entry) {
+//   return state.updateIn(
+//     ['vote', 'tally', entry],
+//     0,
+//     tally => tally + 1
+//   );
+// }
+
+
+
+// var stateV1 = Immutable.fromJS({  
+//   users: [
+//     { name: 'Foo' },
+//     { name: 'Bar' }
+//   ]
+// });
+
+// var stateV2 = stateV1.updateIn(['users', 1], function () {  
+//   return Immutable.fromJS({
+//     name: 'Barbar'
+//   });
+// });
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom'
@@ -67,10 +100,20 @@ import './css/toastr.scss';
 import './css/app.scss';
 
 const reduxRouterMiddleware = syncHistory(browserHistory);
-const store = createStore(appReducer, applyMiddleware(reduxRouterMiddleware, thunkMiddleware));
+
+let initialState = Immutable.fromJS({
+    //location: undefined
+});
+
+const store = createStore(appReducer, initialState, applyMiddleware(reduxRouterMiddleware, thunkMiddleware));
 
 // Required for replaying actions from devtools to work
-reduxRouterMiddleware.listenForReplays(store);
+// reduxRouterMiddleware.listenForReplays(store);
+
+// reduxRouterMiddleware.listenForReplays(store, (state) => {
+//     return state.getIn(['route', 'location']).toJS();
+// });
+
 
 ReactDOM.render((
   <Provider store={store}>

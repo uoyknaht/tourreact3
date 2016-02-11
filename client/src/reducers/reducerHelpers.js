@@ -1,4 +1,5 @@
 
 export default function getMergedState(newState, currentState) {
-  return Object.assign({}, currentState, newState);
+  return currentState.mergeDeep(newState);
+  // return Object.assign({}, currentState, newState);
 }

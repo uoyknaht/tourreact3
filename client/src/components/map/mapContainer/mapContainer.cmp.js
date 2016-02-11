@@ -95,10 +95,10 @@ MapContainer.prototype.shouldComponentUpdate = shouldPureComponentUpdate;
 
 function mapStateToProps(state) {
   return {
-    center: state.map.center,
-    zoom: state.map.zoom,
-    isDraggable: state.map.isDraggable,
-    markers: state.map.markers
+    center: state.getIn(['map', 'center']),
+    zoom: state.getIn(['map', 'zoom']),
+    isDraggable: state.getIn(['map', 'isDraggable']),
+    markers: state.getIn(['map', 'markers']) ? state.getIn(['map', 'markers']).toJS() : []
   }
 }
 

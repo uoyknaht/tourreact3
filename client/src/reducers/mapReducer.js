@@ -7,7 +7,7 @@ import forEach from 'lodash/forEach';
 import notifierService from '../services/notifier.srv';
 import getMergedState from './reducerHelpers';
 
-let defaultState = {
+let defaultState = Immutable.fromJS({
     zoom: 7,
     center: {
       lat: 55.44251502256722,
@@ -16,7 +16,18 @@ let defaultState = {
     isDraggable: true,
     areMarkersDraggable: false,
     markers: []
-};
+});
+
+// let defaultState = Immutable.fromJS({
+//     zoom: 7,
+//     center: {
+//       lat: 55.44251502256722,
+//       lng: 23.74947999804681
+//     },
+//     isDraggable: true,
+//     areMarkersDraggable: false,
+//     markers: Immutable.List()
+// });
 
 function getMarkerFromPlace(place) {
     return {
@@ -31,33 +42,34 @@ export default function mapReducer(state = defaultState, action) {
 
   let newState;
   let mergedState;
+  let markers;
+  let marker;
 
   switch(action.type) {
 
     case 'RECEIVED_PLACES':
 
-      newState = {
-        markers: []
-      };
+      markers = [];
 
       forEach(action.places, place => {
-        newState.markers.push(getMarkerFromPlace(place))
+        markers.push(getMarkerFromPlace(place))
       });
 
-      return getMergedState(newState, state);
+      markers = Immutable.List(markers);
+
+      return state.updateIn(['markers'], arr => markers);
 
     case 'RESPONSE_CREATE_PLACE':
 
-        mergedState = getMergedState({}, state);
-        // mergedState.items = [...mergedState.markers, getMarkerFromPlace(action.createdPlace)];
-        mergedState.markers.push(getMarkerFromPlace(action.createdPlace));
+        // marker = getMarkerFromPlace(action.createdPlace);
+        // console.log(marker);
+        console.log('bbb');
 
-        return mergedState;
+        return state;
+
+        // return state.updateIn(['markers'], arr => arr.push(marker));
 
     case 'RESPONSE_DELETE_PLACE':
-
-
-
 
         mergedState = getMergedState({}, state);
 
@@ -95,7 +107,7 @@ export default function mapReducer(state = defaultState, action) {
     case 'DRAG_MARKER':
 
       mergedState = getMergedState({}, state);
-      let marker = find(mergedState.markers, { id: action.markerId });
+      marker = find(mergedState.markers, { id: action.markerId });
       marker.lat = action.newLat;
       marker.lng = action.newLng;
 

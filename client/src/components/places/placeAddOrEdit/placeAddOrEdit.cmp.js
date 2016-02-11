@@ -174,10 +174,10 @@ class PlaceAddOrEdit extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    place: state.places.itemInEditMode,
+    place: state.getIn(['places', 'itemInEditMode']),
     placeId: ownProps.params.id,
-    isLoading: state.places.isCreatingOrUpdatingItem,
-    lastCreatedItemId: state.places.lastCreatedItemId
+    isLoading: state.getIn(['places', 'isCreatingOrUpdatingItem']),
+    lastCreatedItemId: state.getIn(['places', 'lastCreatedItemId'])
   }
 }
 

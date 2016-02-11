@@ -2,25 +2,31 @@ import Immutable from 'immutable';
 import remove from 'lodash/remove';
 import find from 'lodash/find';
 import indexOf from 'lodash/indexOf';
+import getMergedState from './reducerHelpers';
 import notifierService from '../services/notifier.srv';
 
 // let defaultState = Immutable.fromJS({
-//   places: Immutable.fromJS({
+//   places: {
 //     isFetchingItems: false,
 //     areItemsFetched: false,
-//     items: Immutable.List([]),
+//     items: [],
 //     activeItemId: null,
 //     activeItem: null,
 //     isFetchingItem: true,
-//     itemInEditMode: null
-//   })
+//     itemInEditMode: null,
+//     isCreatingOrUpdatingItem: false,
+//     lastCreatedItemId: null,
+//     lastUpdatedItemId: null,
+//     isDeletingItem: true,
+//     isItemDeleted: false
+//   }
 // });
 
-let defaultState = {
-  places: {
+let defaultState = Immutable.Map({
+  places: Immutable.Map({
     isFetchingItems: false,
     areItemsFetched: false,
-    items: [],
+    items: Immutable.List(),
     activeItemId: null,
     activeItem: null,
     isFetchingItem: true,
@@ -30,12 +36,8 @@ let defaultState = {
     lastUpdatedItemId: null,
     isDeletingItem: true,
     isItemDeleted: false
-  }
-};
-
-function getMergedState(newState, currentState) {
-  return Object.assign({}, currentState, newState);
-}
+  })
+});
 
 export default function placeReducer(state = defaultState, action) {
 
@@ -80,7 +82,7 @@ export default function placeReducer(state = defaultState, action) {
           newState.activeItem = action.place;
         }
 
-        return Object.assign({}, state, newState);
+        return getMergedState(newState, state);
 
       case 'CLEAN_ACTIVE_PLACE':
 
@@ -96,7 +98,7 @@ export default function placeReducer(state = defaultState, action) {
           newState.isItemDeleted = false;
         }
 
-        return Object.assign({}, state, newState);
+        return getMergedState(newState, state);
 
       ////////////////////
       ////////////////////
@@ -112,21 +114,17 @@ export default function placeReducer(state = defaultState, action) {
 
     case 'RESPONSE_CREATE_PLACE':
 
-          newState = {
-            isCreatingOrUpdatingItem: false
-          };
+        mergedState = state.update('isCreatingOrUpdatingItem', false);
+        mergedState = state.update('lastCreatedItemId', action.createdPlace._id);
+        mergedState.updateIn(['items'], arr => arr.push(action.createdPlace));
 
-          mergedState = getMergedState(newState, state);
+        return mergedState;
 
-          if (!action.isSuccess) {
-            notifierService.error('error creating place');
-            return mergedState;
-          }
+    case 'RESPONSE_CREATE_PLACE_ERROR':
 
-          mergedState.lastCreatedItemId = action.createdPlace._id;
-          mergedState.items.push(action.createdPlace);
-
-          return mergedState;
+        mergedState = state.update('isCreatingOrUpdatingItem', false);
+        notifierService.error('error creating place');
+        return mergedState;
 
       ////////////////////
       ////////////////////
@@ -142,7 +140,6 @@ export default function placeReducer(state = defaultState, action) {
 
 
     case 'RESPONSE_UPDATE_PLACE':
-    // debugger;
 
           newState = {
             isCreatingOrUpdatingItem: false,

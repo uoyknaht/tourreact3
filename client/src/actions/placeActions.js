@@ -8,11 +8,11 @@ export function requestPlaces() {
 }
 
 function shouldFetchPlaces(state) {
-  if (state.places.isFetchingItems) {
+  if (state.getIn(['places', 'isFetchingItems'])) {
     return false;
   }
 
-  if (state.places.areItemsFetched) {
+  if (state.getIn(['places', 'areItemsFetched'])) {
     return false;
   }
 
@@ -100,16 +100,22 @@ export function createPlace(newPlace) {
     dispatch(requestCreatePlace());
 
     return apiService.post(`http://localhost:8081/api/places`, newPlace)
-        .then(json => dispatch(responseCreatePlace(true, json)))
-        .catch(() => dispatch(responseCreatePlace(false)));
+        .then(json => dispatch(responseCreatePlace(json)))
+        .catch((err) => dispatch(responseCreatePlaceError(err)));
   }
 }
 
-export function responseCreatePlace(isSuccess, createdPlace) {
+export function responseCreatePlace(createdPlace) {
   return {
     type: 'RESPONSE_CREATE_PLACE',
-    createdPlace,
-    isSuccess
+    createdPlace
+  }
+}
+
+export function responseCreatePlaceError(err) {
+  return {
+    type: 'RESPONSE_CREATE_PLACE_ERROR',
+    err
   }
 }
 
