@@ -10,6 +10,7 @@
 // https://blog.risingstack.com/react-js-best-practices-for-2016/
 // http://www.sitepoint.com/how-to-build-a-todo-app-using-react-redux-and-immutable-js/
 // http://facebook.github.io/react/docs/update.html
+// http://requirebin.com/?gist=643dbb03eaeeb51f5791
 
 // watch:
 // https://www.youtube.com/watch?v=I7IdS-PbEgI
