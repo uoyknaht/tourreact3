@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { fetchPlaces } from '../../../actions/placeActions';
+import { getPlaces } from '../../../actions/placeActions';
 import { connect }            from 'react-redux';
 // import { routeActions } from 'react-router-redux'
 import Loader from '../../loader/loader.cmp';
@@ -17,22 +17,19 @@ class PlaceList extends React.Component {
     }
 
     componentDidMount() {
-      this.props.fetchPlaces();
+      this.props.getPlaces();
     }
-
-    // setPlaces(state, places) {
-    //   return state.set('places', List(places));
-    // }
 
     render() {
       let places = this.props.places;
-      // debugger;
 
       if (!places) {
         return (
           <Loader />
         );
       }
+
+      places = places.toJS();
 
       var placesHtml = [];
 
@@ -61,13 +58,13 @@ class PlaceList extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    places: state.getIn(['places', 'items']) ? state.getIn(['places', 'items']).toJS() : []
+    places: state.getIn(['places', 'items'])
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchPlaces: () => dispatch(fetchPlaces())
+    getPlaces: () => dispatch(getPlaces())
   }
 }
 

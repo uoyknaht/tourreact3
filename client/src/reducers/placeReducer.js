@@ -43,62 +43,73 @@ export default function placeReducer(state = defaultState, action) {
 
   let newState;
   let mergedState;
+  let places;
 
   switch(action.type) {
 
-    case 'REQUEST_PLACES':
-      newState = {
-        isFetchingItems: true
-      };
+    case 'REQUEST_GET_PLACES':
 
-      return getMergedState(newState, state);
+        return state.set('isFetchingItems', true);
 
-    case 'RECEIVED_PLACES':
-      newState = {
-        items: action.places,
-        isFetchingItems: false,
-        areItemsFetched: true
-      };
+    case 'RESPONSE_GET_PLACES':
 
-      return getMergedState(newState, state);
+      newState = state.set('isFetchingItems', false);
+      newState = newState.set('areItemsFetched', true);
+      newState = newState.set('items', Immutable.fromJS(action.places));
 
-      case 'REQUEST_PLACE':
+      return newState;
 
-        newState = {
-          isFetchingItem: true
-        };
+      // newState = {
+      //   items: action.places,
+      //   isFetchingItems: false,
+      //   areItemsFetched: true
+      // };
 
-        return getMergedState(newState, state);
+      // return state.mergeDeep(newState);
 
-      case 'RECEIVED_PLACE':
+    case 'RESPONSE_GET_PLACES_ERROR':
 
-        newState = {
-          isFetchingItem: false
-        };
+        notifierService.error('error RESPONSE_GET_PLACES_ERROR');
+
+        return state.set('isFetchingItems', false);
+
+    case 'REQUEST_GET_PLACE':
+
+        return state.set('isFetchingItem', true);
+
+    case 'RESPONSE_GET_PLACE':
+
+        newState = state.set('isFetchingItem', false);
 
         if (action.isForEdit) {
-          newState.itemInEditMode = action.place;
+            newState.set('itemInEditMode', Immutable.Map(action.place));
         } else {
-          newState.activeItem = action.place;
+            newState.set('activeItem', Immutable.Map(action.place));
         }
 
-        return getMergedState(newState, state);
+        return newState;
 
-      case 'CLEAN_ACTIVE_PLACE':
+    case 'RESPONSE_GET_PLACE_ERROR':
+
+        notifierService.error('error RESPONSE_GET_PLACE_ERROR');
+
+        return state.set('isFetchingItem', false);
+
+    case 'CLEAN_ACTIVE_PLACE':
 
         newState = {};
 
         if (action.isForEdit) {
-          newState.itemInEditMode = null;
-          newState.lastCreatedItemId = null;
-          newState.lastUpdatedItemId = null;
+            newState = state.set('itemInEditMode', null);
+            newState = newState.set('lastCreatedItemId', null);
+            newState = newState.set('lastUpdatedItemId', null);
         } else {
-          newState.activeItemId = null;
-          newState.activeItem = null;
-          newState.isItemDeleted = false;
+            newState = state.set('activeItemId', null);
+            newState = newState.set('activeItem', null);
+            newState = newState.set('isItemDeleted', null);
         }
 
-        return getMergedState(newState, state);
+        return newState;
 
       ////////////////////
       ////////////////////
@@ -106,25 +117,27 @@ export default function placeReducer(state = defaultState, action) {
 
     case 'REQUEST_CREATE_PLACE':
 
-        newState = {
-          isCreatingOrUpdatingItem: true
-        };
+        return state.set('isCreatingOrUpdatingItem', true);
 
-        return getMergedState(newState, state);
 
     case 'RESPONSE_CREATE_PLACE':
 
-        mergedState = state.update('isCreatingOrUpdatingItem', false);
-        mergedState = state.update('lastCreatedItemId', action.createdPlace._id);
-        mergedState.updateIn(['items'], arr => arr.push(action.createdPlace));
+        newState = state.set('isCreatingOrUpdatingItem', false);
+        newState.set('lastCreatedItemId', action.createdPlace._id);
+        newState.update('items', places => places.push(Immutable.Map(action.createdPlace)));
+        
+        return newState;
 
-        return mergedState;
+        // var places = mergedState.get('items').toJS();
+        // places.push(action.createdPlace);
+        // mergedState.setIn(['items'], Immutable.List(places));
+        // mergedState.setIn(['items'], arr => arr.push(action.createdPlace));
 
     case 'RESPONSE_CREATE_PLACE_ERROR':
 
-        mergedState = state.update('isCreatingOrUpdatingItem', false);
-        notifierService.error('error creating place');
-        return mergedState;
+        notifierService.error('error RESPONSE_CREATE_PLACE_ERROR');
+
+        return state.set('isCreatingOrUpdatingItem', false);
 
       ////////////////////
       ////////////////////
@@ -132,44 +145,48 @@ export default function placeReducer(state = defaultState, action) {
 
     case 'REQUEST_UPDATE_PLACE':
 
-        newState = {
-          isCreatingOrUpdatingItem: true
-        };
-
-        return getMergedState(newState, state);
-
+        return state.set('isCreatingOrUpdatingItem', true);
 
     case 'RESPONSE_UPDATE_PLACE':
 
-          newState = {
-            isCreatingOrUpdatingItem: false,
-            lastCreatedItemId: action.updatedPlace._id
-          };
+        let placeId = action.updatedPlace._id;
 
-          mergedState = getMergedState(newState, state);
+        newState = state.set('isCreatingOrUpdatingItem', false);
+        newState = newState.set('lastCreatedItemId', placeId);
 
-          var index = indexOf(mergedState.items, find(mergedState.items, { _id: action.updatedPlace._id }));
-          mergedState.items.splice(index, 1, action.updatedPlace);
+        places = newState.get('items');
+        let index = places.findIndex(place => place.get('_id') === placeId);
 
-          return mergedState;
+        places = places.update(index, place => Immutable.Map(action.updatedPlace)); 
+        
+        return newState.set('items', places);
+
+        // newState.update('items', (places) => {
+        //     places.map((place) => {
+        //         if (place._id === placeId) {
+
+        //         }
+        //         place.set('isCompleted', true)));  
+        //     }
+        // }
+
+          // var index = indexOf(mergedState.items, find(mergedState.items, { _id: action.updatedPlace._id }));
+          // mergedState.items.splice(index, 1, action.updatedPlace);
+
+          // return mergedState;
 
     case 'RESPONSE_UPDATE_PLACE_ERROR':
 
-        newState = {
-          isCreatingOrUpdatingItem: false
-        };
+        notifierService.error('error RESPONSE_UPDATE_PLACE_ERROR');
 
-        notifierService.error('error updating place');
-
-        return getMergedState(newState, state);
+        return state.set('isCreatingOrUpdatingItem', false);
 
 
 ////////////////////
 ////////////////////
 ////////////////////
 
-
-
+// TODO:
 
     case 'REQUEST_DELETE_PLACE':
 
@@ -190,15 +207,18 @@ export default function placeReducer(state = defaultState, action) {
 
       mergedState = getMergedState(newState, state);
 
-      if (action.isSuccess) {
         remove(mergedState.items, function (item) {
           return item._id === removePlaceId;
         });
-      } else {
-        notifierService.error('error removing place');
-      }
+
 
       return mergedState;
+
+    case 'RESPONSE_DELETE_PLACE_ERROR':
+
+        notifierService.error('error RESPONSE_DELETE_PLACE_ERROR');
+
+        return state.set('isDeletingItem', false);
 
     default:
       return state;

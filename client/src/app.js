@@ -1,3 +1,96 @@
+// check:
+// GraphQL 
+// Relay
+// - normalizr
+// - rxjs
+// - console asieskot geresne,kaip padaryt kad ji automatiskai dir atidarytu
+// - atom susikonfiginti
+
+// read:
+// https://blog.risingstack.com/react-js-best-practices-for-2016/
+// http://www.sitepoint.com/how-to-build-a-todo-app-using-react-redux-and-immutable-js/
+// http://facebook.github.io/react/docs/update.html
+
+// watch:
+// https://www.youtube.com/watch?v=I7IdS-PbEgI
+
+// immutable js
+    // https://github.com/facebook/immutable-js/wiki
+
+    // add to array
+    // state = state.update('todos', (todos) =>
+    //   todos.push(item)
+    // );
+
+    // Convert a JS object into an Immutable object:
+    // const state = Immutable.fromJS({
+    //   todos: [{
+    //     text: 'Initial Todo', isCompleted: false
+    //   }],
+    //   toggleAllCompleted: true
+    // });
+
+    // Set a property on an Immutable object:
+    // state.set('toggleAllCompleted', false);
+
+    // Set a nested property on an Immutable object:
+    // state.updateIn(['todos', 0, 'isCompleted'], true);
+
+    // Push to a list inside an Immutable object:
+    // const item = Immutable.fromJS({ text: 'New Item', isCompleted: false });
+    // state.update('todos', todos => todos.push(item));
+
+
+    // handleAddItemClick() {
+    //   this.setState(({data}) => ({
+    //     data: data.update('items', list => list.push(data.get('count')))
+    //   }));
+    // },    
+
+    // Map over a list inside an Immutable object and update all items (this will toggle all todo items isCompleted property):
+    // state.update('todos', (todos) =>
+    //   todos.map((todo) => todo.set('isCompleted', true)));
+
+    // list = list.update(
+    //   list.findIndex(function(item) { 
+    //     return item.get("name") === "third"; 
+    //   }), function(item) {
+    //     return item.set("count", 4);
+    //   }
+    // );
+
+    // Filter a list inside an Immutable object and update the list:
+    // (This will filter all Todos that are not completed and update the list)
+
+    // state.update('todos', (todos) =>
+    //   todos.filter((todo) => !todo.get('isCompleted')));
+
+    // Remove an item from a list inside an Immutable object:
+    // state.deleteIn(['todos', 0]);
+
+
+// immutable helpers
+
+    // var update = require('react-addons-update');
+
+    // var newData = update(myData, {
+    //   x: {y: {z: {$set: 7}}},
+    //   a: {b: {$push: [9]}}
+    // });
+
+
+// react render
+
+    // const todosDOM = todos.map((todo, idx) => {
+    //   return (
+    //     <li key={idx}>
+    //       <TodoItem todo={todo}/>
+    //     </li>
+    //   );
+    // });
+
+
+
 // import * as reducers                    from './reducers';
 //  const { places } = this.props;
 // Object
@@ -75,6 +168,15 @@
 //     name: 'Barbar'
 //   });
 // });
+
+// list = list.update(
+//   list.findIndex(function(item) { 
+//     return item.get("name") === "third"; 
+//   }), function(item) {
+//     return item.set("count", 4);
+//   }
+// ); 
+
 
 import React from 'react';
 import ReactDOM from 'react-dom';

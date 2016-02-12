@@ -47,7 +47,7 @@ export default function mapReducer(state = defaultState, action) {
 
   switch(action.type) {
 
-    case 'RECEIVED_PLACES':
+    case 'RESPONSE_GET_PLACES':
 
       markers = [];
 
@@ -63,7 +63,7 @@ export default function mapReducer(state = defaultState, action) {
 
         // marker = getMarkerFromPlace(action.createdPlace);
         // console.log(marker);
-        console.log('bbb');
+        // console.log('bbb');
 
         return state;
 
@@ -79,12 +79,9 @@ export default function mapReducer(state = defaultState, action) {
 
         return mergedState;
 
-
-
-
-
-
-
+////////////////////
+////////////////////
+////////////////////
 
     case 'OPEN_PLACE_CREATE_OR_UPDATE_FORM':
 

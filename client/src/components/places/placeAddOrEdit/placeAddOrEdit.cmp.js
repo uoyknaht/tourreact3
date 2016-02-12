@@ -5,7 +5,7 @@ import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect }            from 'react-redux';
 import { routeActions } from 'react-router-redux';
 import {
-  fetchPlace,
+  getPlace,
   cleanActivePlace,
   createPlace,
   updatePlace,
@@ -29,7 +29,7 @@ class PlaceAddOrEdit extends React.Component {
       const placeId = this.props.placeId;
 
       if (placeId) {
-        this.props.fetchPlace(placeId, true);
+        this.props.getPlace(placeId, true);
       }
     }
 
@@ -183,7 +183,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchPlace: (placeId, isForEdit) => dispatch(fetchPlace(placeId, isForEdit)),
+    getPlace: (placeId, isForEdit) => dispatch(getPlace(placeId, isForEdit)),
     cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit)),
     createPlace: (place) => dispatch(createPlace(place)),
     updatePlace: (place) => dispatch(updatePlace(place)),

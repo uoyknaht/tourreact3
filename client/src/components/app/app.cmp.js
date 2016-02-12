@@ -24,7 +24,6 @@ export default class App extends React.Component {
                     </div>
                     <div className="col-md-6">
                         Map: TODO.
-                        <MapContainer />
                     </div>
                 </div>
             </div>

@@ -1,13 +1,45 @@
 import fetch from 'isomorphic-fetch'
 import apiService from '../services/api.srv'
 
-export function requestPlaces() {
-  return {
-    type: 'REQUEST_PLACES'
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+
+export function getPlaces() {
+  return function (dispatch, getState) {
+    if (!shouldGetPlaces(getState())) {
+      return;
+    }
+
+    dispatch(requestGetPlaces());
+
+    return apiService.get('http://localhost:8081/api/places')
+        .then(json => dispatch(responseGetPlaces(json)))
+        .catch((error) => dispatch(responseGetPlacesError(error)));      
   }
 }
 
-function shouldFetchPlaces(state) {
+function requestGetPlaces() {
+  return {
+    type: 'REQUEST_GET_PLACES'
+  }
+}
+
+function responseGetPlaces(places) {
+  return {
+    type: 'RESPONSE_GET_PLACES',
+    places
+  }
+}
+
+function responseGetPlacesError(error) {
+  return {
+    type: 'RESPONSE_GET_PLACES_ERROR',
+    error
+  }
+}
+
+function shouldGetPlaces(state) {
   if (state.getIn(['places', 'isFetchingItems'])) {
     return false;
   }
@@ -19,56 +51,46 @@ function shouldFetchPlaces(state) {
   return true;
 }
 
-export function fetchPlaces() {
-  return function (dispatch, getState) {
-    if (!shouldFetchPlaces(getState())) {
-      return;
-    }
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
-    dispatch(requestPlaces());
+export function getPlace(placeId, isForEdit) {
+  return function (dispatch) {
+    dispatch(requestGetPlace(isForEdit));
 
-    return fetch('http://localhost:8081/api/places')
-      .then(response => response.json())
-      .then((json) => {
-        dispatch(receivedPlaces(json))
-      })
+    return apiService.get(`http://localhost:8081/api/places/${placeId}`)
+        .then(json => dispatch(responseGetPlace(json, isForEdit)))
+        .catch((error) => dispatch(responseGetPlaceError(error)));   
   }
 }
 
-export function receivedPlaces(places) {
+function requestGetPlace(placeId, isForEdit) {
   return {
-    type: 'RECEIVED_PLACES',
-    places
-  }
-}
-
-export function requestPlace(placeId, isForEdit) {
-  return {
-    type: 'REQUEST_PLACE',
+    type: 'REQUEST_GET_PLACE',
     placeId,
     isForEdit
   }
 }
 
-export function fetchPlace(placeId, isForEdit) {
-  return function (dispatch) {
-    dispatch(requestPlace(isForEdit));
-
-    return fetch(`http://localhost:8081/api/places/${placeId}`)
-      .then(response => response.json())
-      .then((json) => {
-        dispatch(receivedPlace(json, isForEdit))
-      })
-  }
-}
-
-export function receivedPlace(place, isForEdit) {
+function responseGetPlace(place, isForEdit) {
   return {
-    type: 'RECEIVED_PLACE',
+    type: 'RESPONSE_GET_PLACE',
     place,
     isForEdit
   }
 }
+
+function responseGetPlaceError(error) {
+  return {
+    type: 'RESPONSE_GET_PLACE_ERROR',
+    error
+  }
+}
+
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
 export function cleanActivePlace(isForEdit) {
   return {
@@ -76,6 +98,10 @@ export function cleanActivePlace(isForEdit) {
     isForEdit
   }
 }
+
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
 export function openPlaceCreateOrUpdateForm() {
   return {
@@ -89,11 +115,9 @@ export function closePlaceCreateOrUpdateForm() {
   };
 }
 
-export function requestCreatePlace() {
-  return {
-    type: 'REQUEST_CREATE_PLACE',
-  };
-}
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
 export function createPlace(newPlace) {
   return function (dispatch) {
@@ -101,33 +125,33 @@ export function createPlace(newPlace) {
 
     return apiService.post(`http://localhost:8081/api/places`, newPlace)
         .then(json => dispatch(responseCreatePlace(json)))
-        .catch((err) => dispatch(responseCreatePlaceError(err)));
+        .catch((error) => dispatch(responseCreatePlaceError(error)));
   }
 }
 
-export function responseCreatePlace(createdPlace) {
+function requestCreatePlace() {
+  return {
+    type: 'REQUEST_CREATE_PLACE',
+  };
+}
+
+function responseCreatePlace(createdPlace) {
   return {
     type: 'RESPONSE_CREATE_PLACE',
     createdPlace
   }
 }
 
-export function responseCreatePlaceError(err) {
+function responseCreatePlaceError(err) {
   return {
     type: 'RESPONSE_CREATE_PLACE_ERROR',
     err
   }
 }
 
-///
-///
-///
-
-export function requestUpdatePlace() {
-  return {
-    type: 'REQUEST_UPDATE_PLACE',
-  };
-}
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
 export function updatePlace(newPlace) {
   return function (dispatch) {
@@ -136,11 +160,17 @@ export function updatePlace(newPlace) {
     // return apiService.put(`http://localhost:8081/api/places/${newPlace._id}`, newPlace)
     return apiService.post(`http://localhost:8081/api/places/${newPlace._id}/edit`, newPlace)
         .then(json => dispatch(responseUpdatePlace(json)))
-        .catch(err => dispatch(responseUpdatePlaceError()));
+        .catch(error => dispatch(responseUpdatePlaceError(error)));
   }
 }
 
-export function responseUpdatePlace(updatedPlace) {
+function requestUpdatePlace() {
+  return {
+    type: 'REQUEST_UPDATE_PLACE',
+  };
+}
+
+function responseUpdatePlace(updatedPlace) {
   return {
     type: 'RESPONSE_UPDATE_PLACE',
     updatedPlace
@@ -148,15 +178,26 @@ export function responseUpdatePlace(updatedPlace) {
 }
 
 export function responseUpdatePlaceError(updatedPlace) {
-    // debugger;
   return {
     type: 'RESPONSE_UPDATE_PLACE_ERROR',
   }
 }
 
-///
-///
-///
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+
+export function deletePlace(placeId) {
+  return function (dispatch) {
+    dispatch(requestDeletePlace(placeId));
+
+    return apiService.delete(`http://localhost:8081/api/places/${placeId}`)
+        .then( function() {
+          dispatch(responseDeletePlace(placeId));
+        })
+        .catch((error) => dispatch(responseDeletePlaceError(error)));
+  }
+}
 
 export function requestDeletePlace(placeId) {
   return {
@@ -165,22 +206,16 @@ export function requestDeletePlace(placeId) {
   };
 }
 
-export function deletePlace(placeId) {
-  return function (dispatch) {
-    dispatch(requestDeletePlace(placeId));
-
-    return apiService.delete(`http://localhost:8081/api/places/${placeId}`)
-        .then( function() {
-          dispatch(responseDeletePlace(true, placeId));
-        })
-        .catch(() => dispatch(responseDeletePlace(false, placeId)));
+export function responseDeletePlace(placeId) {
+  return {
+    type: 'RESPONSE_DELETE_PLACE',
+    placeId
   }
 }
 
-export function responseDeletePlace(isSuccess, placeId) {
+export function responseDeletePlaceError(error) {
   return {
-    type: 'RESPONSE_DELETE_PLACE',
-    isSuccess,
-    placeId
+    type: 'RESPONSE_DELETE_PLACE_ERROR',
+    error
   }
 }

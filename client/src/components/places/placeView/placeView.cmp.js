@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect } from 'react-redux';
-import { fetchPlace, cleanActivePlace, deletePlace } from '../../../actions/placeActions';
+import { getPlace, cleanActivePlace, deletePlace } from '../../../actions/placeActions';
 import { routeActions } from 'react-router-redux';
 import Loader from '../../loader/loader.cmp';
 
@@ -16,7 +16,7 @@ class PlaceView extends React.Component {
 
     componentDidMount() {
       const placeId = this.props.placeId;
-      this.props.fetchPlace(placeId);
+      this.props.getPlace(placeId);
     }
 
     componentWillUnmount() {
@@ -25,7 +25,7 @@ class PlaceView extends React.Component {
 
     componentWillReceiveProps(newProps) {
       if (newProps.placeId !== this.props.placeId) {
-        this.props.fetchPlace(newProps.placeId);
+        this.props.getPlace(newProps.placeId);
       }
       else if (newProps.isDeleted && !this.props.isDeleted) {
         this.props.dispatch(routeActions.push('/places'));
@@ -53,6 +53,8 @@ class PlaceView extends React.Component {
         );
       }
 
+      place = place.toJS();
+
         return (
 
             <div>
@@ -78,6 +80,7 @@ class PlaceView extends React.Component {
 }
 
 function mapStateToProps(state,ownProps) {
+
   return {
     isLoading: state.getIn(['places', 'isFetchingItem']),
     isDeleting: state.getIn(['places', 'isDeletingItem']),
@@ -89,7 +92,7 @@ function mapStateToProps(state,ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchPlace: (placeId) => dispatch(fetchPlace(placeId)),
+    getPlace: (placeId) => dispatch(getPlace(placeId)),
     cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit)),
     deletePlace: (placeId) => dispatch(deletePlace(placeId)),
     dispatch: dispatch
