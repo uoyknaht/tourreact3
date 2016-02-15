@@ -34,7 +34,7 @@ function getMarkerFromPlace(place) {
         id: place._id,
         title: place.title,
         lat: place.latitude,
-        lng: place.longitude        
+        lng: place.longitude
     };
 }
 
@@ -48,16 +48,14 @@ export default function mapReducer(state = defaultState, action) {
   switch(action.type) {
 
     case 'RESPONSE_GET_PLACES':
-
-      markers = [];
+    	markers = Immutable.List();
 
       forEach(action.places, place => {
-        markers.push(getMarkerFromPlace(place))
+		marker = getMarkerFromPlace(place);
+    	markers = markers.push(Immutable.Map(marker));
       });
 
-      markers = Immutable.List(markers);
-
-      return state.updateIn(['markers'], arr => markers);
+      return state.set('markers', markers);
 
     case 'RESPONSE_CREATE_PLACE':
 

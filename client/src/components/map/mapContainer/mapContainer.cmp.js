@@ -62,30 +62,30 @@ class MapContainer extends React.Component {
     const defaultMapCenter = {lat: 55.44251502256722, lng: 23.74947999804681};
     const defaultMapZoom = 7;
 
-// debugger;
-
-  if (!this.props.markers) {
-    return (
-      <div></div>
-    );
-  }
+	if (!this.props.markers) {
+		return (
+			<div></div>
+		);
+	}
 
     let markersHtml = this.props.markers.map(marker => {
-        return <Marker lat={marker.lat} lng={marker.lng} text={marker.title} key={marker.id} />
+        return <Marker
+				lat={marker.get('lat')}
+				lng={marker.get('lng')}
+				text={marker.get('title')}
+				key={marker.get('id')} />
     });
-
-// console.log(this.props);
-
 
     return (
         <div style={{width: 500 + 'px', height: 500 + 'px'}}>
 
-            <GoogleMap 
+            <GoogleMap
                 initialCenter={[55,24]}
                 initialZoom={7}>
 
                 {markersHtml}
             </GoogleMap>
+			
       </div>
     );
   }
@@ -98,7 +98,7 @@ function mapStateToProps(state) {
     center: state.getIn(['map', 'center']),
     zoom: state.getIn(['map', 'zoom']),
     isDraggable: state.getIn(['map', 'isDraggable']),
-    markers: state.getIn(['map', 'markers']) ? state.getIn(['map', 'markers']).toJS() : []
+    markers: state.getIn(['map', 'markers'])
   }
 }
 
