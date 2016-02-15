@@ -23,10 +23,10 @@ import notifierService from '../services/notifier.srv';
 // });
 
 let defaultState = Immutable.Map({
-  places: Immutable.Map({
+  //places: Immutable.Map({
     isFetchingItems: false,
     areItemsFetched: false,
-    items: Immutable.List(),
+    places: Immutable.List(),
     activeItemId: null,
     activeItem: null,
     isFetchingItem: true,
@@ -34,9 +34,9 @@ let defaultState = Immutable.Map({
     isCreatingOrUpdatingItem: false,
     lastCreatedItemId: null,
     lastUpdatedItemId: null,
-    isDeletingItem: true,
+    isDeletingItem: false,
     isItemDeleted: false
-  })
+  //})
 });
 
 export default function placeReducer(state = defaultState, action) {
@@ -44,6 +44,7 @@ export default function placeReducer(state = defaultState, action) {
   let newState;
   let mergedState;
   let places;
+  let place;
 
   switch(action.type) {
 
@@ -55,7 +56,7 @@ export default function placeReducer(state = defaultState, action) {
 
       newState = state.set('isFetchingItems', false);
       newState = newState.set('areItemsFetched', true);
-      newState = newState.set('items', Immutable.fromJS(action.places));
+      newState = newState.set('places', Immutable.fromJS(action.places));
 
       return newState;
 
@@ -73,6 +74,10 @@ export default function placeReducer(state = defaultState, action) {
 
         return state.set('isFetchingItems', false);
 
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////        
+
     case 'REQUEST_GET_PLACE':
 
         return state.set('isFetchingItem', true);
@@ -80,13 +85,14 @@ export default function placeReducer(state = defaultState, action) {
     case 'RESPONSE_GET_PLACE':
 
         newState = state.set('isFetchingItem', false);
+        place = Immutable.Map(action.place);
 
         if (action.isForEdit) {
-            newState.set('itemInEditMode', Immutable.Map(action.place));
+            newState = newState.set('itemInEditMode', place);
         } else {
-            newState.set('activeItem', Immutable.Map(action.place));
+            newState = newState.set('activeItem', place);
         }
-
+// debugger;
         return newState;
 
     case 'RESPONSE_GET_PLACE_ERROR':

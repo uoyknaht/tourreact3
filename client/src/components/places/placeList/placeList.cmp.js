@@ -29,14 +29,18 @@ class PlaceList extends React.Component {
         );
       }
 
-      places = places.toJS();
+      if (!places.size) {
+        return (
+          <div>No places</div>
+        );
+      }
 
       var placesHtml = [];
 
-      places.forEach(function (place) {
+      places.forEach((place) => {
         placesHtml.push(
-          <Link to={`/places/${place._id}`} className="list-group-item" key={place._id}>
-            <h4 className="list-group-item-heading">{place.title}</h4>
+          <Link to={`/places/${place.get('_id')}`} className="list-group-item" key={place.get('_id')}>
+            <h4 className="list-group-item-heading">{place.get('title')}</h4>
             <p className="list-group-item-text">...</p>
           </Link>
         );
@@ -48,7 +52,7 @@ class PlaceList extends React.Component {
             <br/>
             <br/>
               <div className="list-group">
-                  {placesHtml}
+                {placesHtml}
               </div>
           </div>
         );
@@ -58,7 +62,7 @@ class PlaceList extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    places: state.getIn(['places', 'items'])
+    places: state.getIn(['places', 'places'])
   }
 }
 

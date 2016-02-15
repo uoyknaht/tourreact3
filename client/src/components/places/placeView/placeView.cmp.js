@@ -38,7 +38,6 @@ class PlaceView extends React.Component {
     }
 
     render() {
-
       if (this.props.isLoading || this.props.isDeleting) {
         return (
           <Loader />
@@ -49,28 +48,25 @@ class PlaceView extends React.Component {
 
       if (!place) {
         return (
-          <div></div>
+          <div>No place</div>
         );
       }
-
-      place = place.toJS();
 
         return (
 
             <div>
 
                   <div className="page-header">
-                    <h1>{place.title} <small>Category</small></h1>
+                    <h1>{place.get('title')} <small>Category</small></h1>
                   </div>
                   <div>
-                    <Link to={`/places/${place._id}/edit`}>Edit</Link> | <a href="#" onClick={this.onDelete}>Delete</a>
+                    <Link to={`/places/${place.get('_id')}/edit`}>Edit</Link> | <a href="#" onClick={this.onDelete}>Delete</a>
                   </div>
                   <br/>
 
-                  <p>Address: {place.address}</p>
-                  <p>Latitude: {place.latitude}</p>
-                  <p>Longitude: {place.longitude}</p>
-
+                  <p>Address: {place.get('address')}</p>
+                  <p>Latitude: {place.get('latitude')}</p>
+                  <p>Longitude: {place.get('longitude')}</p>
 
             </div>
 
