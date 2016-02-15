@@ -5,25 +5,7 @@ import indexOf from 'lodash/indexOf';
 import getMergedState from './reducerHelpers';
 import notifierService from '../services/notifier.srv';
 
-// let defaultState = Immutable.fromJS({
-//   places: {
-//     isFetchingItems: false,
-//     areItemsFetched: false,
-//     items: [],
-//     activeItemId: null,
-//     activeItem: null,
-//     isFetchingItem: true,
-//     itemInEditMode: null,
-//     isCreatingOrUpdatingItem: false,
-//     lastCreatedItemId: null,
-//     lastUpdatedItemId: null,
-//     isDeletingItem: true,
-//     isItemDeleted: false
-//   }
-// });
-
 let defaultState = Immutable.Map({
-  //places: Immutable.Map({
     isFetchingItems: false,
     areItemsFetched: false,
     places: Immutable.List(),
@@ -36,7 +18,6 @@ let defaultState = Immutable.Map({
     lastUpdatedItemId: null,
     isDeletingItem: false,
     isItemDeleted: false
-  //})
 });
 
 export default function placeReducer(state = defaultState, action) {
@@ -61,7 +42,7 @@ export default function placeReducer(state = defaultState, action) {
       return newState;
 
       // newState = {
-      //   items: action.places,
+      //   places: action.places,
       //   isFetchingItems: false,
       //   areItemsFetched: true
       // };
@@ -76,7 +57,7 @@ export default function placeReducer(state = defaultState, action) {
 
 /////////////////////////////////////////////
 /////////////////////////////////////////////
-/////////////////////////////////////////////        
+/////////////////////////////////////////////
 
     case 'REQUEST_GET_PLACE':
 
@@ -130,14 +111,14 @@ export default function placeReducer(state = defaultState, action) {
 
         newState = state.set('isCreatingOrUpdatingItem', false);
         newState.set('lastCreatedItemId', action.createdPlace._id);
-        newState.update('items', places => places.push(Immutable.Map(action.createdPlace)));
-        
+        newState.update('places', places => places.push(Immutable.Map(action.createdPlace)));
+
         return newState;
 
-        // var places = mergedState.get('items').toJS();
+        // var places = mergedState.get('places').toJS();
         // places.push(action.createdPlace);
-        // mergedState.setIn(['items'], Immutable.List(places));
-        // mergedState.setIn(['items'], arr => arr.push(action.createdPlace));
+        // mergedState.setIn(['places'], Immutable.List(places));
+        // mergedState.setIn(['places'], arr => arr.push(action.createdPlace));
 
     case 'RESPONSE_CREATE_PLACE_ERROR':
 
@@ -160,24 +141,24 @@ export default function placeReducer(state = defaultState, action) {
         newState = state.set('isCreatingOrUpdatingItem', false);
         newState = newState.set('lastCreatedItemId', placeId);
 
-        places = newState.get('items');
+        places = newState.get('places');
         let index = places.findIndex(place => place.get('_id') === placeId);
 
-        places = places.update(index, place => Immutable.Map(action.updatedPlace)); 
-        
-        return newState.set('items', places);
+        places = places.update(index, place => Immutable.Map(action.updatedPlace));
 
-        // newState.update('items', (places) => {
+        return newState.set('places', places);
+
+        // newState.update('places', (places) => {
         //     places.map((place) => {
         //         if (place._id === placeId) {
 
         //         }
-        //         place.set('isCompleted', true)));  
+        //         place.set('isCompleted', true)));
         //     }
         // }
 
-          // var index = indexOf(mergedState.items, find(mergedState.items, { _id: action.updatedPlace._id }));
-          // mergedState.items.splice(index, 1, action.updatedPlace);
+          // var index = indexOf(mergedState.places, find(mergedState.places, { _id: action.updatedPlace._id }));
+          // mergedState.places.splice(index, 1, action.updatedPlace);
 
           // return mergedState;
 
@@ -213,7 +194,7 @@ export default function placeReducer(state = defaultState, action) {
 
       mergedState = getMergedState(newState, state);
 
-        remove(mergedState.items, function (item) {
+        remove(mergedState.places, function (item) {
           return item._id === removePlaceId;
         });
 
