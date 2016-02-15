@@ -20,7 +20,7 @@ class GoogleMap extends React.Component {
     componentDidMount() {
 
         var map = new google.maps.Map(
-            document.getElementById('google-map'), 
+            document.getElementById('google-map'),
             {
                 center: new google.maps.LatLng(this.props.initialCenter[0], this.props.initialCenter[1]),
                 zoom: this.props.initialZoom
@@ -33,7 +33,7 @@ class GoogleMap extends React.Component {
         this.setState({
             isApiLoaded: true,
             map: map
-        });        
+        });
 
     }
 
@@ -46,7 +46,7 @@ class GoogleMap extends React.Component {
     }
 
     render() {
-        
+
         // if (!this.state.isApiLoaded) {
         //     return (
         //         <div></div>
@@ -116,7 +116,7 @@ export default GoogleMap;
       // script.src = 'https://maps.googleapis.com/maps/api/js';
       // script.onload = () => {
       //   var map = new google.maps.Map(
-      //       document.getElementById('google-map'), 
+      //       document.getElementById('google-map'),
       //       {
       //           center: new google.maps.LatLng(this.props.initialCenter[0], this.props.initialCenter[1]),
       //           zoom: this.props.initialZoom

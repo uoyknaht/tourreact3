@@ -32,6 +32,19 @@ class Marker extends React.Component {
     marker.setMap(null);
   }
 
+	componentWillReceiveProps(newProps) {
+
+		if (!this.state.marker) {
+			return;
+		}
+
+		if (this.props.draggable !== newProps.draggable) {
+			var marker = this.state.marker;
+			marker.setDraggable(newProps.draggable);
+			this.setState({ marker: marker });
+		}
+	}
+
   render() {
     return (
        <div>{this.props.text}</div>
@@ -42,7 +55,8 @@ class Marker extends React.Component {
 Marker.propTypes = {
     lat: React.PropTypes.number.isRequired,
     lng: React.PropTypes.number.isRequired,
-    text: React.PropTypes.string.isRequired
+    text: React.PropTypes.string.isRequired,
+	draggable: React.PropTypes.bool
 };
 
 export default Marker;

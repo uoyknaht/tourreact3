@@ -103,15 +103,29 @@ export function cleanActivePlace(isForEdit) {
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
-export function openPlaceCreateOrUpdateForm() {
+export function openPlaceCreateForm() {
   return {
-    type: 'OPEN_PLACE_CREATE_OR_UPDATE_FORM',
+    type: 'OPEN_PLACE_CREATE_FORM',
   };
 }
 
-export function closePlaceCreateOrUpdateForm() {
+export function closePlaceCreateForm() {
   return {
-    type: 'CLOSE_PLACE_CREATE_OR_UPDATE_FORM',
+    type: 'CLOSE_PLACE_CREATE_FORM',
+  };
+}
+
+export function openPlaceUpdateForm(placeId) {
+  return {
+    type: 'OPEN_PLACE_UPDATE_FORM',
+	placeId
+  };
+}
+
+export function closePlaceUpdateForm(placeId) {
+  return {
+    type: 'CLOSE_PLACE_UPDATE_FORM',
+	placeId
   };
 }
 

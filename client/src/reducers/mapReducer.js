@@ -33,6 +33,7 @@ export default function mapReducer(state = defaultState, action) {
 	let mergedState;
 	let markers;
 	let marker;
+	let markerId;
 	let index;
 
     switch(action.type) {
@@ -71,23 +72,21 @@ export default function mapReducer(state = defaultState, action) {
 ////////////////////
 ////////////////////
 
-    case 'OPEN_PLACE_CREATE_OR_UPDATE_FORM':
+    case 'OPEN_PLACE_CREATE_FORM':
 
-      newState = {
-        isDraggable: false,
-        areMarkersDraggable: true
-      };
+		return state.set('areMarkersDraggable', true);
 
-      return getMergedState(newState, state);
+    case 'CLOSE_PLACE_CREATE_FORM':
 
-    case 'CLOSE_PLACE_CREATE_OR_UPDATE_FORM':
+		return state.set('areMarkersDraggable', false);
 
-      newState = {
-        isDraggable: true,
-        areMarkersDraggable: false
-      };
+    case 'OPEN_PLACE_UPDATE_FORM':
 
-      return getMergedState(newState, state);
+		return updateMarkerProperty(state, action.placeId, 'draggable', true);
+
+    case 'CLOSE_PLACE_UPDATE_FORM':
+
+		return updateMarkerProperty(state, action.placeId, 'draggable', false);
 
     case 'DRAG_MARKER':
 
@@ -96,11 +95,24 @@ export default function mapReducer(state = defaultState, action) {
       marker.lat = action.newLat;
       marker.lng = action.newLng;
 
-      // console.log(action.newLat);
       return mergedState;
 
     default:
       return state;
   }
 
+}
+
+function updateMarkerProperty(state, markerId, key, value) {
+	let markers = state.get('markers');
+
+	let index = markers.findIndex(marker => {
+		return marker.get('id') === markerId;
+	});
+
+	markers = markers.update(index, marker => {
+		return marker.set(key, value);
+	});
+
+	return state.set('markers', markers);
 }

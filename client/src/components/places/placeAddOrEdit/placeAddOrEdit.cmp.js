@@ -9,8 +9,10 @@ import {
   cleanActivePlace,
   createPlace,
   updatePlace,
-  openPlaceCreateOrUpdateForm,
-  closePlaceCreateOrUpdateForm
+  openPlaceCreateForm,
+  openPlaceUpdateForm,
+  closePlaceCreateForm,
+  closePlaceUpdateForm
 } from '../../../actions/placeActions';
 import Loader from '../../loader/loader.cmp';
 
@@ -24,14 +26,23 @@ class PlaceAddOrEdit extends React.Component {
     }
 
     componentDidMount() {
-      this.props.openPlaceCreateOrUpdateForm();
+    	const placeId = this.props.placeId;
 
-      const placeId = this.props.placeId;
-
-      if (placeId) {
-        this.props.getPlace(placeId, true);
-      }
+    	if (placeId) {
+	        this.props.getPlace(placeId, true);
+			this.props.openPlaceUpdateForm(placeId);
+		}
+		else {
+			this.props.openPlaceCreateForm();
+		}
     }
+
+	componentWillUnmount() {
+		const placeId = this.props.placeId;
+
+		this.props.closePlaceUpdateForm(placeId);
+		this.props.cleanActivePlace(true);
+	}
 
      componentWillReceiveProps(newProps) {
 
@@ -48,11 +59,6 @@ class PlaceAddOrEdit extends React.Component {
 			// debugger;
          this._updateForm(newProps.place);
        }
-     }
-
-     componentWillUnmount() {
-       this.props.closePlaceCreateOrUpdateForm();
-       this.props.cleanActivePlace(true);
      }
 
     onSubmit(e) {
@@ -171,8 +177,10 @@ function mapDispatchToProps(dispatch) {
     cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit)),
     createPlace: (place) => dispatch(createPlace(place)),
     updatePlace: (place) => dispatch(updatePlace(place)),
-    openPlaceCreateOrUpdateForm: () => dispatch(openPlaceCreateOrUpdateForm()),
-    closePlaceCreateOrUpdateForm: () => dispatch(closePlaceCreateOrUpdateForm()),
+    openPlaceCreateForm: () => dispatch(openPlaceCreateForm()),
+    closePlaceCreateForm: () => dispatch(closePlaceCreateForm()),
+    openPlaceUpdateForm: () => dispatch(openPlaceUpdateForm()),
+    closePlaceUpdateForm: () => dispatch(closePlaceUpdateForm()),
     dispatch: dispatch
   }
 }

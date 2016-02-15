@@ -1,5 +1,5 @@
 // check:
-// GraphQL 
+// GraphQL
 // Relay
 // - normalizr
 // - rxjs
@@ -46,15 +46,15 @@
     //   this.setState(({data}) => ({
     //     data: data.update('items', list => list.push(data.get('count')))
     //   }));
-    // },    
+    // },
 
     // Map over a list inside an Immutable object and update all items (this will toggle all todo items isCompleted property):
     // state.update('todos', (todos) =>
     //   todos.map((todo) => todo.set('isCompleted', true)));
 
     // list = list.update(
-    //   list.findIndex(function(item) { 
-    //     return item.get("name") === "third"; 
+    //   list.findIndex(function(item) {
+    //     return item.get("name") === "third";
     //   }), function(item) {
     //     return item.set("count", 4);
     //   }
@@ -157,26 +157,28 @@
 
 
 
-// var stateV1 = Immutable.fromJS({  
+// var stateV1 = Immutable.fromJS({
 //   users: [
 //     { name: 'Foo' },
 //     { name: 'Bar' }
 //   ]
 // });
 
-// var stateV2 = stateV1.updateIn(['users', 1], function () {  
+// var stateV2 = stateV1.updateIn(['users', 1], function () {
 //   return Immutable.fromJS({
 //     name: 'Barbar'
 //   });
 // });
 
 // list = list.update(
-//   list.findIndex(function(item) { 
-//     return item.get("name") === "third"; 
+//   list.findIndex(function(item) {
+//     return item.get("name") === "third";
 //   }), function(item) {
 //     return item.set("count", 4);
 //   }
-// ); 
+// );
+
+// http://gmaps-samples-v3.googlecode.com/svn/trunk/draggable-markers/draggable-markers.html
 
 
 import React from 'react';

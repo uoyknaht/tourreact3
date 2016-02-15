@@ -73,6 +73,7 @@ class MapContainer extends React.Component {
 				lat={marker.get('lat')}
 				lng={marker.get('lng')}
 				text={marker.get('title')}
+				draggable={marker.get('draggable')}
 				key={marker.get('id')} />
     });
 
@@ -85,7 +86,7 @@ class MapContainer extends React.Component {
 
                 {markersHtml}
             </GoogleMap>
-			
+
       </div>
     );
   }
@@ -97,7 +98,7 @@ function mapStateToProps(state) {
   return {
     center: state.getIn(['map', 'center']),
     zoom: state.getIn(['map', 'zoom']),
-    isDraggable: state.getIn(['map', 'isDraggable']),
+    areMarkersDraggable: state.getIn(['map', 'areMarkersDraggable']),
     markers: state.getIn(['map', 'markers'])
   }
 }
