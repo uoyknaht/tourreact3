@@ -45,6 +45,7 @@ class PlaceAddOrEdit extends React.Component {
         }
         // prefilling form data in after opening edit place
         else if (!this.props.place && newProps.place) {
+			// debugger;
          this._updateForm(newProps.place);
        }
      }
@@ -68,7 +69,7 @@ class PlaceAddOrEdit extends React.Component {
       }
 
       if (this.props.place) {
-          place._id = this.props.place._id;
+          place._id = this.props.place.get('_id');
       }
 
       if (place._id) {
@@ -76,21 +77,14 @@ class PlaceAddOrEdit extends React.Component {
       } else {
           this.props.createPlace(place);
       }
-
-
-
-//  SHOW LOADER!!!
-
-      // PlaceActions.savePlace(data);
-      // this.context.router.transitionTo('allPlaces');
     }
 
     _updateForm(place) {
         if (place) {
-            ReactDOM.findDOMNode(this.refs.title).value = place.title;
-            ReactDOM.findDOMNode(this.refs.address).value = place.address;
-            ReactDOM.findDOMNode(this.refs.latitude).value = place.latitude;
-            ReactDOM.findDOMNode(this.refs.longitude).value = place.longitude;
+            ReactDOM.findDOMNode(this.refs.title).value = place.get('title');
+            ReactDOM.findDOMNode(this.refs.address).value = place.get('address');
+            ReactDOM.findDOMNode(this.refs.latitude).value = place.get('latitude');
+            ReactDOM.findDOMNode(this.refs.longitude).value = place.get('longitude');
         } else {
             ReactDOM.findDOMNode(this.refs.title).value = '';
             ReactDOM.findDOMNode(this.refs.address).value = '';
@@ -106,7 +100,6 @@ class PlaceAddOrEdit extends React.Component {
               <Loader />
             );
         }
-
 
         var place = this.props.place;
         var title = place ?'Edit place' : 'Add new place';
@@ -160,15 +153,6 @@ class PlaceAddOrEdit extends React.Component {
 
         );
     }
-
-    // componentDidMount() {
-    //   // from the path `/inbox/messages/:id`
-    //   const id = this.props.params.id
-    //
-    //   fetchMessage(id, function (err, message) {
-    //     this.setState({ id: id })
-    //   })
-    // },
 
 }
 
