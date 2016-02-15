@@ -15,7 +15,7 @@ export function getPlaces() {
 
     return apiService.get('http://localhost:8081/api/places')
         .then(json => dispatch(responseGetPlaces(json)))
-        .catch((error) => dispatch(responseGetPlacesError(error)));      
+        .catch((error) => dispatch(responseGetPlacesError(error)));
   }
 }
 
@@ -61,7 +61,7 @@ export function getPlace(placeId, isForEdit) {
 
     return apiService.get(`http://localhost:8081/api/places/${placeId}`)
         .then(json => dispatch(responseGetPlace(json, isForEdit)))
-        .catch((error) => dispatch(responseGetPlaceError(error)));   
+        .catch((error) => dispatch(responseGetPlaceError(error)));
   }
 }
 

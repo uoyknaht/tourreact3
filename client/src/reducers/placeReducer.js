@@ -110,15 +110,10 @@ export default function placeReducer(state = defaultState, action) {
 		case 'RESPONSE_CREATE_PLACE':
 
 			newState = state.set('isCreatingOrUpdatingItem', false);
-			newState.set('lastCreatedItemId', action.createdPlace._id);
-			newState.update('places', places => places.push(Immutable.Map(action.createdPlace)));
+			newState = newState.set('lastCreatedItemId', action.createdPlace._id);
+			newState = newState.update('places', places => places.push(Immutable.Map(action.createdPlace)));
 
 			return newState;
-
-			// var places = mergedState.get('places').toJS();
-			// places.push(action.createdPlace);
-			// mergedState.setIn(['places'], Immutable.List(places));
-			// mergedState.setIn(['places'], arr => arr.push(action.createdPlace));
 
 		case 'RESPONSE_CREATE_PLACE_ERROR':
 
