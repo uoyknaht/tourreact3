@@ -6,209 +6,203 @@ import getMergedState from './reducerHelpers';
 import notifierService from '../services/notifier.srv';
 
 let defaultState = Immutable.Map({
-    isFetchingItems: false,
-    areItemsFetched: false,
-    places: Immutable.List(),
-    activeItemId: null,
-    activeItem: null,
-    isFetchingItem: true,
-    itemInEditMode: null,
-    isCreatingOrUpdatingItem: false,
-    lastCreatedItemId: null,
-    lastUpdatedItemId: null,
-    isDeletingItem: false,
-    isItemDeleted: false
+	isFetchingItems: false,
+	areItemsFetched: false,
+	places: Immutable.List(),
+	activeItemId: null,
+	activeItem: null,
+	isFetchingItem: true,
+	itemInEditMode: null,
+	isCreatingOrUpdatingItem: false,
+	lastCreatedItemId: null,
+	lastUpdatedItemId: null,
+	isDeletingItem: false,
+	isItemDeleted: false
 });
 
 export default function placeReducer(state = defaultState, action) {
 
-  let newState;
-  let mergedState;
-  let places;
-  let place;
+	let newState;
+	let mergedState;
+	let places;
+	let place;
+	let index;
 
-  switch(action.type) {
+	switch(action.type) {
 
-    case 'REQUEST_GET_PLACES':
+		case 'REQUEST_GET_PLACES':
 
-        return state.set('isFetchingItems', true);
+			return state.set('isFetchingItems', true);
 
-    case 'RESPONSE_GET_PLACES':
+		case 'RESPONSE_GET_PLACES':
 
-      newState = state.set('isFetchingItems', false);
-      newState = newState.set('areItemsFetched', true);
-      newState = newState.set('places', Immutable.fromJS(action.places));
+			newState = state.set('isFetchingItems', false);
+			newState = newState.set('areItemsFetched', true);
+			newState = newState.set('places', Immutable.fromJS(action.places));
 
-      return newState;
+			return newState;
 
-      // newState = {
-      //   places: action.places,
-      //   isFetchingItems: false,
-      //   areItemsFetched: true
-      // };
+			// newState = {
+			//   places: action.places,
+			//   isFetchingItems: false,
+			//   areItemsFetched: true
+			// };
 
-      // return state.mergeDeep(newState);
+			// return state.mergeDeep(newState);
 
-    case 'RESPONSE_GET_PLACES_ERROR':
+		case 'RESPONSE_GET_PLACES_ERROR':
 
-        notifierService.error('error RESPONSE_GET_PLACES_ERROR');
+			notifierService.error('error RESPONSE_GET_PLACES_ERROR');
 
-        return state.set('isFetchingItems', false);
+			return state.set('isFetchingItems', false);
 
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
-    case 'REQUEST_GET_PLACE':
+		case 'REQUEST_GET_PLACE':
 
-        return state.set('isFetchingItem', true);
+			return state.set('isFetchingItem', true);
 
-    case 'RESPONSE_GET_PLACE':
+		case 'RESPONSE_GET_PLACE':
 
-        newState = state.set('isFetchingItem', false);
-        place = Immutable.Map(action.place);
+			newState = state.set('isFetchingItem', false);
+			place = Immutable.Map(action.place);
 
-        if (action.isForEdit) {
-            newState = newState.set('itemInEditMode', place);
-        } else {
-            newState = newState.set('activeItem', place);
-        }
-// debugger;
-        return newState;
+			if (action.isForEdit) {
+				newState = newState.set('itemInEditMode', place);
+			} else {
+				newState = newState.set('activeItem', place);
+			}
 
-    case 'RESPONSE_GET_PLACE_ERROR':
+			return newState;
 
-        notifierService.error('error RESPONSE_GET_PLACE_ERROR');
+		case 'RESPONSE_GET_PLACE_ERROR':
 
-        return state.set('isFetchingItem', false);
+			notifierService.error('error RESPONSE_GET_PLACE_ERROR');
 
-    case 'CLEAN_ACTIVE_PLACE':
+			return state.set('isFetchingItem', false);
 
-        newState = {};
+		case 'CLEAN_ACTIVE_PLACE':
 
-        if (action.isForEdit) {
-            newState = state.set('itemInEditMode', null);
-            newState = newState.set('lastCreatedItemId', null);
-            newState = newState.set('lastUpdatedItemId', null);
-        } else {
-            newState = state.set('activeItemId', null);
-            newState = newState.set('activeItem', null);
-            newState = newState.set('isItemDeleted', null);
-        }
+			newState = {};
 
-        return newState;
+			if (action.isForEdit) {
+				newState = state.set('itemInEditMode', null);
+				newState = newState.set('lastCreatedItemId', null);
+				newState = newState.set('lastUpdatedItemId', null);
+			} else {
+				newState = state.set('activeItemId', null);
+				newState = newState.set('activeItem', null);
+				newState = newState.set('isItemDeleted', null);
+			}
 
-      ////////////////////
-      ////////////////////
-      ////////////////////
+			return newState;
 
-    case 'REQUEST_CREATE_PLACE':
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
-        return state.set('isCreatingOrUpdatingItem', true);
+		case 'REQUEST_CREATE_PLACE':
 
+			return state.set('isCreatingOrUpdatingItem', true);
 
-    case 'RESPONSE_CREATE_PLACE':
+		case 'RESPONSE_CREATE_PLACE':
 
-        newState = state.set('isCreatingOrUpdatingItem', false);
-        newState.set('lastCreatedItemId', action.createdPlace._id);
-        newState.update('places', places => places.push(Immutable.Map(action.createdPlace)));
+			newState = state.set('isCreatingOrUpdatingItem', false);
+			newState.set('lastCreatedItemId', action.createdPlace._id);
+			newState.update('places', places => places.push(Immutable.Map(action.createdPlace)));
 
-        return newState;
+			return newState;
 
-        // var places = mergedState.get('places').toJS();
-        // places.push(action.createdPlace);
-        // mergedState.setIn(['places'], Immutable.List(places));
-        // mergedState.setIn(['places'], arr => arr.push(action.createdPlace));
+			// var places = mergedState.get('places').toJS();
+			// places.push(action.createdPlace);
+			// mergedState.setIn(['places'], Immutable.List(places));
+			// mergedState.setIn(['places'], arr => arr.push(action.createdPlace));
 
-    case 'RESPONSE_CREATE_PLACE_ERROR':
+		case 'RESPONSE_CREATE_PLACE_ERROR':
 
-        notifierService.error('error RESPONSE_CREATE_PLACE_ERROR');
+			notifierService.error('error RESPONSE_CREATE_PLACE_ERROR');
 
-        return state.set('isCreatingOrUpdatingItem', false);
+			return state.set('isCreatingOrUpdatingItem', false);
 
-      ////////////////////
-      ////////////////////
-      ////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
-    case 'REQUEST_UPDATE_PLACE':
+		case 'REQUEST_UPDATE_PLACE':
 
-        return state.set('isCreatingOrUpdatingItem', true);
+			return state.set('isCreatingOrUpdatingItem', true);
 
-    case 'RESPONSE_UPDATE_PLACE':
+		case 'RESPONSE_UPDATE_PLACE':
 
-        let placeId = action.updatedPlace._id;
+			let placeId = action.updatedPlace._id;
 
-        newState = state.set('isCreatingOrUpdatingItem', false);
-        newState = newState.set('lastCreatedItemId', placeId);
+			newState = state.set('isCreatingOrUpdatingItem', false);
+			newState = newState.set('lastCreatedItemId', placeId);
 
-        places = newState.get('places');
-        let index = places.findIndex(place => place.get('_id') === placeId);
+			places = newState.get('places');
+			index = places.findIndex(place => place.get('_id') === placeId);
 
-        places = places.update(index, place => Immutable.Map(action.updatedPlace));
+			places = places.update(index, place => Immutable.Map(action.updatedPlace));
 
-        return newState.set('places', places);
+			return newState.set('places', places);
 
-        // newState.update('places', (places) => {
-        //     places.map((place) => {
-        //         if (place._id === placeId) {
+			// newState.update('places', (places) => {
+			//     places.map((place) => {
+			//         if (place._id === placeId) {
 
-        //         }
-        //         place.set('isCompleted', true)));
-        //     }
-        // }
+			//         }
+			//         place.set('isCompleted', true)));
+			//     }
+			// }
 
-          // var index = indexOf(mergedState.places, find(mergedState.places, { _id: action.updatedPlace._id }));
-          // mergedState.places.splice(index, 1, action.updatedPlace);
+			// var index = indexOf(mergedState.places, find(mergedState.places, { _id: action.updatedPlace._id }));
+			// mergedState.places.splice(index, 1, action.updatedPlace);
 
-          // return mergedState;
+			// return mergedState;
 
-    case 'RESPONSE_UPDATE_PLACE_ERROR':
+		case 'RESPONSE_UPDATE_PLACE_ERROR':
 
-        notifierService.error('error RESPONSE_UPDATE_PLACE_ERROR');
+			notifierService.error('error RESPONSE_UPDATE_PLACE_ERROR');
 
-        return state.set('isCreatingOrUpdatingItem', false);
-
-
-////////////////////
-////////////////////
-////////////////////
-
-// TODO:
-
-    case 'REQUEST_DELETE_PLACE':
-
-      newState = {
-        isDeletingItem: true
-      };
-
-      return getMergedState(newState, state);
-
-    case 'RESPONSE_DELETE_PLACE':
-
-      var removePlaceId = action.placeId;
-
-      newState = {
-        isDeletingItem: false,
-        isItemDeleted: true
-      };
-
-      mergedState = getMergedState(newState, state);
-
-        remove(mergedState.places, function (item) {
-          return item._id === removePlaceId;
-        });
+			return state.set('isCreatingOrUpdatingItem', false);
 
 
-      return mergedState;
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
-    case 'RESPONSE_DELETE_PLACE_ERROR':
+		case 'REQUEST_DELETE_PLACE':
 
-        notifierService.error('error RESPONSE_DELETE_PLACE_ERROR');
+			return state.set('isDeletingItem', true);
 
-        return state.set('isDeletingItem', false);
+		case 'RESPONSE_DELETE_PLACE':
 
-    default:
-      return state;
-  }
+			var removePlaceId = action.placeId;
+
+			newState = state.set('isDeletingItem', false);
+			newState = newState.set('isItemDeleted', true);
+
+			index = newState.get('places').findIndex(place => {
+				return place.get('_id') === removePlaceId;
+			});
+
+			places = newState.get('places');
+			places = places.remove(index);
+
+			newState = newState.set('places', places);
+
+			return newState;
+
+		case 'RESPONSE_DELETE_PLACE_ERROR':
+
+			notifierService.error('error RESPONSE_DELETE_PLACE_ERROR');
+
+			return state.set('isDeletingItem', false);
+
+		default:
+			return state;
+	}
 
 }
