@@ -15,19 +15,8 @@ let defaultState = Immutable.fromJS({
     },
     isDraggable: true,
     areMarkersDraggable: false,
-    markers: []
+    markers: Immutable.List()
 });
-
-// let defaultState = Immutable.fromJS({
-//     zoom: 7,
-//     center: {
-//       lat: 55.44251502256722,
-//       lng: 23.74947999804681
-//     },
-//     isDraggable: true,
-//     areMarkersDraggable: false,
-//     markers: Immutable.List()
-// });
 
 function getMarkerFromPlace(place) {
     return {
@@ -59,13 +48,10 @@ export default function mapReducer(state = defaultState, action) {
 
     case 'RESPONSE_CREATE_PLACE':
 
-        // marker = getMarkerFromPlace(action.createdPlace);
-        // console.log(marker);
-        // console.log('bbb');
+        marker = getMarkerFromPlace(action.createdPlace);
+		marker = Immutable.Map(marker);
 
-        return state;
-
-        // return state.updateIn(['markers'], arr => arr.push(marker));
+		return state.updateIn(['markers'], markers => markers.push(marker));
 
     case 'RESPONSE_DELETE_PLACE':
 
