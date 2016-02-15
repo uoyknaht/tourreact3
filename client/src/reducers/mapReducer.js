@@ -29,20 +29,21 @@ function getMarkerFromPlace(place) {
 
 export default function mapReducer(state = defaultState, action) {
 
-  let newState;
-  let mergedState;
-  let markers;
-  let marker;
+	let newState;
+	let mergedState;
+	let markers;
+	let marker;
+	let index;
 
-  switch(action.type) {
+    switch(action.type) {
 
     case 'RESPONSE_GET_PLACES':
     	markers = Immutable.List();
 
-      forEach(action.places, place => {
-		marker = getMarkerFromPlace(place);
-    	markers = markers.push(Immutable.Map(marker));
-      });
+		forEach(action.places, place => {
+			marker = getMarkerFromPlace(place);
+			markers = markers.push(Immutable.Map(marker));
+		});
 
       return state.set('markers', markers);
 
@@ -55,13 +56,16 @@ export default function mapReducer(state = defaultState, action) {
 
     case 'RESPONSE_DELETE_PLACE':
 
-        mergedState = getMergedState({}, state);
+		let removeMarkerId = action.placeId;
 
-        remove(mergedState.markers, function (marker) {
-            return marker.id === action.placeId;
-        });
+		index = state.get('markers').findIndex(marker => {
+			return marker.get('id') === removeMarkerId;
+		});
 
-        return mergedState;
+		markers = state.get('markers');
+		markers = markers.remove(index);
+
+		return state.set('markers', markers);
 
 ////////////////////
 ////////////////////
