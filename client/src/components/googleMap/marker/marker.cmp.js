@@ -5,7 +5,8 @@ class Marker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        marker: null
+        marker: null,
+		dragEndListener: null
     };
   }
 
@@ -40,8 +41,27 @@ class Marker extends React.Component {
 
 		if (this.props.draggable !== newProps.draggable) {
 			var marker = this.state.marker;
+			let dragEndListener;
+
 			marker.setDraggable(newProps.draggable);
-			this.setState({ marker: marker });
+
+			if (newProps.draggable) {
+				dragEndListener = google.maps.event.addListener(marker, 'dragend', () => {
+					let newLat = marker.position.lat();
+					let newLng = marker.position.lng();
+			    	this.props.onDragEnd(newLat, newLng);
+			    });
+			} else  {
+				if (this.state.dragEndListener) {
+					google.maps.event.removeListener(this.state.dragEndListener);
+					dragEndListener = null;
+				}
+			}
+
+			this.setState({
+				marker: marker,
+				dragEndListener: dragEndListener
+			});
 		}
 	}
 
@@ -56,7 +76,8 @@ Marker.propTypes = {
     lat: React.PropTypes.number.isRequired,
     lng: React.PropTypes.number.isRequired,
     text: React.PropTypes.string.isRequired,
-	draggable: React.PropTypes.bool
+	draggable: React.PropTypes.bool,
+	//onDragEnd: React.PropTypes.function
 };
 
 export default Marker;

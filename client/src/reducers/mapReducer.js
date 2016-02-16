@@ -15,7 +15,11 @@ let defaultState = Immutable.fromJS({
     },
     isDraggable: true,
     areMarkersDraggable: false,
-    markers: Immutable.List()
+    markers: Immutable.List(),
+	latLngOnDragEnd: {
+		lat: null,
+		lng: null
+	}
 });
 
 function getMarkerFromPlace(place) {
@@ -88,14 +92,13 @@ export default function mapReducer(state = defaultState, action) {
 
 		return updateMarkerProperty(state, action.placeId, 'draggable', false);
 
-    case 'DRAG_MARKER':
+    case 'MARKER_DRAG_END':
+		let newLatLng = Immutable.Map({
+			lat: action.lat,
+			lng: action.lng
+		});
 
-      mergedState = getMergedState({}, state);
-      marker = find(mergedState.markers, { id: action.markerId });
-      marker.lat = action.newLat;
-      marker.lng = action.newLng;
-
-      return mergedState;
+		return state.set('latLngOnDragEnd', newLatLng);
 
     default:
       return state;

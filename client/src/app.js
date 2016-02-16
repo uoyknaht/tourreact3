@@ -178,9 +178,6 @@
 //   }
 // );
 
-// http://gmaps-samples-v3.googlecode.com/svn/trunk/draggable-markers/draggable-markers.html
-
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom'

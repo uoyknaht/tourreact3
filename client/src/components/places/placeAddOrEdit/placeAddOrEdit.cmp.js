@@ -59,6 +59,10 @@ class PlaceAddOrEdit extends React.Component {
 			// debugger;
          this._updateForm(newProps.place);
        }
+
+		if (this.props.latLngOnDragEnd !== newProps.latLngOnDragEnd) {
+			this._updateFormLatLng(newProps.latLngOnDragEnd);
+		}
      }
 
     onSubmit(e) {
@@ -97,6 +101,11 @@ class PlaceAddOrEdit extends React.Component {
             ReactDOM.findDOMNode(this.refs.latitude).value = '';
             ReactDOM.findDOMNode(this.refs.longitude).value = '';
         }
+    }
+
+    _updateFormLatLng(latLng) {
+        ReactDOM.findDOMNode(this.refs.latitude).value = latLng.get('lat');
+        ReactDOM.findDOMNode(this.refs.longitude).value = latLng.get('lng');
     }
 
     render() {
@@ -167,7 +176,8 @@ function mapStateToProps(state, ownProps) {
     place: state.getIn(['places', 'itemInEditMode']),
     placeId: ownProps.params.id,
     isLoading: state.getIn(['places', 'isCreatingOrUpdatingItem']),
-    lastCreatedItemId: state.getIn(['places', 'lastCreatedItemId'])
+    lastCreatedItemId: state.getIn(['places', 'lastCreatedItemId']),
+	latLngOnDragEnd: state.getIn(['map', 'latLngOnDragEnd'])
   }
 }
 
