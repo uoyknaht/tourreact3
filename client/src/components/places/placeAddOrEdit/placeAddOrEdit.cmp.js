@@ -216,8 +216,8 @@ function mapDispatchToProps(dispatch) {
     updatePlace: (place) => dispatch(updatePlace(place)),
     openPlaceCreateForm: () => dispatch(openPlaceCreateForm()),
     closePlaceCreateForm: () => dispatch(closePlaceCreateForm()),
-    openPlaceUpdateForm: () => dispatch(openPlaceUpdateForm()),
-    closePlaceUpdateForm: () => dispatch(closePlaceUpdateForm()),
+    openPlaceUpdateForm: (placeId) => dispatch(openPlaceUpdateForm(placeId)),
+    closePlaceUpdateForm: (placeId) => dispatch(closePlaceUpdateForm(placeId)),
     dispatch: dispatch
   }
 }
