@@ -26,6 +26,7 @@ export default function placeReducer(state = defaultState, action) {
 	let mergedState;
 	let places;
 	let place;
+	let newPlace;
 	let index;
 
 	switch(action.type) {
@@ -102,6 +103,27 @@ export default function placeReducer(state = defaultState, action) {
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 /////////////////////////////////////////////
+
+		case 'CREATE_TEMP_PLACE':
+
+			newPlace = Immutable.Map({
+				_id: 0,
+				latitude: action.latLng.lat,
+				longitude: action.latLng.lng
+			});
+
+			return state.update('places', places => places.push(newPlace));
+
+		case 'DELETE_TEMP_PLACE':
+
+			index = state.get('places').findIndex(place => {
+				return place.get('_id') === 0;
+			});
+
+			places = state.get('places');
+			places = places.remove(index);
+
+			return state.set('places', places);
 
 		case 'REQUEST_CREATE_PLACE':
 

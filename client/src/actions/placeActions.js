@@ -133,6 +133,19 @@ export function closePlaceUpdateForm(placeId) {
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
+export function createTempPlace(latLng) {
+	return {
+		type: 'CREATE_TEMP_PLACE',
+		latLng
+    };
+}
+
+export function deleteTempPlace() {
+	return {
+		type: 'DELETE_TEMP_PLACE',
+    };
+}
+
 export function createPlace(newPlace) {
   return function (dispatch) {
     dispatch(requestCreatePlace());

@@ -7,6 +7,8 @@ import { routeActions } from 'react-router-redux';
 import {
   getPlace,
   cleanActivePlace,
+  createTempPlace,
+  deleteTempPlace,
   createPlace,
   updatePlace,
   openPlaceCreateForm,
@@ -41,9 +43,12 @@ class PlaceAddOrEdit extends React.Component {
 		}
 		else {
 			this.props.openPlaceCreateForm();
-			this.setState({
-				shouldAddMarkerOnMapClick: true
-			});
+			let centerLatLng = mapService.getCurrentCenter(window.map);
+			this.props.createTempPlace(centerLatLng);
+			this._updateFormLatLng(centerLatLng);
+			// this.setState({
+			// 	shouldAddMarkerOnMapClick: true
+			// });
 		}
     }
 
@@ -52,6 +57,7 @@ class PlaceAddOrEdit extends React.Component {
 
 		this.props.closePlaceUpdateForm(placeId);
 		this.props.cleanActivePlace(true);
+		this.props.deleteTempPlace();
 	}
 
      componentWillReceiveProps(newProps) {
@@ -71,14 +77,14 @@ class PlaceAddOrEdit extends React.Component {
        }
 
 		if (this.props.latLngOnDragEnd !== newProps.latLngOnDragEnd) {
-			this._updateFormLatLng(newProps.latLngOnDragEnd);
+			this._updateFormLatLng(newProps.latLngOnDragEnd.toJS());
 		}
 
 		if (this.props.latLngOnMapClick !== newProps.latLngOnMapClick) {
 			if (this.state.shouldAddMarkerOnMapClick) {
 				// TODO: replace window.map
 				mapService.createMarker(newProps.latLngOnMapClick.toJS(), window.map);
-				this._updateFormLatLng(newProps.latLngOnMapClick);
+				this._updateFormLatLng(newProps.latLngOnMapClick.toJS());
 
 				this.setState({
 					shouldAddMarkerOnMapClick: false
@@ -127,8 +133,8 @@ class PlaceAddOrEdit extends React.Component {
     }
 
     _updateFormLatLng(latLng) {
-        ReactDOM.findDOMNode(this.refs.latitude).value = latLng.get('lat');
-        ReactDOM.findDOMNode(this.refs.longitude).value = latLng.get('lng');
+        ReactDOM.findDOMNode(this.refs.latitude).value = latLng.lat;
+        ReactDOM.findDOMNode(this.refs.longitude).value = latLng.lng;
     }
 
 	_setAdressFromCoordinates(e) {
@@ -234,7 +240,9 @@ function mapDispatchToProps(dispatch) {
   return {
     getPlace: (placeId, isForEdit) => dispatch(getPlace(placeId, isForEdit)),
     cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit)),
+    createTempPlace: (latLng) => dispatch(createTempPlace(latLng)),
     createPlace: (place) => dispatch(createPlace(place)),
+    deleteTempPlace: () => dispatch(deleteTempPlace()),
     updatePlace: (place) => dispatch(updatePlace(place)),
     openPlaceCreateForm: () => dispatch(openPlaceCreateForm()),
     closePlaceCreateForm: () => dispatch(closePlaceCreateForm()),

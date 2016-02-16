@@ -8,6 +8,15 @@ class MapService {
 		});
 	}
 
+	getCurrentCenter(map) {
+		let center = map.getCenter();
+
+		return {
+			lat: center.lat(),
+			lng: center.lng()
+		};
+	}
+
 }
 
 export default new MapService();

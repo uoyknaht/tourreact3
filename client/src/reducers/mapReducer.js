@@ -53,6 +53,28 @@ export default function mapReducer(state = defaultState, action) {
 
       return state.set('markers', markers);
 
+	case 'CREATE_TEMP_PLACE':
+
+		marker = Immutable.Map({
+			id: 0,
+			title: '',
+			lat: action.latLng.lat,
+			lng: action.latLng.lng
+		});
+
+		return state.update('markers', markers => markers.push(marker));
+
+	case 'DELETE_TEMP_PLACE':
+
+		index = state.get('markers').findIndex(marker => {
+			return marker.get('id') === 0;
+		});
+
+		markers = state.get('markers');
+		markers = markers.remove(index);
+
+		return state.set('markers', markers);
+
     case 'RESPONSE_CREATE_PLACE':
 
         marker = getMarkerFromPlace(action.createdPlace);
