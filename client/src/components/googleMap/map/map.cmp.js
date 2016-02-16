@@ -27,6 +27,17 @@ class GoogleMap extends React.Component {
             }
         );
 
+		map.addListener('click', (e) => {
+			if (this.props.onClick) {
+				let latLng = {
+					lat: e.latLng.lat(),
+					lng: e.latLng.lng()
+				};
+
+				this.props.onClick(latLng, map);
+			}
+	    });
+
         // TODO: find how to pass as props to marker cmp
         window.map = map;
 
@@ -66,6 +77,7 @@ class GoogleMap extends React.Component {
 GoogleMap.propTypes = {
     initialZoom: React.PropTypes.number.isRequired,
     initialCenter: React.PropTypes.array.isRequired
+    // onClick: React.PropTypes.function
 };
 
 export default GoogleMap;

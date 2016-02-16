@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
-import { clickMarker, markerDragEnd } from '../../../actions/mapActions';
+import { clickMap, clickMarker, markerDragEnd } from '../../../actions/mapActions';
 import { connect }            from 'react-redux';
 // import React, {PropTypes, Component} from 'react/addons';
 import { routeActions } from 'react-router-redux';
@@ -82,7 +82,8 @@ class MapContainer extends React.Component {
 
             <GoogleMap
                 initialCenter={[54.95,23.8]}
-                initialZoom={12}>
+                initialZoom={12}
+				onClick={this.props.clickMap}>
 
                 {markersHtml}
             </GoogleMap>
@@ -105,6 +106,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    clickMap: (latLng) => dispatch(clickMap(latLng, map)),
     clickMarker: (markerId) => dispatch(clickMarker(markerId)),
     markerDragEnd: (markerId, newLat, newLng) => dispatch(markerDragEnd(markerId, newLat, newLng)),
     dispatch: dispatch

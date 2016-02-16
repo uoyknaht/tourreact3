@@ -178,6 +178,8 @@
 //   }
 // );
 
+// https://developers.google.com/maps/documentation/javascript/examples/event-simple
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom'

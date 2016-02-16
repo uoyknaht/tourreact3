@@ -16,6 +16,7 @@ import {
 } from '../../../actions/placeActions';
 import Loader from '../../loader/loader.cmp';
 import notifierService from '../../../services/notifier.srv';
+import mapService from '../../../services/map.srv';
 
 class PlaceAddOrEdit extends React.Component {
 
@@ -25,6 +26,10 @@ class PlaceAddOrEdit extends React.Component {
         this._updateForm = this._updateForm.bind(this);
         this._setAdressFromCoordinates = this._setAdressFromCoordinates.bind(this);
         this.render = this.render.bind(this);
+
+		this.state = {
+			shouldAddMarkerOnMapClick: false
+		};
     }
 
     componentDidMount() {
@@ -36,6 +41,9 @@ class PlaceAddOrEdit extends React.Component {
 		}
 		else {
 			this.props.openPlaceCreateForm();
+			this.setState({
+				shouldAddMarkerOnMapClick: true
+			});
 		}
     }
 
@@ -64,6 +72,19 @@ class PlaceAddOrEdit extends React.Component {
 
 		if (this.props.latLngOnDragEnd !== newProps.latLngOnDragEnd) {
 			this._updateFormLatLng(newProps.latLngOnDragEnd);
+		}
+
+		if (this.props.latLngOnMapClick !== newProps.latLngOnMapClick) {
+			if (this.state.shouldAddMarkerOnMapClick) {
+				// TODO: replace window.map
+				mapService.createMarker(newProps.latLngOnMapClick.toJS(), window.map);
+				this._updateFormLatLng(newProps.latLngOnMapClick);
+
+				this.setState({
+					shouldAddMarkerOnMapClick: false
+				});
+			}
+
 		}
      }
 
@@ -204,7 +225,8 @@ function mapStateToProps(state, ownProps) {
     placeId: ownProps.params.id,
     isLoading: state.getIn(['places', 'isCreatingOrUpdatingItem']),
     lastCreatedItemId: state.getIn(['places', 'lastCreatedItemId']),
-	latLngOnDragEnd: state.getIn(['map', 'latLngOnDragEnd'])
+	latLngOnDragEnd: state.getIn(['map', 'latLngOnDragEnd']),
+	latLngOnMapClick: state.getIn(['map', 'latLngOnMapClick'])
   }
 }
 

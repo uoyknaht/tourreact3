@@ -19,7 +19,8 @@ let defaultState = Immutable.fromJS({
 	latLngOnDragEnd: {
 		lat: null,
 		lng: null
-	}
+	},
+	latLngOnMapClick: null
 });
 
 function getMarkerFromPlace(place) {
@@ -91,6 +92,9 @@ export default function mapReducer(state = defaultState, action) {
     case 'CLOSE_PLACE_UPDATE_FORM':
 
 		return updateMarkerProperty(state, action.placeId, 'draggable', false);
+
+    case 'CLICK_MAP':
+		return state.set('latLngOnMapClick', Immutable.Map(action.latLng));
 
     case 'MARKER_DRAG_END':
 		let newLatLng = Immutable.Map({
