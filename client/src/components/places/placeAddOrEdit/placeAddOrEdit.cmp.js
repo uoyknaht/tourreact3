@@ -42,10 +42,10 @@ class PlaceAddOrEdit extends React.Component {
 			this.props.openPlaceUpdateForm(placeId);
 		}
 		else {
-			this.props.openPlaceCreateForm();
 			let centerLatLng = mapService.getCurrentCenter(window.map);
 			this.props.createTempPlace(centerLatLng);
 			this._updateFormLatLng(centerLatLng);
+			this.props.openPlaceCreateForm();
 			// this.setState({
 			// 	shouldAddMarkerOnMapClick: true
 			// });
@@ -55,7 +55,13 @@ class PlaceAddOrEdit extends React.Component {
 	componentWillUnmount() {
 		const placeId = this.props.placeId;
 
-		this.props.closePlaceUpdateForm(placeId);
+		if (placeId) {
+			this.props.closePlaceUpdateForm(placeId);
+		}
+		else {
+			this.props.closePlaceCreateForm();
+		}
+
 		this.props.cleanActivePlace(true);
 		this.props.deleteTempPlace();
 	}

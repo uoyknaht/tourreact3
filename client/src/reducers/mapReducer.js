@@ -101,12 +101,11 @@ export default function mapReducer(state = defaultState, action) {
 ////////////////////
 
     case 'OPEN_PLACE_CREATE_FORM':
-
-		return state.set('areMarkersDraggable', true);
+		return updateMarkerProperty(state, 0, 'draggable', true);
 
     case 'CLOSE_PLACE_CREATE_FORM':
 
-		return state.set('areMarkersDraggable', false);
+		return updateMarkerProperty(state, 0, 'draggable', false);
 
     case 'OPEN_PLACE_UPDATE_FORM':
 
