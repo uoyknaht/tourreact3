@@ -17,6 +17,11 @@ class MapService {
 		};
 	}
 
+	panMapToLatLng(latLng, map) {
+		var latLng = new google.maps.LatLng(latLng.lat, latLng.lng);
+	    map.panTo(latLng);
+	}
+
 }
 
 export default new MapService();
