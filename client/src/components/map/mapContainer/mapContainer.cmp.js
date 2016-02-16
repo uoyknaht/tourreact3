@@ -10,9 +10,6 @@ import shouldPureComponentUpdate from 'react-pure-render/function';
 import GoogleMap from '../../googleMap/map/map.cmp.js';
 import Marker from '../../googleMap/marker/marker.cmp.js';
 
-
-
-
 class MapContainer extends React.Component {
 
   constructor(props) {
@@ -22,6 +19,7 @@ class MapContainer extends React.Component {
     this._onMarkerMouseDown = this._onMarkerMouseDown.bind(this);
     this._onMarkerMouseUp = this._onMarkerMouseUp.bind(this);
     this._onMarkerMouseMove = this._onMarkerMouseMove.bind(this);
+    this.render = this.render.bind(this);
 
     this._draggableMarker = null;
   }
@@ -33,9 +31,9 @@ class MapContainer extends React.Component {
     // console.log(`new marginBounds: ${marginBounds}`);
   }
 
-  _onMarkerClick(markerId, marker) {
-      this.props.dispatch(routeActions.push(`/places/${markerId}`));
-  }
+    _onMarkerClick(markerId, marker, map) {
+    	this.props.dispatch(routeActions.push(`/places/${markerId}`));
+    }
 
   _onMarkerMouseDown(markerId, marker, a) {
     this._draggableMarker = marker;
@@ -67,13 +65,18 @@ class MapContainer extends React.Component {
 		);
 	}
 
+
+
     let markersHtml = this.props.markers.map(marker => {
+
         return <Marker
+				id={marker.get('id')}
 				lat={marker.get('lat')}
 				lng={marker.get('lng')}
 				text={marker.get('title')}
 				draggable={marker.get('draggable')}
 				animation={marker.get('animation')}
+				onClick={this._onMarkerClick}
 				onDragEnd={this.props.markerDragEnd}
 				key={marker.get('id')} />
     });

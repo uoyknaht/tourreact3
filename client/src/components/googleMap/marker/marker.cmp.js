@@ -4,6 +4,7 @@ class Marker extends React.Component {
 
   constructor(props) {
     super(props);
+	this.componentWillMount = this.componentWillMount.bind(this);
     this.state = {
         marker: null,
 		dragEndListener: null
@@ -27,6 +28,10 @@ class Marker extends React.Component {
 	}
 
 	marker = new google.maps.Marker(marker);
+
+	marker.addListener('click', () => {
+		this.props.onClick(this.props.id, marker, map);
+    });
 
     this.setState({
         marker: marker
@@ -83,6 +88,7 @@ Marker.propTypes = {
     text: React.PropTypes.string.isRequired,
 	draggable: React.PropTypes.bool,
 	//onDragEnd: React.PropTypes.function
+	// onClick
 	// animation
 };
 
