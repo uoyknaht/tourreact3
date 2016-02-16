@@ -15,6 +15,7 @@ import {
   closePlaceUpdateForm
 } from '../../../actions/placeActions';
 import Loader from '../../loader/loader.cmp';
+import notifierService from '../../../services/notifier.srv';
 
 class PlaceAddOrEdit extends React.Component {
 
@@ -22,6 +23,7 @@ class PlaceAddOrEdit extends React.Component {
         super();
         this.onSubmit = this.onSubmit.bind(this);
         this._updateForm = this._updateForm.bind(this);
+        this._setAdressFromCoordinates = this._setAdressFromCoordinates.bind(this);
         this.render = this.render.bind(this);
     }
 
@@ -108,6 +110,28 @@ class PlaceAddOrEdit extends React.Component {
         ReactDOM.findDOMNode(this.refs.longitude).value = latLng.get('lng');
     }
 
+	_setAdressFromCoordinates(e) {
+		e.preventDefault();
+
+		let lat = ReactDOM.findDOMNode(this.refs.latitude).value.trim();
+		let lng = ReactDOM.findDOMNode(this.refs.longitude).value.trim();
+        let latlng = new google.maps.LatLng(lat, lng);
+        let geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({ 'latLng': latlng }, (results, status) => {
+            if (status === google.maps.GeocoderStatus.OK) {
+                if (results && results[0]) {
+                    var address = results[0].formatted_address;
+                    ReactDOM.findDOMNode(this.refs.address).value = address;
+                } else {
+                	notifierService.warning('Could not determine address');
+                }
+            } else {
+                 console.log('Geocoder failed due to: ' + status);
+            }
+        });
+	}
+
     render() {
 
         if (this.props.isLoading) {
@@ -139,6 +163,9 @@ class PlaceAddOrEdit extends React.Component {
                       id="place-form-address"
                       placeholder="Address"
                       className="form-control" />
+
+				  <br/>
+					<a href="#" onClick={this._setAdressFromCoordinates}>Set address from coordinates</a>
             </div>
 
             <div className="form-group">
