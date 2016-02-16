@@ -14,18 +14,23 @@ class Marker extends React.Component {
 
     var map = window.map;
 
-    var marker = new google.maps.Marker({
+    let marker = {
         position: {
             lat: this.props.lat,
             lng: this.props.lng
         },
         map: map
-    });
+    };
+
+	if (this.props.animation) {
+		marker.animation = this.props.animation;
+	}
+
+	marker = new google.maps.Marker(marker);
 
     this.setState({
         marker: marker
     });
-
   }
 
   componentWillUnmount () {
@@ -78,6 +83,7 @@ Marker.propTypes = {
     text: React.PropTypes.string.isRequired,
 	draggable: React.PropTypes.bool,
 	//onDragEnd: React.PropTypes.function
+	// animation
 };
 
 export default Marker;

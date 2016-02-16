@@ -73,6 +73,7 @@ class MapContainer extends React.Component {
 				lng={marker.get('lng')}
 				text={marker.get('title')}
 				draggable={marker.get('draggable')}
+				animation={marker.get('animation')}
 				onDragEnd={this.props.markerDragEnd}
 				key={marker.get('id')} />
     });

@@ -180,6 +180,11 @@
 
 // https://developers.google.com/maps/documentation/javascript/examples/event-simple
 
+// next:
+// - on place edit begin, pan map to marker
+// on marker click, open place view
+// draggable marker in create place form
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom'
