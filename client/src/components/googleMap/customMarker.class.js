@@ -30,9 +30,9 @@ CustomMarker.prototype.onAdd = function() {
         div.dataset.marker_id = self.args.marker_id;
     }
 
-    // google.maps.event.addDomListener(div, "click", function(event) {
-    //     google.maps.event.trigger(self, "click");
-    // });
+	google.maps.event.addDomListener(this.div, 'click', (e) => {
+        google.maps.event.trigger(this, 'click');
+    });
 
     var panes = this.getPanes();
     panes.overlayImage.appendChild(div);
@@ -74,6 +74,9 @@ function enableDragging() {
 	let wasDragged = false;
 
     this._dragMouseDownListener = google.maps.event.addDomListener(this.div, 'mousedown', (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+
         this.div.style.cursor = 'move';
         this.map.set('draggable', false);
         this.set('origin', e);
