@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { getPlace, cleanActivePlace, deletePlace } from '../../../actions/placeActions';
 import { routeActions } from 'react-router-redux';
 import Loader from '../../loader/loader.cmp';
+import mapService from '../../../services/map.srv';
 
 class PlaceView extends React.Component {
 
@@ -30,6 +31,15 @@ class PlaceView extends React.Component {
 		else if (newProps.isDeleted && !this.props.isDeleted) {
 			this.props.dispatch(routeActions.push('/places'));
 		}
+        // received data of place which has to be shown
+        else if (this.props.place !== newProps.place) {
+            let latLng = {
+                lat: newProps.place.get('latitude'),
+                lng: newProps.place.get('longitude')
+            };
+
+            mapService.panMapToLatLng(latLng, window.map);            
+        }
 	}
 
 	onDelete() {
