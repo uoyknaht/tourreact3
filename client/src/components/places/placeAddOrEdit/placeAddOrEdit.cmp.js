@@ -78,15 +78,14 @@ class PlaceAddOrEdit extends React.Component {
         }
         // prefilling form data in after opening edit place
         else if (!this.props.place && newProps.place) {
-			// debugger;
         	this._updateForm(newProps.place);
 
-			// let latLng = {
-			// 	lat: newProps.place.latitude,
-			// 	lng: newProps.place.longitude
-			// };
-			//
-			// mapService.panMapToLatLng(latLng, window.map);
+			let latLng = {
+				lat: newProps.place.get('latitude'),
+				lng: newProps.place.get('longitude')
+			};
+
+			mapService.panMapToLatLng(latLng, window.map);
         }
 
 		if (this.props.latLngOnDragEnd !== newProps.latLngOnDragEnd) {
