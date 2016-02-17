@@ -25,6 +25,12 @@ class PlaceMarker extends React.Component {
         className: 'tr-marker'
     };
 
+	if (this.props.onDragEnd) {
+		options.onDragEnd = (newLat, newLng) => {
+			this.props.onDragEnd(newLat, newLng);
+		};
+	}
+
     if (this.props.animation) {
         marker.animation = this.props.animation;
     }

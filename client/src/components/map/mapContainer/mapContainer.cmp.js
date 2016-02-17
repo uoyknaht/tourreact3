@@ -113,7 +113,7 @@ function mapDispatchToProps(dispatch) {
   return {
     clickMap: (latLng) => dispatch(clickMap(latLng, map)),
     clickMarker: (markerId) => dispatch(clickMarker(markerId)),
-    markerDragEnd: (markerId, newLat, newLng) => dispatch(markerDragEnd(markerId, newLat, newLng)),
+    markerDragEnd: (newLat, newLng) => dispatch(markerDragEnd(newLat, newLng)),
     dispatch: dispatch
   }
 }

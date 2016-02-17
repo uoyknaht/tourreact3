@@ -5,6 +5,8 @@ function CustomMarker(latLng, map, args) {
     this.args = args || {};
     this.setMap(map);
     this.map = map;
+	this._dragMouseDownListener = null;
+	this._dragMouseUpListener = null;
 }
 
 CustomMarker.prototype = new google.maps.OverlayView();
@@ -14,70 +16,30 @@ CustomMarker.prototype.onAdd = function() {
 
     var div = this.div;
 
-    if (!div) {
+    if (div) {
+		return;
+	}
 
-        div = this.div = document.createElement('div');
+    div = this.div = document.createElement('div');
+    div.className = this.args.className || 'marker';
+    div.style.position = 'absolute';
+    div.style.width = '20px';
+    div.style.height = '20px';
 
-        div.className = this.args.className || 'marker';
-
-        div.style.position = 'absolute';
-        div.style.width = '20px';
-        div.style.height = '20px';
-        // http://jsfiddle.net/doktormolle/QRuW8/
-        // https://developers.google.com/maps/documentation/javascript/customoverlays
-        div.draggable = true;
-
-        if (typeof(self.args.marker_id) !== 'undefined') {
-            div.dataset.marker_id = self.args.marker_id;
-        }
-
-        google.maps.event.addDomListener(div, "click", function(event) {
-            google.maps.event.trigger(self, "click");
-        });
-
-        var that = this;
-
-        google.maps.event.addDomListener(div,
-            'mousedown',
-            function(e) {
-                div.style.cursor = 'move';
-                that.map.set('draggable', false);
-                that.set('origin', e);
-
-                that.moveHandler = google.maps.event.addDomListener(
-					that.get('map').getDiv(),
-                    'mousemove',
-                    function(e) {
-                        var origin = that.get('origin');
-                        var left = origin.clientX - e.clientX;
-                        var top = origin.clientY - e.clientY;
-                        var lat = that.getPosition().lat();
-                        var lng = that.getPosition().lng();
-                        var latLng =  new google.maps.LatLng(lat, lng);
-                        var pos = that.getProjection().fromLatLngToDivPixel(latLng);
-						var point = new google.maps.Point(pos.x - left, pos.y - top);
-						var latLng2 = that.getProjection().fromDivPixelToLatLng(point);
-                        that.set('origin', e);
-                        that.latlng = latLng2;
-                        that.draw();
-                    });
-            }
-        );
-
-        google.maps.event.addDomListener(div, 'mouseup', function() {
-            that.map.set('draggable', true);
-            div.style.cursor = 'default';
-            google.maps.event.removeListener(that.moveHandler);
-        });
-
-        var panes = this.getPanes();
-        panes.overlayImage.appendChild(div);
+    if (typeof(self.args.marker_id) !== 'undefined') {
+        div.dataset.marker_id = self.args.marker_id;
     }
+
+    // google.maps.event.addDomListener(div, "click", function(event) {
+    //     google.maps.event.trigger(self, "click");
+    // });
+
+    var panes = this.getPanes();
+    panes.overlayImage.appendChild(div);
 };
 
 CustomMarker.prototype.draw = function() {
     var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
-	console.log(point);
 
     if (point) {
         this.div.style.left = point.x + 'px';
@@ -95,5 +57,70 @@ CustomMarker.prototype.remove = function() {
 CustomMarker.prototype.getPosition = function() {
     return this.latlng;
 };
+
+CustomMarker.prototype.setDraggable = function(isDraggable) {
+	if (isDraggable) {
+		enableDragging.call(this);
+	}
+	else {
+		disableDragging.call(this);
+	}
+};
+
+// http://jsfiddle.net/doktormolle/QRuW8/
+// https://developers.google.com/maps/documentation/javascript/customoverlays
+function enableDragging() {
+
+	let wasDragged = false;
+
+    this._dragMouseDownListener = google.maps.event.addDomListener(this.div, 'mousedown', (e) => {
+        this.div.style.cursor = 'move';
+        this.map.set('draggable', false);
+        this.set('origin', e);
+
+		let mapDiv = this.get('map').getDiv();
+
+        this.moveHandler = google.maps.event.addDomListener(mapDiv, 'mousemove', (e) => {
+			wasDragged = true;
+
+            var origin = this.get('origin');
+            var left = origin.clientX - e.clientX;
+            var top = origin.clientY - e.clientY;
+            var lat = this.getPosition().lat();
+            var lng = this.getPosition().lng();
+            var currentLatLng =  new google.maps.LatLng(lat, lng);
+            var pos = this.getProjection().fromLatLngToDivPixel(currentLatLng);
+			var point = new google.maps.Point(pos.x - left, pos.y - top);
+			var newLatLng = this.getProjection().fromDivPixelToLatLng(point);
+            this.set('origin', e);
+            this.latlng = newLatLng;
+            this.draw();
+        });
+    });
+
+    this._dragMouseUpListener = google.maps.event.addDomListener(this.div, 'mouseup', () => {
+        this.map.set('draggable', true);
+        this.div.style.cursor = 'default';
+        google.maps.event.removeListener(this.moveHandler);
+
+		if (wasDragged) {
+			wasDragged = false;
+
+			if (this.args.onDragEnd) {
+				this.args.onDragEnd(this.getPosition().lat(), this.getPosition().lng());
+			}
+		}
+    });
+}
+
+function disableDragging() {
+	if (this._dragMouseDownListener) {
+		google.maps.event.removeListener(this._dragMouseDownListener);
+		google.maps.event.removeListener(this._dragMouseUpListener);
+
+		this._dragMouseDownListener = null;
+		this._dragMouseUpListener = null;
+	}
+}
 
 export default CustomMarker;
