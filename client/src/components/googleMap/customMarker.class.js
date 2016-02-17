@@ -9,7 +9,7 @@ function CustomMarker(latLng, map, args) {
 
 CustomMarker.prototype = new google.maps.OverlayView();
 
-CustomMarker.prototype.draw = function() {
+CustomMarker.prototype.onAdd = function() {
     var self = this;
     
     var div = this.div;
@@ -105,6 +105,9 @@ CustomMarker.prototype.draw = function() {
         var panes = this.getPanes();
         panes.overlayImage.appendChild(div);
     }
+};
+
+CustomMarker.prototype.draw = function() {
     
     var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
     
@@ -112,10 +115,6 @@ CustomMarker.prototype.draw = function() {
         div.style.left = point.x + 'px';
         div.style.top = point.y + 'px';
     }
-};
-
-CustomMarker.prototype.onAdd = function() {
-
 };
 
 CustomMarker.prototype.remove = function() {
