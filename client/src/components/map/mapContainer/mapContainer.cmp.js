@@ -9,6 +9,7 @@ import shouldPureComponentUpdate from 'react-pure-render/function';
 // import GoogleMap from 'google-map-react';
 import GoogleMap from '../../googleMap/map/map.cmp.js';
 import Marker from '../../googleMap/marker/marker.cmp.js';
+import PlaceMarker from '../../googleMap/placeMarker/placeMarker.cmp';
 
 class MapContainer extends React.Component {
 
@@ -69,7 +70,7 @@ class MapContainer extends React.Component {
 
     let markersHtml = this.props.markers.map(marker => {
 
-        return <Marker
+        return <PlaceMarker
 				id={marker.get('id')}
 				lat={marker.get('lat')}
 				lng={marker.get('lng')}

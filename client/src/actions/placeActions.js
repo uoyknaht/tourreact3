@@ -15,7 +15,10 @@ export function getPlaces() {
 
     return apiService.get('http://localhost:8081/api/places')
         .then(json => dispatch(responseGetPlaces(json)))
-        .catch((error) => dispatch(responseGetPlacesError(error)));
+        .catch((error) => {
+            console.log(error);
+            dispatch(responseGetPlacesError(error))
+        });
   }
 }
 
