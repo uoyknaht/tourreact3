@@ -60,10 +60,10 @@ class PlaceAddOrEdit extends React.Component {
 		}
 		else {
 			this.props.closePlaceCreateForm();
+            this.props.deleteTempPlace();
 		}
 
 		this.props.cleanActivePlace(true);
-		this.props.deleteTempPlace();
 	}
 
      componentWillReceiveProps(newProps) {
