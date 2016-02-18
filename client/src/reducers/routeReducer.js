@@ -8,11 +8,23 @@ initialState = Immutable.fromJS({
 });
 
 export default (state = initialState, action) => {
-    if (action.type === UPDATE_LOCATION) {
-        return state.merge({
-            location: action.payload
-        });
+
+    switch(action.type) {
+
+        case UPDATE_LOCATION:
+
+            return state.merge({
+                location: action.payload
+            });
+
+        case 'CLICK_MARKER':
+
+                console.log('CLICK_MARKER');
+            return state;
+
+        default:
+
+            return state;
     }
 
-    return state;
 };

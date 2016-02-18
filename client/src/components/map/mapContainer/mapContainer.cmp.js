@@ -33,8 +33,12 @@ class MapContainer extends React.Component {
   }
 
     _onMarkerClick(markerId, marker, map) {
-    	this.props.dispatch(routeActions.push(`/places/${markerId}`));
+    	// this.props.dispatch(routeActions.push(`/places/${markerId}`));
+
+        this.props.clickMarker(markerId, marker);
     }
+
+
 
   _onMarkerMouseDown(markerId, marker, a) {
     this._draggableMarker = marker;
@@ -100,7 +104,10 @@ class MapContainer extends React.Component {
 
 MapContainer.prototype.shouldComponentUpdate = shouldPureComponentUpdate;
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+
+    console.log(ownProps);
+
   return {
     center: state.getIn(['map', 'center']),
     zoom: state.getIn(['map', 'zoom']),
@@ -112,7 +119,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     clickMap: (latLng) => dispatch(clickMap(latLng, map)),
-    clickMarker: (markerId) => dispatch(clickMarker(markerId)),
+    clickMarker: (placeId, marker) => dispatch(clickMarker(placeId, marker)),
     markerDragEnd: (newLat, newLng) => dispatch(markerDragEnd(newLat, newLng)),
     dispatch: dispatch
   }

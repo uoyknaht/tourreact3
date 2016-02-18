@@ -7,9 +7,11 @@ export function clickMap(latLng, map) {
 	}
 }
 
-export function clickMarker() {
+export function clickMarker(placeId, marker) {
 	return {
-		type: 'CLICK_MARKER'
+		type: 'CLICK_MARKER',
+        placeId,
+        marker
 	}
 }
 
