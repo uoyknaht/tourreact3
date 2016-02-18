@@ -180,10 +180,31 @@
 
 // https://developers.google.com/maps/documentation/javascript/examples/event-simple
 
+    // const Markers = this.props.markers &&
+    //   this.props.markers.filter((m, index) => index >= rowFrom && index <= rowTo)
+    //   .map((marker, index) => (
+    //     <MarkerExample
+    //       // required props
+    //       key={marker.get('id')}
+    //       lat={marker.get('lat')}
+    //       lng={marker.get('lng')}
+    //       // any user props
+    //       showBallon={index + rowFrom === this.props.openBallonIndex}
+    //       onCloseClick={this._onBalloonCloseClick}
+    //       hoveredAtTable={index + rowFrom === this.props.hoveredRowIndex}
+    //       scale={getScale(index + rowFrom, this.props.visibleRowFirst, this.props.visibleRowLast, K_SCALE_NORMAL)}
+    //       {...markerDescriptions[marker.get('type')]}
+    //       marker={marker} />
+    //   ));
+
+
 // next:
 // - on place edit begin, pan map to marker
 // on marker click, open place view
 // draggable marker in create place form
+
+
+
 
 import React from 'react';
 import ReactDOM from 'react-dom';

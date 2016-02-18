@@ -22,7 +22,11 @@ class PlaceMarker extends React.Component {
     };
 
     let options = {
-        className: 'tr-marker'
+        className: 'tr-marker',
+        width: 40,
+        height: 40,
+        markerEdgeOffsetLeft: 20,
+        markerEdgeOffsetTop: 60,
     };
 
 	if (this.props.onDragEnd) {

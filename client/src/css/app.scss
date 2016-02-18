@@ -1,5 +1,6 @@
 @import "_nav";
 @import "_toastrOverride";
+// @import "map_marker";
 
 body {
       padding-top: 70px;
@@ -11,9 +12,19 @@ body {
 }
 
 .tr-marker {
-    background: green;
+    // background: green;
+    // background-image: url('../assets/icons/map_icons/map_icon_text_red.svg');
+    background-image: url('img/place-marker.svg');
+    background-size: contain;
+    transform: scale(1, 1);
+    -webkit-filter: contrast(1);
+    will-change: transform;
+    transition: -webkit-transform 0.25s cubic-bezier(0.485, 1.65, 0.545, 0.835);
+    transform-origin: 8px 100%;
+    // margin-left: -40px;
+    // margin-top: -30px;
 
     &:hover {
-        background: red;
+        transform: scale(1.4, 1.4);
     }
 }

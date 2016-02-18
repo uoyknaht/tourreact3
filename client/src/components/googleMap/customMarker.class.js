@@ -7,6 +7,10 @@ function CustomMarker(latLng, map, args) {
     this.map = map;
 	this._dragMouseDownListener = null;
 	this._dragMouseUpListener = null;
+    this.width = this.args.width || 20;
+    this.height = this.args.height || 20;
+    this.markerEdgeOffsetLeft = this.args.markerEdgeOffsetLeft || this.width / 2;
+    this.markerEdgeOffsetTop = this.args.markerEdgeOffsetTop || this.height;
 }
 
 CustomMarker.prototype = new google.maps.OverlayView();
@@ -23,23 +27,26 @@ CustomMarker.prototype.onAdd = function() {
     div = this.div = document.createElement('div');
     div.className = this.args.className || 'marker';
     div.style.position = 'absolute';
-    div.style.width = '20px';
-    div.style.height = '20px';
+    div.style.width = this.width + 'px';
+    div.style.height = this.height + 'px';
 
     if (typeof(self.args.marker_id) !== 'undefined') {
         div.dataset.marker_id = self.args.marker_id;
     }
 
-	google.maps.event.addDomListener(this.div, 'click', (e) => {
-        google.maps.event.trigger(this, 'click');
-    });
+	// google.maps.event.addDomListener(this.div, 'click', (e) => {
+ //        google.maps.event.trigger(this, 'click');
+ //    });
 
     var panes = this.getPanes();
     panes.overlayImage.appendChild(div);
 };
 
 CustomMarker.prototype.draw = function() {
-    var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
+    var projection = this.getProjection();
+    var point = projection.fromLatLngToDivPixel(this.latlng);
+    // var offsetX = projection.fromContainerPixelToLatLng(this.markerEdgeOffsetLeft);
+// console.log(offsetX);
 
     if (point) {
         this.div.style.left = point.x + 'px';
@@ -94,6 +101,10 @@ function enableDragging() {
             var currentLatLng =  new google.maps.LatLng(lat, lng);
             var pos = this.getProjection().fromLatLngToDivPixel(currentLatLng);
 			var point = new google.maps.Point(pos.x - left, pos.y - top);
+
+
+
+
 			var newLatLng = this.getProjection().fromDivPixelToLatLng(point);
             this.set('origin', e);
             this.latlng = newLatLng;
