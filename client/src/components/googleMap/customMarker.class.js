@@ -50,7 +50,7 @@ CustomMarker.prototype.draw = function() {
 
     if (point) {
         this.div.style.left = point.x + 'px';
-        this.div.style.top = point.y + 'px';
+        this.div.style.bottom = -point.y + 'px';
     }
 };
 
