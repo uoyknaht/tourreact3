@@ -15,10 +15,19 @@ class PlaceList extends React.Component {
         super();
         this.render = this.render.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     componentDidMount() {
-      this.props.getPlaces();
+      this.props.getPlaces(this.props.categoryFilter);
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.categoryFilter 
+            && this.props.categoryFilter !== newProps.categoryFilter) {
+
+            this.props.getPlaces(newProps.categoryFilter);
+        }
     }
 
     render() {
@@ -62,15 +71,16 @@ class PlaceList extends React.Component {
 
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
-    places: state.getIn(['places', 'places'])
+    places: state.getIn(['places', 'places']),
+    categoryFilter: ownProps.location.query.category
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPlaces: () => dispatch(getPlaces())
+    getPlaces: (categoryFilter) => dispatch(getPlaces(categoryFilter))
   }
 }
 
