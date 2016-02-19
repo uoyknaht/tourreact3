@@ -19,6 +19,8 @@ export default (state = initialState, action) => {
 
         case 'CLICK_MARKER':
 
+
+                // TODO: handle route here or create a prop "clickedMarker" to be handled in components
                 console.log('CLICK_MARKER');
             return state;
 

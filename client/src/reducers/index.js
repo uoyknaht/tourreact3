@@ -5,11 +5,13 @@ import Immutable from 'immutable';
 import routeReducer from './routeReducer';
 import placeReducer from './placeReducer';
 import mapReducer from './mapReducer';
+import categoriesReducer from './categories.rdc';
 
 let reducers = Object.assign({}, {
   places: placeReducer,
   map: mapReducer,
-  routing: routeReducer
+  routing: routeReducer,
+  categories: categoriesReducer
 });
 
 //reducers = Immutable.fromJS(reducers);

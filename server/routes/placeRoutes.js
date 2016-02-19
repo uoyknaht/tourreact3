@@ -177,21 +177,21 @@ router.delete('/api/places/:id', function(req, res, next) {
 
 
 router.get('/api/categories', function(req, res, next) {
-  // Category.find(function(err, categories){
-  //   if (err) {
-  //       return next(err);
-  //   }
-
-  //   res.json(categories);
-  // });
-
-  Category.find().populate('places').exec(function(err, categories){
+  Category.find(function(err, categories){
     if (err) {
         return next(err);
     }
 
     res.json(categories);
   });
+
+  // Category.find().populate('places').exec(function(err, categories){
+  //   if (err) {
+  //       return next(err);
+  //   }
+
+  //   res.json(categories);
+  // });
 
 });
 

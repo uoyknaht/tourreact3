@@ -6,6 +6,7 @@ import { getPlaces } from '../../../actions/placeActions';
 import { connect }            from 'react-redux';
 // import { routeActions } from 'react-router-redux'
 import Loader from '../../loader/loader.cmp';
+import CategoryList from '../../categories/categoryList/categoryList.cmp';
 
 //@connect(state => ({ places: state.places }))
 class PlaceList extends React.Component {
@@ -50,6 +51,7 @@ class PlaceList extends React.Component {
           <div>
             <Link to={`/places/actions/create`}>Create new</Link>
             <br/>
+            <CategoryList />
             <br/>
               <div className="list-group">
                 {placesHtml}

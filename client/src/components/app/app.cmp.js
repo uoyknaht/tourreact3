@@ -23,7 +23,6 @@ export default class App extends React.Component {
                         {this.props.children}
                     </div>
                     <div className="col-md-6">
-                        <MapContainer />
                     </div>
                 </div>
             </div>
