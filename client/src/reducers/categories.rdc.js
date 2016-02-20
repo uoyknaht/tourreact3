@@ -5,19 +5,21 @@ let defaultState = Immutable.Map({
     isFetchingCategories: false,
     areCategoriesFetched: false,
     categories: Immutable.List(),
-    categoryFilter: null
+    selectedCategoriesFilter: Immutable.List()
 });
 
 export default function categoriesReducer(state = defaultState, action) {
 
     let newState;
     let categories;
+	let index;
+	let slugs;
 
     switch(action.type) {
 
 /////////////////////////////////////////////
 /////////////////////////////////////////////
-/////////////////////////////////////////////        
+/////////////////////////////////////////////
 
         case 'REQUEST_GET_CATEGORIES':
 
@@ -36,6 +38,26 @@ export default function categoriesReducer(state = defaultState, action) {
             notifierService.error('error RESPONSE_GET_CATEGORIES_ERROR');
 
             return state.set('isFetchingCategories', false);
+
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+
+		case 'CHANGE_CATEGORIES_FILTER':
+
+			slugs = state.get('selectedCategoriesFilter');
+
+			index = slugs.findIndex(categorySlug => {
+				return categorySlug === action.categorySlug;
+			});
+
+			if (index > -1) {
+				slugs = slugs.remove(index);
+
+				return state.set('selectedCategoriesFilter', slugs);
+			}
+
+			return state.update('selectedCategoriesFilter', slugs => slugs.push(action.categorySlug));
 
 /////////////////////////////////////////////
 /////////////////////////////////////////////

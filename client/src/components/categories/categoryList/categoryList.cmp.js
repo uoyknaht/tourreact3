@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { getCategories } from '../../../actions/category.act';
+import { getCategories, changeCategoriesFilter } from '../../../actions/category.act';
+import { getCategoriesFilterUrl, isCategoryChecked } from '../../../services/categories.srv';
 import { connect }            from 'react-redux';
+import { routeActions } from 'react-router-redux';
 
 class CategoryList extends React.Component {
 
@@ -15,54 +17,70 @@ class CategoryList extends React.Component {
       this.props.getCategories();
     }
 
+	componentWillReceiveProps(newProps) {
+        if (newProps.selectedCategoriesFilter
+            && this.props.selectedCategoriesFilter !== newProps.selectedCategoriesFilter) {
+
+			let categoriesFilterUrlPart = getCategoriesFilterUrl(newProps.selectedCategoriesFilter)
+			let fullUrl = `/places${categoriesFilterUrlPart}`;
+
+			this.props.dispatch(routeActions.push(fullUrl));
+        }
+    }
+
+	_onCategoryClick(categorySlug, e) {
+		this.props.changeCategoriesFilter(categorySlug);
+	}
+
     render() {
-      let categories = this.props.categories;
+    	let categories = this.props.categories;
 
+		if (!categories || !categories.size) {
+			return (
+				<div>Loading categories...</div>
+			);
+		}
 
-      if (!categories || !categories.size) {
-        return (
-          <div>Loading categories...</div>
-        );
-      }
+		let html = [];
 
-      let html = [];
+	    categories.forEach((category) => {
 
-      categories.forEach((category) => {
-        html.push(
-          <Link to={{ pathname: '/places', query: { category: category.get('_id')} }} key={category.get('_id')}>
-            {category.get('title')}&nbsp;|&nbsp;
-          </Link>
-        );
-      });
+			let isChecked = isCategoryChecked(category, this.props.selectedCategoriesFilter);
 
+	        html.push(
+				<div className="checkbox" key={category.get('_id')} >
+	  				<label>
+	  					<input type="checkbox"
+							checked={isChecked}
+							onChange={this._onCategoryClick.bind(this, category.get('slug'))} />
 
-      // let html = categories.map((comment) => {
-      //     return (
-      //     <span key={category.get('_id')>
-
-      //     </span>
-      //     );
-      //   });
-
+						{category.get('title')}
+	  				</label>
+	  			</div>
+	        );
+	    });
 
         return (
-          <div>
-            {html}
-          </div>
+	        <form>
+	            {html}
+			</form>
         );
     }
 
 }
 
 function mapStateToProps(state) {
-  return {
-    categories: state.getIn(['categories', 'categories'])
-  }
+	return {
+	    categories: state.getIn(['categories', 'categories']),
+	    selectedCategoriesFilter: state.getIn(['categories', 'selectedCategoriesFilter'])
+	}
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getCategories: () => dispatch(getCategories())
+    getCategories: () => dispatch(getCategories()),
+    changeCategoriesFilter: (categorySlug) => dispatch(changeCategoriesFilter(categorySlug)),
+	dispatch: dispatch
   }
 }
 

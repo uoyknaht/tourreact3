@@ -5,13 +5,13 @@ import apiService from '../services/api.srv'
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
-export function getPlaces(categoryFilter) {
+export function getPlaces(categoriesFilter) {
   return function (dispatch, getState) {
-    if (!shouldGetPlaces(getState(), categoryFilter)) {
+    if (!shouldGetPlaces(getState(), categoriesFilter)) {
       return;
     }
 
-    dispatch(requestGetPlaces(categoryFilter));
+    dispatch(requestGetPlaces());
 
     return apiService.get('http://localhost:8081/api/places')
         .then(json => dispatch(responseGetPlaces(json)))
@@ -42,7 +42,7 @@ function responseGetPlacesError(error) {
   }
 }
 
-function shouldGetPlaces(state, categoryFilter) {
+function shouldGetPlaces(state, categoriesFilter) {
   if (state.getIn(['places', 'isFetchingItems'])) {
     return false;
   }

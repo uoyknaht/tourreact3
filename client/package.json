@@ -26,6 +26,7 @@
     "ejs": "^2.4.1",
     "es6-promise": "^3.0.2",
     "express": "^4.13.4",
+    "file-loader": "^0.8.5",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
     "gulp-jsx": "^2.0.1",

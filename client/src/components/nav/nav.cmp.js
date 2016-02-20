@@ -1,8 +1,10 @@
 import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
+import { connect } from 'react-redux';
+import { getCategoriesFilterUrl } from '../../services/categories.srv';
 
-export default class Nav extends React.Component {
+class Nav extends React.Component {
 
     constructor() {
         super();
@@ -10,6 +12,9 @@ export default class Nav extends React.Component {
     }
 
     render() {
+
+		let categoriesFilterUrlPart = getCategoriesFilterUrl(this.props.selectedCategoriesFilter)
+		let fullAllPlacesUrl = `/places${categoriesFilterUrlPart}`;
 
         return (
 
@@ -29,7 +34,7 @@ export default class Nav extends React.Component {
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav">
                   <li><Link to="/">Home</Link></li>
-                  <li><Link to="/places">Places</Link></li>
+                  <li><Link to={fullAllPlacesUrl}>Places</Link></li>
                   <li><Link to="/places/add">Add new place</Link></li>
 
                 </ul>
@@ -114,3 +119,11 @@ export default class Nav extends React.Component {
     }
 
 }
+
+function mapStateToProps(state) {
+	return {
+	    selectedCategoriesFilter: state.getIn(['categories', 'selectedCategoriesFilter'])
+	}
+}
+
+export default connect(mapStateToProps)(Nav);

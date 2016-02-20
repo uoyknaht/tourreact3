@@ -197,6 +197,19 @@
     //       marker={marker} />
     //   ));
 
+	//   let html = categories.map((category) => {
+	// 	  return (
+	// 		<div className="checkbox" key={category.get('_id')} >
+ //  				<label>
+ //  					<input type="checkbox"
+	// 					onChange={this._onCategoryClick} />
+	  //
+	// 				{category.get('title')}
+ //  				</label>
+ //  			</div>
+	// 	  );
+	//   });
+
 
 // next:
 // - on place edit begin, pan map to marker
@@ -249,7 +262,7 @@ ReactDOM.render((
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path="/" component={App}>
-        <Route path="places" component={PlaceList}/>
+        <Route path="places(?categories=***)" component={PlaceList}/>
         <Route name="placeView" path="places/:id" component={PlaceView}/>
         <Route name="placeCreate" path="places/actions/create" component={PlaceAddOrEdit}/>
         <Route name="placeEdit" path="places/:id/edit" component={PlaceAddOrEdit}/>
