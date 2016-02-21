@@ -4,6 +4,7 @@ import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect }            from 'react-redux';
 import { routeActions } from 'react-router-redux';
+import CheckboxGroup from 'react-checkbox-group';
 import {
   getPlace,
   cleanActivePlace,
@@ -104,36 +105,32 @@ class PlaceAddOrEdit extends React.Component {
 			}
 		}
 
-		// if (this.props.markerInEditMode !== newProps.markerInEditMode) {
-		// 	if (this.props.markerInEditMode) {
-		//
-		// 	}
-		// }
-
      }
 
     onSubmit(e) {
-      e.preventDefault();
+		e.preventDefault();
 
-      var _this = this;
+		var _this = this;
 
-      var place = {
-          title: ReactDOM.findDOMNode(this.refs.title).value.trim(),
-          address: ReactDOM.findDOMNode(this.refs.address).value.trim(),
-          latitude: ReactDOM.findDOMNode(this.refs.latitude).value.trim(),
-          longitude: ReactDOM.findDOMNode(this.refs.longitude).value.trim(),
-          categories: []
-      }
+		var place = {
+		  title: ReactDOM.findDOMNode(this.refs.title).value.trim(),
+		  address: ReactDOM.findDOMNode(this.refs.address).value.trim(),
+		  latitude: ReactDOM.findDOMNode(this.refs.latitude).value.trim(),
+		  longitude: ReactDOM.findDOMNode(this.refs.longitude).value.trim(),
+		  categories: this.refs.categories.getCheckedValues()
+		}
 
-      if (this.props.place) {
-          place._id = this.props.place.get('_id');
-      }
+		console.log(place);
 
-      if (place._id) {
-        this.props.updatePlace(place);
-      } else {
-          this.props.createPlace(place);
-      }
+		if (this.props.place) {
+		  place._id = this.props.place.get('_id');
+		}
+
+		if (place._id) {
+		this.props.updatePlace(place);
+		} else {
+		  this.props.createPlace(place);
+		}
     }
 
     _updateForm(place) {
@@ -185,8 +182,24 @@ class PlaceAddOrEdit extends React.Component {
             );
         }
 
-        var place = this.props.place;
-        var title = place ?'Edit place' : 'Add new place';
+        let place = this.props.place;
+        let title = place ?'Edit place' : 'Add new place';
+		let categoriesHtml = [];
+
+		this.props.categories.forEach((category) => {
+
+			categoriesHtml.push(
+				<div className="checkbox" key={category.get('_id')} >
+					<label>
+						<input
+							type="checkbox"
+							value={category.get('_id')} />
+
+						{category.get('title')}
+					</label>
+				</div>
+			);
+		});
 
         return (
 
@@ -231,10 +244,25 @@ class PlaceAddOrEdit extends React.Component {
                       className="form-control" />
             </div>
 
+            <div className="form-group">
+            	<label>Categories</label>
+
+				<CheckboxGroup name="categories" ref="categories" value={[]}>
+					{categoriesHtml}
+		  		</CheckboxGroup>
+            </div>
+
+			<br/>
+
             <input type="submit"
               className="btn btn-default"
               value="Save"
               onClick={this.onSubmit} />
+
+
+
+
+
 
           </form>
 
@@ -251,7 +279,8 @@ function mapStateToProps(state, ownProps) {
     lastCreatedItemId: state.getIn(['places', 'lastCreatedItemId']),
 	latLngOnDragEnd: state.getIn(['map', 'latLngOnDragEnd']),
 	latLngOnMapClick: state.getIn(['map', 'latLngOnMapClick']),
-	markerInEditMode: state.getIn(['map', 'markerInEditMode'])
+	markerInEditMode: state.getIn(['map', 'markerInEditMode']),
+	categories: state.getIn(['categories', 'categories'])
   }
 }
 

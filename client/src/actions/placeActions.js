@@ -63,8 +63,10 @@ export function getPlace(placeId, isForEdit) {
     dispatch(requestGetPlace(isForEdit));
 
     return apiService.get(`http://localhost:8081/api/places/${placeId}`)
-        .then(json => dispatch(responseGetPlace(json, isForEdit)))
-        .catch((error) => dispatch(responseGetPlaceError(error)));
+        .then(
+			json => dispatch(responseGetPlace(json, isForEdit)),
+			error => dispatch(responseGetPlaceError(error))
+		)
   }
 }
 

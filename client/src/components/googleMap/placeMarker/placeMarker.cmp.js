@@ -51,10 +51,7 @@ class PlaceMarker extends React.Component {
         if (newProps.options.animation
 			&& this.props.options.animation !== newProps.options.animation) {
 
-			//setTimeout(() => {
-				this.state.marker.animate(newProps.options.animation);
-			//}, 500)
-
+			this.state.marker.animate(newProps.options.animation);
         }
     }
 
