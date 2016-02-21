@@ -43,6 +43,10 @@ export default function categoriesReducer(state = defaultState, action) {
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
+		case 'SET_CATEGORIES_FILTER':
+
+			return state.set('selectedCategoriesFilter', Immutable.List(action.filter));
+
 		case 'CHANGE_CATEGORIES_FILTER':
 
 			slugs = state.get('selectedCategoriesFilter');

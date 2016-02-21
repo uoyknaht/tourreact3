@@ -12,7 +12,6 @@ class Nav extends React.Component {
     }
 
     render() {
-
 		let categoriesFilterUrlPart = getCategoriesFilterUrl(this.props.selectedCategoriesFilter)
 		let fullAllPlacesUrl = `/places${categoriesFilterUrlPart}`;
 

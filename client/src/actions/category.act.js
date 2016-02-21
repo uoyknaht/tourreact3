@@ -57,6 +57,13 @@ function shouldGetCategories(state) {
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
+export function setCategoriesFilter(filter) {
+	return {
+		type: 'SET_CATEGORIES_FILTER',
+		filter
+	}
+}
+
 export function changeCategoriesFilter(categorySlug) {
 	return {
 		type: 'CHANGE_CATEGORIES_FILTER',

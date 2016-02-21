@@ -3,6 +3,8 @@ import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { getPlaces } from '../../../actions/placeActions';
+import { setCategoriesFilter } from '../../../actions/category.act';
+import { getFilterFromQuery } from '../../../services/categories.srv';
 import { connect }            from 'react-redux';
 // import { routeActions } from 'react-router-redux'
 import Loader from '../../loader/loader.cmp';
@@ -15,18 +17,25 @@ class PlaceList extends React.Component {
         super();
         this.render = this.render.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
+    }
+
+    componentWillMount() {
+		if (this.props.categoriesQuery) {
+			let selectedCategoriesFilter = getFilterFromQuery(this.props.categoriesQuery);
+			this.props.setCategoriesFilter(selectedCategoriesFilter);
+		}
     }
 
     componentDidMount() {
-      this.props.getPlaces(this.props.categoryFilter);
+		this.props.getPlaces(this.props.selectedCategoriesFilter);
     }
 
     componentWillReceiveProps(newProps) {
-        if (newProps.categoryFilter 
-            && this.props.categoryFilter !== newProps.categoryFilter) {
+        if (newProps.selectedCategoriesFilter
+            && this.props.selectedCategoriesFilter !== newProps.selectedCategoriesFilter) {
 
-            this.props.getPlaces(newProps.categoryFilter);
+            this.props.getPlaces(newProps.selectedCategoriesFilter);
         }
     }
 
@@ -72,15 +81,16 @@ class PlaceList extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  return {
-    places: state.getIn(['places', 'places']),
-    categoryFilter: ownProps.location.query.category
-  }
+	return {
+	    places: state.getIn(['places', 'places']),
+		categoriesQuery: ownProps.location.query.categories
+	}
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPlaces: (categoryFilter) => dispatch(getPlaces(categoryFilter))
+    getPlaces: (selectedCategoriesFilter) => dispatch(getPlaces(selectedCategoriesFilter)),
+    setCategoriesFilter: (selectedCategoriesFilter) => dispatch(setCategoriesFilter(selectedCategoriesFilter))
   }
 }
 

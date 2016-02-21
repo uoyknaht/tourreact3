@@ -3,15 +3,11 @@ export function getCategoriesFilterUrl(categoriesFilter) {
 	let url = '';
 
 	if (!isCategoriesFilterEmpty(categoriesFilter)) {
-		let categoryFilterQuery = getCategoriesFilterQuery(categoriesFilter);
+		let categoryFilterQuery = getQueryFromFilter(categoriesFilter);
 		url += `?categories=${categoryFilterQuery}`;
 	}
 
 	return url;
-}
-
-function getCategoriesFilterQuery(categoriesFilterArr) {
-	return categoriesFilterArr.join(',');
 }
 
 export function isCategoryChecked(category, categoriesFilter) {
@@ -21,6 +17,14 @@ export function isCategoryChecked(category, categoriesFilter) {
 	});
 
 	return index > -1;
+}
+
+export function getFilterFromQuery(query) {
+	return query.split(',');
+}
+
+function getQueryFromFilter(categoriesFilter) {
+	return categoriesFilter.toJS().join(',');
 }
 
 function isCategoriesFilterEmpty(categoriesFilter) {
