@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-
 var mongoose = require('mongoose');
 var Category = mongoose.model('Category');
 var Place = mongoose.model('Place');
@@ -21,10 +20,13 @@ router.get('/api/places', function(req, res, next) {
 
 router.get('/api/places/:id', function(req, res, next) {
 
-    Place.findById(req.params.id, function(err, place){
-        if (err) {
-            return next(err);
-        }
+    // Place.findById(req.params.id, function(err, place){
+    Place.findById(req.params.id)
+		.populate('categories')
+		.exec(function(err, place) {
+	        if (err) {
+	            return next(err);
+	        }
 
       // Category.find({ _id: { $in: place.categories}}, function(err, categories){
       //   if (err) {
@@ -37,7 +39,7 @@ router.get('/api/places/:id', function(req, res, next) {
       // });
 
 
-        res.json(place);
+        	res.json(place);
     });
 
 });
@@ -64,6 +66,23 @@ router.post('/api/places/:id/edit', function(req, res, next) {
             return next(err);
         }
 
+		// TODO: update place's categories here
+
+		console.log(JSON.stringify(req.body, null, 2))
+
+		// TODO: now adds only first category
+	    Category.update(
+			{ _id: req.body['categories[]'][0] },
+			{ $push : { places: id }},
+			function (err) {
+				if (err) {
+		            return next(err);
+		        }
+
+				res.json(newPlace);
+			}
+		);
+
         // var category = new Category({
         //     title: categories[0].title,
         //     _creator: place._id
@@ -76,7 +95,7 @@ router.post('/api/places/:id/edit', function(req, res, next) {
         //     }
         // });
 
-        res.json(newPlace);
+        // res.json(newPlace);
     });
 });
 

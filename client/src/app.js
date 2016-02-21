@@ -216,7 +216,11 @@
 // on marker click, open place view
 // draggable marker in create place form
 
-
+// mongo:
+// https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
+// http://www.jonahnisenson.com/schema-within-a-schema-use-embedded-documents-in-mongoosemongo/
+// https://alexanderzeitler.com/articles/mongoose-referencing-schema-in-properties-and-arrays/
+// http://jaketrent.com/post/mongoose-population/
 
 
 import React from 'react';

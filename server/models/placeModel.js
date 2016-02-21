@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
-require('./categoryModel');
+// var CategorySchema = require('./categoryModel');
 
 var PlaceSchema = new Schema({
   // _creator : { type: Schema.Types.ObjectId, ref: 'Category' },
@@ -23,14 +22,13 @@ var PlaceSchema = new Schema({
         type : Date,
         default : Date.now
   },
-  // categories : [{ type: Schema.Types.ObjectId, ref: 'Category' }]
-  categoriesIds : []
-    // comments: [
-    //     { 
-    //         type: mongoose.Schema.Types.ObjectId, 
-    //         ref: 'Comment' 
-    //     }
-    // ]
+  // categories : [CategorySchema]
+  categories : [
+	  {
+		  type: Schema.Types.ObjectId,
+		  ref: 'Category'
+	  }
+  ]
 });
 
-mongoose.model('Place', PlaceSchema);
+module.exports = mongoose.model('Place', PlaceSchema);

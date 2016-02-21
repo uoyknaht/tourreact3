@@ -19,7 +19,6 @@ class ApiService {
               resolve(response);
           },
           error: () => {
-            console.log(222);
             reject();
           }
       });

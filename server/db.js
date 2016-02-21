@@ -5,7 +5,8 @@ var uriUtil = require('mongodb-uri');
 var options = {
     server: {
         socketOptions: {
-        keepAlive: 1, connectTimeoutMS: 30000
+        	keepAlive: 1,
+			connectTimeoutMS: 30000
         }
     },
     replset: {

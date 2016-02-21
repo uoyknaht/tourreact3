@@ -1,13 +1,15 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+// var PlaceSchema = require('./placeModel');
 
 require('./placeModel');
 
 var CategorySchema = new Schema({
     // _creator : { type: String, ref: 'Place' },
     title: String,
+	// categories : [PlaceSchema]
     // places: [{ type: String, ref: 'Place' }]
-    // places : [{ type: Schema.Types.ObjectId, ref: 'Place' }]
+    places : [{ type: Schema.Types.ObjectId, ref: 'Place' }]
 });
 
-mongoose.model('Category', CategorySchema);
+module.exports = mongoose.model('Category', CategorySchema);

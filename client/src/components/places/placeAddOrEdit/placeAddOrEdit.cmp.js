@@ -120,8 +120,6 @@ class PlaceAddOrEdit extends React.Component {
 		  categories: this.refs.categories.getCheckedValues()
 		}
 
-		console.log(place);
-
 		if (this.props.place) {
 		  place._id = this.props.place.get('_id');
 		}
