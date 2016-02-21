@@ -25,20 +25,20 @@ class MapContainer extends React.Component {
     this._draggableMarker = null;
   }
 
+	_onMarkerClick(markerId, marker, map) {
+		// TODO: decide where this should be handled
+		this.props.dispatch(routeActions.push(`/places/${markerId}`));
+		// this.props.clickMarker(markerId, marker);
+	}
+
+
+
   _onBoundsChange(center, zoom, bounds, marginBounds) {
     // console.log(`new center: ${center}`);
     // console.log(`new zoom: ${zoom}`);
     // console.log(`new bounds: ${bounds}`);
     // console.log(`new marginBounds: ${marginBounds}`);
   }
-
-    _onMarkerClick(markerId, marker, map) {
-    	// this.props.dispatch(routeActions.push(`/places/${markerId}`));
-
-        this.props.clickMarker(markerId, marker);
-    }
-
-
 
   _onMarkerMouseDown(markerId, marker, a) {
     this._draggableMarker = marker;
@@ -100,18 +100,6 @@ class MapContainer extends React.Component {
 			map={map}
 			options={options}
 			key={marker.get('id')} />
-
-        // return <PlaceMarker
-		// 		id={marker.get('id')}
-		// 		lat={marker.get('lat')}
-		// 		lng={marker.get('lng')}
-		// 		map={window.map}
-		// 		text={marker.get('title')}
-		// 		draggable={marker.get('draggable')}
-		// 		animation={marker.get('animation')}
-		// 		onClick={this._onMarkerClick}
-		// 		onDragEnd={this.props.markerDragEnd}
-		// 		key={marker.get('id')} />
     });
 
     return (
