@@ -1,5 +1,7 @@
 // http://humaan.com/custom-html-markers-google-maps/
 
+import { ANIMATION_DROP } from './constants';
+
 function CustomMarker(latLng, map, args) {
     this.latlng = new google.maps.LatLng(latLng.lat, latLng.lng);
     this.args = args || {};
@@ -145,7 +147,7 @@ function animate(animation) {
 		return;
 	}
 
-	if (animation === 'DROP') {
+	if (animation === ANIMATION_DROP) {
 		setTimeout(() => {
 			this.div.classList.add('animated');
 			this.div.classList.add('bounceInDown');

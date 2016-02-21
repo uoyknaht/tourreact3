@@ -6,6 +6,7 @@ import indexOf from 'lodash/indexOf';
 import forEach from 'lodash/forEach';
 import notifierService from '../services/notifier.srv';
 import getMergedState from './reducerHelpers';
+import { ANIMATION_DROP } from '../components/googleMap/constants'
 
 let defaultState = Immutable.fromJS({
     zoom: 7,
@@ -60,7 +61,7 @@ export default function mapReducer(state = defaultState, action) {
 			title: '',
 			lat: action.latLng.lat,
 			lng: action.latLng.lng,
-			animation: 'DROP'
+			animation: ANIMATION_DROP
 		});
 
 		return state.update('markers', markers => markers.push(marker));

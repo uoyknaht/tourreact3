@@ -1,5 +1,6 @@
 import React from 'react';
 import CustomMarker from '../customMarker.class';
+import { ANIMATION_DROP } from '../constants';
 
 class PlaceMarker extends React.Component {
 
@@ -61,7 +62,7 @@ PlaceMarker.propTypes = {
 		id: React.PropTypes.any.isRequired,
 		text: React.PropTypes.string.isRequired,
 		className: React.PropTypes.string.isRequired,
-		animation: React.PropTypes.oneOf(['DROP']),
+		animation: React.PropTypes.oneOf([ANIMATION_DROP]),
 		onClick: React.PropTypes.func,
 		draggable: React.PropTypes.bool,
 		onDragEnd: React.PropTypes.func,
