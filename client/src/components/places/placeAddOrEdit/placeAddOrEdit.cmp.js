@@ -102,8 +102,14 @@ class PlaceAddOrEdit extends React.Component {
 					shouldAddMarkerOnMapClick: false
 				});
 			}
-
 		}
+
+		// if (this.props.markerInEditMode !== newProps.markerInEditMode) {
+		// 	if (this.props.markerInEditMode) {
+		//
+		// 	}
+		// }
+
      }
 
     onSubmit(e) {
@@ -244,7 +250,8 @@ function mapStateToProps(state, ownProps) {
     isLoading: state.getIn(['places', 'isCreatingOrUpdatingItem']),
     lastCreatedItemId: state.getIn(['places', 'lastCreatedItemId']),
 	latLngOnDragEnd: state.getIn(['map', 'latLngOnDragEnd']),
-	latLngOnMapClick: state.getIn(['map', 'latLngOnMapClick'])
+	latLngOnMapClick: state.getIn(['map', 'latLngOnMapClick']),
+	markerInEditMode: state.getIn(['map', 'markerInEditMode'])
   }
 }
 

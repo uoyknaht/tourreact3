@@ -1,6 +1,6 @@
 // http://humaan.com/custom-html-markers-google-maps/
 
-import { ANIMATION_DROP } from './constants';
+import { ANIMATION_DROP, ANIMATION_SHOWITSELF } from './constants';
 
 function CustomMarker(latLng, map, args) {
     this.latlng = new google.maps.LatLng(latLng.lat, latLng.lng);
@@ -29,6 +29,7 @@ CustomMarker.prototype.onAdd = function() {
 
     div = this.div = document.createElement('div');
     div.className = this.args.className || 'marker';
+	div.classList.add('animated');
     div.style.position = 'absolute';
     div.style.width = this.width + 'px';
     div.style.height = this.height + 'px';
@@ -57,7 +58,6 @@ CustomMarker.prototype.draw = function() {
     if (point) {
         this.div.style.left = point.x + 'px';
 		this.div.style.bottom = -point.y + 'px';
-		animate.call(this, this.args.animation);
     }
 };
 
@@ -79,6 +79,37 @@ CustomMarker.prototype.setDraggable = function(isDraggable) {
 	else {
 		disableDragging.call(this);
 	}
+};
+
+CustomMarker.prototype.animate = function(animation) {
+
+	if (!animation) {
+		return;
+	}
+
+	let animationClass = '';
+
+	switch(animation) {
+
+		case ANIMATION_DROP:
+
+			animationClass = 'bounceInDown';
+			break;
+
+		case ANIMATION_SHOWITSELF:
+
+			// animationClass = 'bounceIn'
+			animationClass = 'rubberBand'
+			break;
+	}
+
+	setTimeout(() => {
+		this.div.classList.add(animationClass);
+	})
+
+	setTimeout(() => {
+		this.div.classList.remove(animationClass);
+	}, 3000)
 };
 
 // http://jsfiddle.net/doktormolle/QRuW8/
@@ -138,25 +169,6 @@ function disableDragging() {
 
 		this._dragMouseDownListener = null;
 		this._dragMouseUpListener = null;
-	}
-}
-
-function animate(animation) {
-
-	if (!animation) {
-		return;
-	}
-
-	if (animation === ANIMATION_DROP) {
-		setTimeout(() => {
-			this.div.classList.add('animated');
-			this.div.classList.add('bounceInDown');
-		})
-
-		setTimeout(() => {
-			// this.div.classList.remove('animated');
-			// this.div.classList.remove('bounceInDown');
-		}, 3000)
 	}
 }
 

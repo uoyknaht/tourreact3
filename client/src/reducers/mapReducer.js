@@ -6,7 +6,7 @@ import indexOf from 'lodash/indexOf';
 import forEach from 'lodash/forEach';
 import notifierService from '../services/notifier.srv';
 import getMergedState from './reducerHelpers';
-import { ANIMATION_DROP } from '../components/googleMap/constants'
+import { ANIMATION_DROP, ANIMATION_SHOWITSELF } from '../components/googleMap/constants'
 
 let defaultState = Immutable.fromJS({
     zoom: 7,
@@ -17,6 +17,8 @@ let defaultState = Immutable.fromJS({
     isDraggable: true,
     areMarkersDraggable: false,
     markers: Immutable.List(),
+	activeMarker: null,
+	markerInEditMode: null,
 	latLngOnDragEnd: {
 		lat: null,
 		lng: null
@@ -39,6 +41,8 @@ export default function mapReducer(state = defaultState, action) {
 	let mergedState;
 	let markers;
 	let marker;
+	let activeMarker;
+	let markerInEditMode;
 	let markerId;
 	let index;
 
@@ -110,11 +114,26 @@ export default function mapReducer(state = defaultState, action) {
 
     case 'OPEN_PLACE_UPDATE_FORM':
 
-		return updateMarkerProperty(state, action.placeId, 'draggable', true);
+		newState = updateMarkerProperty(state, action.placeId, 'draggable', true);
+		newState = updateMarkerProperty(newState, action.placeId, 'animation', ANIMATION_SHOWITSELF);
+		newState = updateMarkerProperty(newState, action.placeId, 'isInEditMode', true);
+
+		markerInEditMode = newState.get('markers').find((marker) => {
+			return marker.get('id') === action.placeId;
+		})
+
+		newState = newState.set('markerInEditMode', markerInEditMode);
+
+		return newState;
 
     case 'CLOSE_PLACE_UPDATE_FORM':
 
-		return updateMarkerProperty(state, action.placeId, 'draggable', false);
+		newState = updateMarkerProperty(state, action.placeId, 'draggable', false);
+		newState = updateMarkerProperty(newState, action.placeId, 'animation', null);
+		newState = updateMarkerProperty(newState, action.placeId, 'isInEditMode', false);
+		newState = newState.set('markerInEditMode', null);
+
+		return newState;
 
     case 'CLICK_MAP':
 		return state.set('latLngOnMapClick', Immutable.Map(action.latLng));
