@@ -18,7 +18,7 @@ import {
 } from '../../../actions/placeActions';
 import Loader from '../../loader/loader.cmp';
 import notifierService from '../../../services/notifier.srv';
-import mapService from '../../../services/map.srv';
+import { createMarker, getCurrentCenter, panMapToLatLng } from '../../../services/map.srv';
 
 class PlaceAddOrEdit extends React.Component {
 
@@ -42,7 +42,7 @@ class PlaceAddOrEdit extends React.Component {
 			this.props.openPlaceUpdateForm(placeId);
 		}
 		else {
-			let centerLatLng = mapService.getCurrentCenter(window.map);
+			let centerLatLng = getCurrentCenter(window.map);
 			this.props.createTempPlace(centerLatLng);
 			this._updateFormLatLng(centerLatLng);
 			this.props.openPlaceCreateForm();
@@ -85,7 +85,7 @@ class PlaceAddOrEdit extends React.Component {
 				lng: newProps.place.get('longitude')
 			};
 
-			mapService.panMapToLatLng(latLng, window.map);
+			panMapToLatLng(latLng, window.map);
         }
 
 		if (this.props.latLngOnDragEnd !== newProps.latLngOnDragEnd) {
@@ -95,7 +95,7 @@ class PlaceAddOrEdit extends React.Component {
 		if (this.props.latLngOnMapClick !== newProps.latLngOnMapClick) {
 			if (this.state.shouldAddMarkerOnMapClick) {
 				// TODO: replace window.map
-				mapService.createMarker(newProps.latLngOnMapClick.toJS(), window.map);
+				createMarker(newProps.latLngOnMapClick.toJS(), window.map);
 				this._updateFormLatLng(newProps.latLngOnMapClick.toJS());
 
 				this.setState({

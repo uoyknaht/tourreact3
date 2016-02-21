@@ -3,46 +3,29 @@ import CustomMarker from '../customMarker.class';
 
 class PlaceMarker extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.componentWillMount = this.componentWillMount.bind(this);
-    this.state = {
-        marker: null,
-        dragEndListener: null
-    };
-  }
+	constructor(props) {
+	    super(props);
+	    this.componentWillMount = this.componentWillMount.bind(this);
+	    this.state = {
+	        marker: null,
+	        dragEndListener: null
+	    };
+	}
 
   componentWillMount() {
 
-    var map = window.map;
+    let map = this.props.map;
+    let latLng = this.props.latLng
+	let options = this.props.options;
 
-    let latLng = {
-        lat: this.props.lat,
-        lng: this.props.lng
-    };
-
-    let options = {
-        className: 'tr-marker',
-        width: 40,
-        height: 40,
-        markerEdgeOffsetLeft: 20,
-        markerEdgeOffsetTop: 60,
-    };
-
-	if (this.props.onDragEnd) {
-		options.onDragEnd = (newLat, newLng) => {
-			this.props.onDragEnd(newLat, newLng);
-		};
-	}
-
-    if (this.props.animation) {
-        marker.animation = this.props.animation;
-    }
+    // if (this.props.animation) {
+    //     marker.animation = this.props.animation;
+    // }
 
     let marker = new CustomMarker(latLng, map, options);
 
     marker.addListener('click', () => {
-        this.props.onClick(this.props.id, marker, map);
+        this.props.options.onClick(options.id, marker, map);
     });
 
     this.setState({
@@ -50,10 +33,10 @@ class PlaceMarker extends React.Component {
     });
   }
 
-  componentWillUnmount () {
-    var marker = this.state.marker;
-    marker.setMap(null);
-  }
+	componentWillUnmount () {
+		var marker = this.state.marker;
+		marker.setMap(null);
+	}
 
     componentWillReceiveProps(newProps) {
 
@@ -61,47 +44,37 @@ class PlaceMarker extends React.Component {
             return;
         }
 
-        if (this.props.draggable !== newProps.draggable) {
-            var marker = this.state.marker;
-            let dragEndListener;
-
-            marker.setDraggable(newProps.draggable);
-
-            if (newProps.draggable) {
-                dragEndListener = google.maps.event.addListener(marker, 'dragend', () => {
-                    let newLat = marker.position.lat();
-                    let newLng = marker.position.lng();
-                    this.props.onDragEnd(newLat, newLng);
-                });
-            } else  {
-                if (this.state.dragEndListener) {
-                    google.maps.event.removeListener(this.state.dragEndListener);
-                    dragEndListener = null;
-                }
-            }
-
-            this.setState({
-                marker: marker,
-                dragEndListener: dragEndListener
-            });
+        if (this.props.options.draggable !== newProps.options.draggable) {
+            this.state.marker.setDraggable(newProps.options.draggable);
         }
     }
 
   render() {
     return (
-       <div>{this.props.text}</div>
+       <div>{this.props.options.text}</div>
     );
   }
 }
 
 PlaceMarker.propTypes = {
-    lat: React.PropTypes.number.isRequired,
-    lng: React.PropTypes.number.isRequired,
-    text: React.PropTypes.string.isRequired,
-    draggable: React.PropTypes.bool,
-    //onDragEnd: React.PropTypes.function
-    // onClick
-    // animation
+	latLng: React.PropTypes.shape({
+		lat: React.PropTypes.number.isRequired,
+		lng: React.PropTypes.number.isRequired,
+    }),
+	map: React.PropTypes.any.isRequired,
+	options: React.PropTypes.shape({
+		id: React.PropTypes.any.isRequired,
+		text: React.PropTypes.string.isRequired,
+		className: React.PropTypes.string.isRequired,
+		// animation: React.PropTypes.string,
+		onClick: React.PropTypes.func,
+		draggable: React.PropTypes.bool,
+		onDragEnd: React.PropTypes.func,
+		width: React.PropTypes.number,
+		height: React.PropTypes.number,
+		markerEdgeOffsetLeft: React.PropTypes.number,
+		markerEdgeOffsetTop: React.PropTypes.number
+    })
 };
 
 export default PlaceMarker;

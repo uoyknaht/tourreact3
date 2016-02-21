@@ -74,16 +74,44 @@ class MapContainer extends React.Component {
 
     let markersHtml = this.props.markers.map(marker => {
 
+		let latLng = {
+			lat: marker.get('lat'),
+			lng: marker.get('lng')
+		};
+
+		let map = window.map;
+
+		let options = {
+			id: marker.get('id'),
+			text: marker.get('title'),
+			draggable: marker.get('draggable'),
+			animation: marker.get('animation'),
+			onClick: this._onMarkerClick,
+			onDragEnd: this.props.markerDragEnd,
+			className: 'tr-marker',
+			width: 40,
+			height: 40,
+		    markerEdgeOffsetLeft: 20,
+	        markerEdgeOffsetTop: 60
+		};
+
         return <PlaceMarker
-				id={marker.get('id')}
-				lat={marker.get('lat')}
-				lng={marker.get('lng')}
-				text={marker.get('title')}
-				draggable={marker.get('draggable')}
-				animation={marker.get('animation')}
-				onClick={this._onMarkerClick}
-				onDragEnd={this.props.markerDragEnd}
-				key={marker.get('id')} />
+			latLng={latLng}
+			map={map}
+			options={options}
+			key={marker.get('id')} />
+
+        // return <PlaceMarker
+		// 		id={marker.get('id')}
+		// 		lat={marker.get('lat')}
+		// 		lng={marker.get('lng')}
+		// 		map={window.map}
+		// 		text={marker.get('title')}
+		// 		draggable={marker.get('draggable')}
+		// 		animation={marker.get('animation')}
+		// 		onClick={this._onMarkerClick}
+		// 		onDragEnd={this.props.markerDragEnd}
+		// 		key={marker.get('id')} />
     });
 
     return (
@@ -105,9 +133,6 @@ class MapContainer extends React.Component {
 MapContainer.prototype.shouldComponentUpdate = shouldPureComponentUpdate;
 
 function mapStateToProps(state, ownProps) {
-
-    console.log(ownProps);
-
   return {
     center: state.getIn(['map', 'center']),
     zoom: state.getIn(['map', 'zoom']),

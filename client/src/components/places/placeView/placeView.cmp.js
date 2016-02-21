@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getPlace, cleanActivePlace, deletePlace } from '../../../actions/placeActions';
 import { routeActions } from 'react-router-redux';
 import Loader from '../../loader/loader.cmp';
-import mapService from '../../../services/map.srv';
+import { panMapToLatLng } from '../../../services/map.srv';
 
 class PlaceView extends React.Component {
 
@@ -38,7 +38,7 @@ class PlaceView extends React.Component {
                 lng: newProps.place.get('longitude')
             };
 
-            mapService.panMapToLatLng(latLng, window.map);            
+            panMapToLatLng(latLng, window.map);
         }
 	}
 
