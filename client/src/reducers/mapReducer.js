@@ -60,7 +60,7 @@ export default function mapReducer(state = defaultState, action) {
 			title: '',
 			lat: action.latLng.lat,
 			lng: action.latLng.lng,
-			animation: google.maps.Animation.DROP
+			animation: 'DROP'
 		});
 
 		return state.update('markers', markers => markers.push(marker));

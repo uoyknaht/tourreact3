@@ -17,11 +17,6 @@ class PlaceMarker extends React.Component {
     let map = this.props.map;
     let latLng = this.props.latLng
 	let options = this.props.options;
-
-    // if (this.props.animation) {
-    //     marker.animation = this.props.animation;
-    // }
-
     let marker = new CustomMarker(latLng, map, options);
 
     marker.addListener('click', () => {
@@ -66,7 +61,7 @@ PlaceMarker.propTypes = {
 		id: React.PropTypes.any.isRequired,
 		text: React.PropTypes.string.isRequired,
 		className: React.PropTypes.string.isRequired,
-		// animation: React.PropTypes.string,
+		animation: React.PropTypes.oneOf(['DROP']),
 		onClick: React.PropTypes.func,
 		draggable: React.PropTypes.bool,
 		onDragEnd: React.PropTypes.func,

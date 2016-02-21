@@ -51,11 +51,11 @@ CustomMarker.prototype.draw = function() {
     var projection = this.getProjection();
     var point = projection.fromLatLngToDivPixel(this.latlng);
     // var offsetX = projection.fromContainerPixelToLatLng(this.markerEdgeOffsetLeft);
-// console.log(offsetX);
 
     if (point) {
         this.div.style.left = point.x + 'px';
-        this.div.style.bottom = -point.y + 'px';
+		this.div.style.bottom = -point.y + 'px';
+		animate.call(this, this.args.animation);
     }
 };
 
@@ -112,7 +112,7 @@ function enableDragging() {
     });
 
     this._dragMouseUpListener = google.maps.event.addDomListener(this.div, 'mouseup', () => {
-        
+
         this.map.set('draggable', true);
         this.div.style.cursor = 'default';
         google.maps.event.removeListener(this.moveHandler);
@@ -125,7 +125,7 @@ function enableDragging() {
 
         setTimeout(() => {
             this.isDragging = false;
-        });        
+        });
     });
 }
 
@@ -136,6 +136,25 @@ function disableDragging() {
 
 		this._dragMouseDownListener = null;
 		this._dragMouseUpListener = null;
+	}
+}
+
+function animate(animation) {
+
+	if (!animation) {
+		return;
+	}
+
+	if (animation === 'DROP') {
+		setTimeout(() => {
+			this.div.classList.add('animated');
+			this.div.classList.add('bounceInDown');
+		})
+
+		setTimeout(() => {
+			// this.div.classList.remove('animated');
+			// this.div.classList.remove('bounceInDown');
+		}, 3000)
 	}
 }
 
