@@ -6,6 +6,7 @@ import { routeActions } from 'react-router-redux';
 import Immutable from 'immutable';
 import Autocomplete from 'react-autocomplete'
 import apiService from '../../../services/api.srv'
+import { goToPlaceView } from '../../../services/router.srv'
 
 
         let styles = {
@@ -32,6 +33,7 @@ class PlacesSearch extends React.Component {
         super();
         this.render = this.render.bind(this);
         this._onChange = this._onChange.bind(this);
+        this._onSelect = this._onSelect.bind(this);
 
         this.state = {
             places: []
@@ -67,6 +69,11 @@ class PlacesSearch extends React.Component {
             )   
     }
 
+    _onSelect(value, place) {
+        goToPlaceView(this.props.dispatch, place._id);
+    }
+
+
     _renderItem(place, isHighlighted) {
         return (
             <div
@@ -77,12 +84,6 @@ class PlacesSearch extends React.Component {
                 {place.title}
             </div>
         );
-    }
-
-    _onSelect(value, item) {
-        this.setState({ 
-            places: [ item ] 
-        })
     }
 
     render() {
@@ -110,6 +111,7 @@ function mapStateToProps(state,ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        dispatch: dispatch
     }
 }
 
