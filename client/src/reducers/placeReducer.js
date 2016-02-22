@@ -133,7 +133,7 @@ export default function placeReducer(state = defaultState, action) {
 
 			newState = state.set('isCreatingOrUpdatingItem', false);
 			newState = newState.set('lastCreatedItemId', action.createdPlace._id);
-			newState = newState.update('places', places => places.push(Immutable.Map(action.createdPlace)));
+			newState = newState.update('places', places => places.push(Immutable.fromJS(action.createdPlace)));
 
 			return newState;
 

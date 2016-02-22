@@ -24,8 +24,16 @@ class PlaceMarker extends React.Component {
 	        this.props.options.onClick(options.id, marker, map);
 	    });
 
-		if (marker && options.animation) {
-			marker.animate(options.animation);
+		if (marker) {
+            if (options.animation) {
+                marker.animate(options.animation);
+            }
+
+            if (options.draggable) {
+                setTimeout(() => {
+                    marker.setDraggable(options.draggable);
+                })
+            }            
 		}
 
 	    this.setState({
