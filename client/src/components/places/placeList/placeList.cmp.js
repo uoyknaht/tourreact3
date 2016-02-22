@@ -24,14 +24,17 @@ class PlaceList extends React.Component {
 		if (this.props.categoriesQuery) {
 			let selectedCategoriesFilter = getFilterFromQuery(this.props.categoriesQuery);
 			this.props.setCategoriesFilter(selectedCategoriesFilter);
-		}
+		} else {
+            this.props.getPlaces();
+        }
     }
 
-    componentDidMount() {
-		this.props.getPlaces(this.props.selectedCategoriesFilter);
+    componentDidMount() {  
+		
     }
 
     componentWillReceiveProps(newProps) {
+        // TODO: places can receive new category, but in place list this wont be reflected
         if (newProps.selectedCategoriesFilter
             && this.props.selectedCategoriesFilter !== newProps.selectedCategoriesFilter) {
 
@@ -50,7 +53,11 @@ class PlaceList extends React.Component {
 
       if (!places.size) {
         return (
-          <div>No places</div>
+            <div>
+                <CategoryList />
+                <br/>
+                <div className="alert alert-info" role="alert">No places found</div>
+            </div>
         );
       }
 
@@ -83,7 +90,8 @@ class PlaceList extends React.Component {
 function mapStateToProps(state, ownProps) {
 	return {
 	    places: state.getIn(['places', 'places']),
-		categoriesQuery: ownProps.location.query.categories
+		categoriesQuery: ownProps.location.query.categories,
+        selectedCategoriesFilter: state.getIn(['categories', 'selectedCategoriesFilter'])
 	}
 }
 

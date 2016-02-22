@@ -5,12 +5,33 @@ var Category = mongoose.model('Category');
 var Place = mongoose.model('Place');
 
 router.get('/api/places', function(req, res, next) {
-  Place.find().sort({ title: 1 }).exec(function(err, places){
-    if (err) {
-        return next(err);
+
+    var query = {};
+
+    if (req.query.categories) {
+        query = {
+            categories: {
+                $elemMatch: {
+                    slug: {
+                        $in: req.query.categories.split(',')
+                    }
+                    // can be more:
+                    // by: 'shipping'
+                }
+            }
+        };
     }
 
-    res.json(places);
+
+  Place
+    .find(query)
+    .sort({ title: 1 })
+    .exec(function(err, places){
+        if (err) {
+            return next(err);
+        }
+
+        res.json(places);
   });
 });
 

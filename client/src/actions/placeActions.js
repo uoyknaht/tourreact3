@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-fetch'
 import apiService from '../services/api.srv'
+import getCategoriesFilterUrl from '../services/categories.srv'
+
 
 /////////////////////////////////////////////
 /////////////////////////////////////////////
@@ -11,9 +13,31 @@ export function getPlaces(categoriesFilter) {
       return;
     }
 
+    // debugger;
+    // console.log(categoriesFilter.toJS());
+
+    var categoriesFilterUrl = '';
+
+    if (categoriesFilter) {
+        var filter = categoriesFilter.toJS();
+
+        if (filter && filter.length) {
+            categoriesFilterUrl = '?categories=' + filter.join(',');
+        }
+
+        console.log(categoriesFilterUrl);
+    }
+
+
+
+    // let categoriesFilterUrl = getCategoriesFilterUrl(categoriesFilter);
+    // var a = getCategoriesFilterUrl(categoriesFilter);
+
+    // console.log(categoriesFilter.toJS());
     dispatch(requestGetPlaces());
 
-    return apiService.get('http://localhost:8081/api/places')
+    // return apiService.get(`http://localhost:8081/api/places`)
+    return apiService.get(`http://localhost:8081/api/places${categoriesFilterUrl}`)
         .then(json => dispatch(responseGetPlaces(json)))
         .catch((error) => {
             console.log(error);
