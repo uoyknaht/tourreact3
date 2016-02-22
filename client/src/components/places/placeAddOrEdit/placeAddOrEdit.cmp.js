@@ -5,6 +5,7 @@ import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect }            from 'react-redux';
 import { routeActions } from 'react-router-redux';
 import CheckboxGroup from 'react-checkbox-group';
+import find from 'lodash/find'
 import {
   getPlace,
   cleanActivePlace,
@@ -116,19 +117,26 @@ class PlaceAddOrEdit extends React.Component {
 		  title: ReactDOM.findDOMNode(this.refs.title).value.trim(),
 		  address: ReactDOM.findDOMNode(this.refs.address).value.trim(),
 		  latitude: ReactDOM.findDOMNode(this.refs.latitude).value.trim(),
-		  longitude: ReactDOM.findDOMNode(this.refs.longitude).value.trim(),
-		  categories: this.refs.categories.getCheckedValues()
+		  longitude: ReactDOM.findDOMNode(this.refs.longitude).value.trim()
 		}
+
+        var categoriesIds = this.refs.categories.getCheckedValues();
+
+        var categories = categoriesIds.map(categoryId => {
+            return find(this.props.categories.toJS(), {_id: categoryId});
+        });
+
+        place.categories = categories;
 
 		if (this.props.place) {
 		  place._id = this.props.place.get('_id');
 		}
 
-		if (place._id) {
-		this.props.updatePlace(place);
-		} else {
-		  this.props.createPlace(place);
-		}
+        if (place._id) {
+            this.props.updatePlace(place);
+        } else {
+            this.props.createPlace(place);
+        }
     }
 
     _updateForm(place) {

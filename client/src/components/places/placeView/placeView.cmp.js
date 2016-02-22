@@ -70,9 +70,8 @@ class PlaceView extends React.Component {
             } 
 
             return (
-                <span>
+                <span key={category._id}>
                     <Link 
-                        key={category._id}
                         to={`/places?categories=${category.slug}`} >
 
                         {title}
