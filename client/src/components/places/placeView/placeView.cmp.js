@@ -63,6 +63,10 @@ class PlaceView extends React.Component {
 		}
 
         let categories = place.get('categories');
+        // TODO: sorting
+        // categories = categories.sortBy((category, key) => {
+        //     return -category.title;
+        // });
         let categoriesHtml = categories.map((category, index) => {
             let title = category.title;
             if (index + 1 !== categories.length) {

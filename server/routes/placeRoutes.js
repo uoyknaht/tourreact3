@@ -5,7 +5,7 @@ var Category = mongoose.model('Category');
 var Place = mongoose.model('Place');
 
 router.get('/api/places', function(req, res, next) {
-  Place.find(function(err, places){
+  Place.find().sort({ title: 1 }).exec(function(err, places){
     if (err) {
         return next(err);
     }
@@ -66,7 +66,7 @@ router.delete('/api/places/:id', function(req, res, next) {
 });
 
 router.get('/api/categories', function(req, res, next) {
-  Category.find(function(err, categories){
+  Category.find().sort({ title: 1 }).exec(function(err, categories){
     if (err) {
         return next(err);
     }
