@@ -182,6 +182,15 @@ class PlaceAddOrEdit extends React.Component {
 
         let place = this.props.place;
         let title = place ?'Edit place' : 'Add new place';
+        let placeCategories = [];
+
+        if (place) {
+            placeCategories = place.get('categories').map((category) => {
+                return category._id
+            });
+        }
+
+
 		let categoriesHtml = [];
 
 		this.props.categories.forEach((category) => {
@@ -245,7 +254,7 @@ class PlaceAddOrEdit extends React.Component {
             <div className="form-group">
             	<label>Categories</label>
 
-				<CheckboxGroup name="categories" ref="categories" value={[]}>
+				<CheckboxGroup name="categories" ref="categories" value={placeCategories}>
 					{categoriesHtml}
 		  		</CheckboxGroup>
             </div>

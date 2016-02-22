@@ -14,7 +14,8 @@ class ApiService {
     return new Promise((resolve, reject) => {
       $.post({
           url: url,
-          data: data,
+          data: JSON.stringify(data),
+          contentType: 'application/json',
           success: (response) => {
               resolve(response);
           },

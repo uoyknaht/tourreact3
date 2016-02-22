@@ -221,6 +221,8 @@
 // http://www.jonahnisenson.com/schema-within-a-schema-use-embedded-documents-in-mongoosemongo/
 // https://alexanderzeitler.com/articles/mongoose-referencing-schema-in-properties-and-arrays/
 // http://jaketrent.com/post/mongoose-population/
+// http://stackoverflow.com/questions/26156687/mongoose-find-update-subdocument
+// https://docs.mongodb.org/manual/reference/operator/update/pullAll/
 
 
 import React from 'react';

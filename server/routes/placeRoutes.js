@@ -59,43 +59,56 @@ router.post('/api/places', function(req, res, next) {
 router.post('/api/places/:id/edit', function(req, res, next) {
 
     var id = req.params.id;
+    var placeId = id;
     var place = new Place(req.body);
 
-    Place.findByIdAndUpdate(id, place, { new: true },  function(err, newPlace){
+    Place.findByIdAndUpdate(placeId, place, { new: true }, function (err, newPlace){
         if (err) {
             return next(err);
         }
 
-		// TODO: update place's categories here
+		// console.log(JSON.stringify(req.body, null, 2))
 
-		console.log(JSON.stringify(req.body, null, 2))
+        // var placeCategories = place.categories;
 
-		// TODO: now adds only first category
-	    Category.update(
-			{ _id: req.body['categories[]'][0] },
-			{ $push : { places: id }},
-			function (err) {
-				if (err) {
-		            return next(err);
-		        }
-
-				res.json(newPlace);
-			}
-		);
-
-        // var category = new Category({
-        //     title: categories[0].title,
-        //     _creator: place._id
-        // });
-
-
-        // category.save(function (err) {
+        // Category.find(function(err, allDbCategories){
         //     if (err) {
         //         return next(err);
         //     }
+
+        //     allDbCategories.forEach(function (category) {
+        //        // Category.findOne({ _id: category._id }).exec(function (err, category) {
+
+        //         var options;
+
+        //         if (placeCategories.indexOf(category._id) > -1) {
+        //             if (category.places.indexOf(placeId) < 0) {
+        //                 options = { $push : { places: id }};
+        //             }                        
+        //         } else {
+        //             if (category.places.indexOf(placeId) > -1) {
+        //                 options = { $pulAll : { places: [id] }};
+        //             }  
+        //         }
+
+        //         if (options) {
+        //             Category.update(
+        //                 { _id: category._id },
+        //                 options,
+        //                 function (err) {
+        //                     if (err) {
+        //                         return next(err);
+        //                     }
+        //                 }
+        //                 );                        
+        //         }
+
+        //     });
+
+
         // });
 
-        // res.json(newPlace);
+         res.json(newPlace);
     });
 });
 
