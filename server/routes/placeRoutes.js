@@ -9,17 +9,22 @@ router.get('/api/places', function(req, res, next) {
     var query = {};
 
     if (req.query.categories) {
-        query = {
-            categories: {
-                $elemMatch: {
-                    slug: {
-                        $in: req.query.categories.split(',')
-                    }
-                    // can be more:
-                    // by: 'shipping'
+        query.categories = {
+            $elemMatch: {
+                slug: {
+                    $in: req.query.categories.split(',')
                 }
+                // can be more:
+                // by: 'shipping'
             }
         };
+    }
+
+    // https://docs.mongodb.org/manual/reference/operator/query/regex/
+    if (req.query.search) {
+        query.title = { 
+            $regex: new RegExp('.*' + req.query.search + '.*', 'i')
+        }
     }
 
 

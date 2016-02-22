@@ -10,6 +10,7 @@ import { connect }            from 'react-redux';
 import Loader from '../../loader/loader.cmp';
 import CategoryList from '../../categories/categoryList/categoryList.cmp';
 import CategoriesTitlesList from '../../categories/categoriesTitlesList/categoriesTitlesList.cmp.js'
+import PlacesSearch from '../placesSearch/placesSearch.cmp'
 
 //@connect(state => ({ places: state.places }))
 class PlaceList extends React.Component {
@@ -86,15 +87,23 @@ class PlaceList extends React.Component {
       });
 
         return (
-          <div>
-            <Link to={`/places/actions/create`}>Create new</Link>
-            <br/>
-            <CategoryList />
-            <br/>
-              <div className="list-group">
-                {placesHtml}
-              </div>
-          </div>
+            <div>
+                <div className="row">
+                    <div className="col-md-6">
+                        <Link to={`/places/actions/create`}>Create new</Link>
+                        <br/> 
+                    </div>
+                    <div className="col-md-6">
+                        <PlacesSearch />
+                    </div>
+                </div>
+
+                <CategoryList />
+                <br/>
+                  <div className="list-group">
+                    {placesHtml}
+                  </div>
+            </div>
         );
     }
 
