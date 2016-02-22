@@ -6,6 +6,7 @@ import { getPlace, cleanActivePlace, deletePlace } from '../../../actions/placeA
 import { routeActions } from 'react-router-redux';
 import Loader from '../../loader/loader.cmp';
 import { panMapToLatLng } from '../../../services/map.srv';
+import CategoriesTitlesList from '../../categories/categoriesTitlesList/categoriesTitlesList.cmp.js'
 
 class PlaceView extends React.Component {
 
@@ -62,29 +63,6 @@ class PlaceView extends React.Component {
 			);
 		}
 
-        let categories = place.get('categories');
-        // TODO: sorting
-        // categories = categories.sortBy((category, key) => {
-        //     return -category.title;
-        // });
-        let categoriesHtml = categories.map((category, index) => {
-            let title = category.title;
-            if (index + 1 !== categories.length) {
-                title += ',';
-            } 
-
-            return (
-                <span key={category._id}>
-                    <Link 
-                        to={`/places?categories=${category.slug}`} >
-
-                        {title}
-                    </Link>
-                    &nbsp;
-                </span>
-            )
-        })
-
 		return (
 			<div>
 				<div className="page-header">
@@ -98,7 +76,13 @@ class PlaceView extends React.Component {
 				<p>Address: {place.get('address')}</p>
 				<p>Latitude: {place.get('latitude')}</p>
                 <p>Longitude: {place.get('longitude')}</p>
-				<p>Categories: {categoriesHtml}</p>
+				<p>
+                    Categories:&nbsp;
+
+                    <CategoriesTitlesList 
+                        placeId={place.get('_id')} 
+                        categories={place.get('categories')} />
+                </p>
 			</div>
 		);
 	}

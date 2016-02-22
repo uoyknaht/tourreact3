@@ -9,6 +9,7 @@ import { connect }            from 'react-redux';
 // import { routeActions } from 'react-router-redux'
 import Loader from '../../loader/loader.cmp';
 import CategoryList from '../../categories/categoryList/categoryList.cmp';
+import CategoriesTitlesList from '../../categories/categoriesTitlesList/categoriesTitlesList.cmp.js'
 
 //@connect(state => ({ places: state.places }))
 class PlaceList extends React.Component {
@@ -65,10 +66,22 @@ class PlaceList extends React.Component {
 
       places.forEach((place) => {
         placesHtml.push(
-          <Link to={`/places/${place.get('_id')}`} className="list-group-item" key={place.get('_id')}>
-            <h4 className="list-group-item-heading">{place.get('title')}</h4>
-            <p className="list-group-item-text">...</p>
-          </Link>
+          <div to className="list-group-item" key={place.get('_id')}>
+
+            <Link 
+                to={`/places/${place.get('_id')}`} 
+                className="list-group-item-heading">
+
+                {place.get('title')}
+            </Link>
+
+            <p className="list-group-item-text">
+                Categories:&nbsp;
+                <CategoriesTitlesList 
+                    placeId={place.get('_id')} 
+                    categories={place.get('categories')} />
+            </p>
+          </div>
         );
       });
 

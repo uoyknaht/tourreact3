@@ -68,7 +68,7 @@ export default function placeReducer(state = defaultState, action) {
 		case 'RESPONSE_GET_PLACE':
 
 			newState = state.set('isFetchingItem', false);
-			place = Immutable.Map(action.place);
+			place = Immutable.fromJS(action.place);
 
 			if (action.isForEdit) {
 				newState = newState.set('itemInEditMode', place);
