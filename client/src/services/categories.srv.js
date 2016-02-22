@@ -2,6 +2,10 @@
 export function getCategoriesFilterUrl(categoriesFilter) {
 	let url = '';
 
+    if (!categoriesFilter) {
+        return url;
+    }
+
 	if (!isCategoriesFilterEmpty(categoriesFilter)) {
 		let categoryFilterQuery = getQueryFromFilter(categoriesFilter);
 		url += `?categories=${categoryFilterQuery}`;
