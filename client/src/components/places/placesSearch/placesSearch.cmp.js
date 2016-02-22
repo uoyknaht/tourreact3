@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { routeActions } from 'react-router-redux';
 import Immutable from 'immutable';
 import Autocomplete from 'react-autocomplete'
+import { setSearchFilter } from '../../../actions/filters.act';
 import apiService from '../../../services/api.srv'
 import { goToPlaceView } from '../../../services/router.srv'
 
@@ -69,8 +70,15 @@ class PlacesSearch extends React.Component {
             )   
     }
 
-    _onSelect(value, place) {
+    _onSelect(searchValue, place) {
         goToPlaceView(this.props.dispatch, place._id);
+        this.props.setSearchFilter(searchValue);
+    }
+
+    _onKeyPress(e) {
+
+        // console.log(e);
+        // event.key === 'Enter' && ::this.handleSelect(event.target.value)
     }
 
 
@@ -88,9 +96,15 @@ class PlacesSearch extends React.Component {
 
     render() {
 
+        let inputProps = {
+            placeholder: 'Search...',
+            onKeyPress: this._onKeyPress
+        };
+
         return (
 
             <Autocomplete
+                inputProps={inputProps}
                 ref="autocomplete"
                 items={this.state.places}
                 getItemValue={this._getItemValue}
@@ -111,6 +125,7 @@ function mapStateToProps(state,ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        setSearchFilter: (searchValue) => dispatch(setSearchFilter(searchValue)),
         dispatch: dispatch
     }
 }

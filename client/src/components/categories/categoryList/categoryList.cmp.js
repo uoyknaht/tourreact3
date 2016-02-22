@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { getCategories, changeCategoriesFilter } from '../../../actions/category.act';
+import { getCategories } from '../../../actions/category.act';
+import { changeCategoriesFilter } from '../../../actions/filters.act';
 import { getCategoriesFilterUrl, isCategoryChecked } from '../../../services/categories.srv';
 import { connect }            from 'react-redux';
 import { routeActions } from 'react-router-redux';
@@ -72,7 +73,7 @@ class CategoryList extends React.Component {
 function mapStateToProps(state) {
 	return {
 	    categories: state.getIn(['categories', 'categories']),
-	    selectedCategoriesFilter: state.getIn(['categories', 'selectedCategoriesFilter'])
+	    selectedCategoriesFilter: state.getIn(['filters', 'selectedCategoriesFilter'])
 	}
 }
 

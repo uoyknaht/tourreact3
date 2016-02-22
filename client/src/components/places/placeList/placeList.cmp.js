@@ -3,7 +3,7 @@ import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { getPlaces } from '../../../actions/placeActions';
-import { setCategoriesFilter } from '../../../actions/category.act';
+import { setCategoriesFilter, setSearchFilter } from '../../../actions/filters.act';
 import { getFilterFromQuery } from '../../../services/categories.srv';
 import { connect }            from 'react-redux';
 // import { routeActions } from 'react-router-redux'
@@ -23,10 +23,20 @@ class PlaceList extends React.Component {
     }
 
     componentWillMount() {
-		if (this.props.categoriesQuery) {
-			let selectedCategoriesFilter = getFilterFromQuery(this.props.categoriesQuery);
-			this.props.setCategoriesFilter(selectedCategoriesFilter);
-		} else {
+        let doesFilterExist = false;
+
+        if (this.props.categoriesQuery) {
+            let selectedCategoriesFilter = getFilterFromQuery(this.props.categoriesQuery);
+            this.props.setCategoriesFilter(selectedCategoriesFilter);
+            doesFilterExist = true;
+        }
+
+		if (this.props.searchQuery) {
+			this.props.setSearchFilter(this.props.searchQuery);
+            doesFilterExist = true;
+		}
+
+        if (!doesFilterExist) {
             this.props.getPlaces();
         }
     }
@@ -37,10 +47,22 @@ class PlaceList extends React.Component {
 
     componentWillReceiveProps(newProps) {
         // TODO: places can receive new category, but in place list this wont be reflected
-        if (newProps.selectedCategoriesFilter
-            && this.props.selectedCategoriesFilter !== newProps.selectedCategoriesFilter) {
 
+        let hasCategoriesFilterChanged = newProps.selectedCategoriesFilter
+            && this.props.selectedCategoriesFilter !== newProps.selectedCategoriesFilter;
+
+        let hasSearchFilterChanged = newProps.searchFilter
+            && this.props.searchFilter !== newProps.searchFilter;
+
+        if (hasCategoriesFilterChanged && hasSearchFilterChanged) {
+
+            this.props.getPlaces(newProps.selectedCategoriesFilter, newProps.searchFilter);
+        }
+        else if (hasCategoriesFilterChanged) {
             this.props.getPlaces(newProps.selectedCategoriesFilter);
+        } else if (hasSearchFilterChanged) {
+            console.log(newProps.searchFilter);
+            this.props.getPlaces(null, newProps.searchFilter);
         }
     }
 
@@ -112,15 +134,18 @@ class PlaceList extends React.Component {
 function mapStateToProps(state, ownProps) {
 	return {
 	    places: state.getIn(['places', 'places']),
-		categoriesQuery: ownProps.location.query.categories,
-        selectedCategoriesFilter: state.getIn(['categories', 'selectedCategoriesFilter'])
+        categoriesQuery: ownProps.location.query.categories,
+		searchQuery: ownProps.location.query.search,
+        selectedCategoriesFilter: state.getIn(['filters', 'selectedCategoriesFilter']),
+        searchFilter: state.getIn(['filters', 'searchFilter'])
 	}
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPlaces: (selectedCategoriesFilter) => dispatch(getPlaces(selectedCategoriesFilter)),
-    setCategoriesFilter: (selectedCategoriesFilter) => dispatch(setCategoriesFilter(selectedCategoriesFilter))
+    getPlaces: (selectedCategoriesFilter, searchFilter) => dispatch(getPlaces(selectedCategoriesFilter, searchFilter)),
+    setCategoriesFilter: (selectedCategoriesFilter) => dispatch(setCategoriesFilter(selectedCategoriesFilter)),
+    setSearchFilter: (searchValue) => dispatch(setSearchFilter(searchValue))
   }
 }
 

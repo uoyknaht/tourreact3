@@ -121,7 +121,7 @@ class Nav extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-	    selectedCategoriesFilter: state.getIn(['categories', 'selectedCategoriesFilter'])
+	    selectedCategoriesFilter: state.getIn(['filters', 'selectedCategoriesFilter'])
 	}
 }
 

@@ -52,21 +52,3 @@ function shouldGetCategories(state) {
 
   return true;
 }
-
-/////////////////////////////////////////////
-/////////////////////////////////////////////
-/////////////////////////////////////////////
-
-export function setCategoriesFilter(filter) {
-	return {
-		type: 'SET_CATEGORIES_FILTER',
-		filter
-	}
-}
-
-export function changeCategoriesFilter(categorySlug) {
-	return {
-		type: 'CHANGE_CATEGORIES_FILTER',
-		categorySlug
-	}
-}

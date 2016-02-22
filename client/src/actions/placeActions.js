@@ -1,23 +1,22 @@
 import fetch from 'isomorphic-fetch'
 import apiService from '../services/api.srv'
-import { getCategoriesFilterUrl } from '../services/categories.srv'
-
+import { getPlaceListFilterQuery } from '../services/filters.srv'
 
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
-export function getPlaces(categoriesFilter) {
+export function getPlaces(categoriesFilter, searchFilter) {
   return function (dispatch, getState) {
-    if (!shouldGetPlaces(getState(), categoriesFilter)) {
+    if (!shouldGetPlaces(getState(), categoriesFilter, searchFilter)) {
       return;
     }
 
     dispatch(requestGetPlaces());
 
-    let categoriesFilterUrl = getCategoriesFilterUrl(categoriesFilter);
+    let filterQuery = getPlaceListFilterQuery(categoriesFilter, searchFilter);
 
-    return apiService.get(`http://localhost:8081/api/places${categoriesFilterUrl}`)
+    return apiService.get(`http://localhost:8081/api/places${filterQuery}`)
         .then(
             json => dispatch(responseGetPlaces(json)),
             error => dispatch(responseGetPlacesError(error))
