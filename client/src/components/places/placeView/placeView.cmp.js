@@ -62,6 +62,26 @@ class PlaceView extends React.Component {
 			);
 		}
 
+        let categories = place.get('categories');
+        let categoriesHtml = categories.map((category, index) => {
+            let title = category.title;
+            if (index + 1 !== categories.length) {
+                title += ',';
+            } 
+
+            return (
+                <span>
+                    <Link 
+                        key={category._id}
+                        to={`/places?categories=${category.slug}`} >
+
+                        {title}
+                    </Link>
+                    &nbsp;
+                </span>
+            )
+        })
+
 		return (
 			<div>
 				<div className="page-header">
@@ -74,7 +94,8 @@ class PlaceView extends React.Component {
 
 				<p>Address: {place.get('address')}</p>
 				<p>Latitude: {place.get('latitude')}</p>
-				<p>Longitude: {place.get('longitude')}</p>
+                <p>Longitude: {place.get('longitude')}</p>
+				<p>Categories: {categoriesHtml}</p>
 			</div>
 		);
 	}
