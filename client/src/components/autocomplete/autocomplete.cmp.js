@@ -138,6 +138,7 @@ let Autocomplete = React.createClass({
       }
       else if (this.state.highlightedIndex == null) {
         // hit enter after focus but before typing anything so no autocomplete attempt yet
+		this.props.onSelect(this.state.value, null)
         this.setState({
           isOpen: false
         }, () => {
