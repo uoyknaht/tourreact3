@@ -17,7 +17,7 @@ export function getPlaceListFilterQuery(categoriesFilter, searchFilter) {
     }
 
     if (query) {
-        query = '?' + query;    
+        query = '?' + query;
     }
 
     return query;
@@ -25,6 +25,10 @@ export function getPlaceListFilterQuery(categoriesFilter, searchFilter) {
 }
 
 export function getFilterFromQuery(query) {
+	if (!query) {
+		return [];
+	}
+
     return query.split(',');
 }
 

@@ -6,13 +6,6 @@ export function goToPlaceView(dispatch, placeId) {
 }
 
 export function goToPlaceList(dispatch, categoriesFilter, searchFilter) {
-
     let filterQuery = getPlaceListFilterQuery(categoriesFilter, searchFilter);
     dispatch(routeActions.push(`/places${filterQuery}`));
-
-    let url = 'http://localhost:8081/api/places';
-    
-
-    return apiService.get(`http://localhost:8081/api/places${filterQuery}`)
-
 }

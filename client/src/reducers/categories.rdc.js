@@ -4,8 +4,7 @@ import notifierService from '../services/notifier.srv';
 let defaultState = Immutable.Map({
     isFetchingCategories: false,
     areCategoriesFetched: false,
-    categories: Immutable.List(),
-    selectedCategoriesFilter: Immutable.List()
+    categories: Immutable.List()
 });
 
 export default function categoriesReducer(state = defaultState, action) {

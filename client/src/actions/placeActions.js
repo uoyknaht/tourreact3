@@ -6,21 +6,19 @@ import { getPlaceListFilterQuery } from '../services/filters.srv'
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
-export function getPlaces(categoriesFilter, searchFilter) {
+export function getPlaces(filterQuery) {
   return function (dispatch, getState) {
-    if (!shouldGetPlaces(getState(), categoriesFilter, searchFilter)) {
+    if (!shouldGetPlaces(getState())) {
       return;
     }
 
     dispatch(requestGetPlaces());
 
-    let filterQuery = getPlaceListFilterQuery(categoriesFilter, searchFilter);
-
     return apiService.get(`http://localhost:8081/api/places${filterQuery}`)
         .then(
             json => dispatch(responseGetPlaces(json)),
             error => dispatch(responseGetPlacesError(error))
-        )         
+        )
   }
 }
 
@@ -44,7 +42,7 @@ function responseGetPlacesError(error) {
   }
 }
 
-function shouldGetPlaces(state, categoriesFilter) {
+function shouldGetPlaces(state) {
   if (state.getIn(['places', 'isFetchingItems'])) {
     return false;
   }

@@ -232,6 +232,14 @@
 // http://stackoverflow.com/questions/26156687/mongoose-find-update-subdocument
 // https://docs.mongodb.org/manual/reference/operator/update/pullAll/
 
+// 1. page load: no filter, category filter, search filter, both filters
+// 2. on category click: without search filter, with it
+// 3. on search filter click: without categories filter, with it
+// 4. on direct route change, f.e. clicking on Places in nav
+//
+//
+//
+//
 
 import React from 'react';
 import ReactDOM from 'react-dom';
