@@ -31,7 +31,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loaders: ['react-hot', 'babel']
+        loaders: ['react-hot', 'babel?presets[]=react,presets[]=es2015,presets[]=stage-2']
       },
       {
         test: /\.scss$/,
@@ -44,7 +44,7 @@ module.exports = {
       {
         test: /\.svg$/,
         loader: 'file-loader'
-      }      
+      }
     ]
   }
 }
