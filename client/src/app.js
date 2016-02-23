@@ -1,5 +1,6 @@
 // TODO
 
+// search works except initial load
 // - sortinti categories list in place view in js. - place.categories db yra ne List(), reikia perdaryti. Immutable ordered list?
 // - create place sutvarkyt
 // - issaugoti i state place lista pagal ivairu filtravima kad nedaryt tokiu paciu requestu
@@ -240,6 +241,22 @@
 //
 //
 //
+
+// var parts = ['shoulders', 'knees'];
+// var lyrics = ['head', ...parts, 'and', 'toes'];
+// console.log(lyrics)
+//
+// var a = {
+// 	a: 1,
+// 	b: 2
+// }
+//
+// var c = {
+// 	c: 3
+// }
+// var style= {...a, ...c}
+//
+// console.log(style);
 
 import React from 'react';
 import ReactDOM from 'react-dom';

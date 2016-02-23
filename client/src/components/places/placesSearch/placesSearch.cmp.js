@@ -1,116 +1,50 @@
 import React from 'react';
-import Router from 'react-router';
-import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { routeActions } from 'react-router-redux';
 import Immutable from 'immutable';
-import Autocomplete from 'react-autocomplete'
 import { setSearchFilter } from '../../../actions/filters.act';
-import apiService from '../../../services/api.srv'
-import { goToPlaceView } from '../../../services/router.srv'
-
-
-        let styles = {
-          item: {
-            padding: '2px 6px',
-            cursor: 'default'
-          },
-
-          highlightedItem: {
-            color: 'white',
-            background: 'hsl(200, 50%, 50%)',
-            padding: '2px 6px',
-            cursor: 'default'
-          },
-
-          menu: {
-            border: 'solid 1px #ccc'
-          }
-        }          
 
 class PlacesSearch extends React.Component {
 
     constructor() {
         super();
         this.render = this.render.bind(this);
-        this._onChange = this._onChange.bind(this);
-        this._onSelect = this._onSelect.bind(this);
-
-        this.state = {
-            places: []
-        };
+        this._onKeyUp = this._onKeyUp.bind(this);
+		this._onBlur = this._onBlur.bind(this);
+		this._search = this._search.bind(this);
+		this._previousValue = null;
     }
 
-    _getItemValue(place) {
-        return place.title;
-    }
+	_onKeyUp(e) {
+		if (e.key !== 'Enter') {
+			return;
+		}
 
-    _onChange(event, value) {
-        if (!value || value.length < 3) {
-            return;
-        }
+		this._search();
+	}
 
-        this.setState({
-            loading: true
-        })
+	_onBlur() {
 
-        apiService.get(`http://localhost:8081/api/places?search=${value}`)
-            .then(
-                places => {
-                    this.setState({ 
-                        places: places, 
-                        loading: false 
-                    })
-                },
-                error => {
-                    this.setState({ 
-                        loading: false 
-                    })
-                }
-            )   
-    }
+	}
 
-    _onSelect(searchValue, place) {
-        goToPlaceView(this.props.dispatch, place._id);
-        this.props.setSearchFilter(searchValue);
-    }
+	_search() {
+		let value = ReactDOM.findDOMNode(this.refs.placeSearch).value.trim()
 
-    _onKeyPress(e) {
-
-        // console.log(e);
-        // event.key === 'Enter' && ::this.handleSelect(event.target.value)
-    }
-
-
-    _renderItem(place, isHighlighted) {
-        return (
-            <div
-                style={isHighlighted ? styles.highlightedItem : styles.item}
-                key={place._id}
-                id={place._id} >
-
-                {place.title}
-            </div>
-        );
-    }
+		if (value !== this._previousValue) {
+			this.props.setSearchFilter(value);
+			this._previousValue = value;
+		}
+	}
 
     render() {
-
-        let inputProps = {
-            placeholder: 'Search...',
-            onKeyPress: this._onKeyPress
-        };
-
         return (
-            <Autocomplete
-                initialValue ={this.props.searchFilter}
-                inputProps={inputProps}
-                ref="autocomplete"
-                items={this.state.places}
-                getItemValue={this._getItemValue}
-                onSelect={this._onSelect}
-                onChange={this._onChange}
-                renderItem={this._renderItem} />
+			<input
+				type="text"
+				placeholder="Search..."
+				ref="placeSearch"
+				defaultValue={this.props.searchFilter}
+				onKeyUp={this._onKeyUp}
+				onBlur={this._onBlur} />
         );
     }
 

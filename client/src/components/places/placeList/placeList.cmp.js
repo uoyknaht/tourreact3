@@ -37,6 +37,15 @@ class PlaceList extends React.Component {
             return (
                 <div>
                     {filterCmp}
+					<div className="row">
+	                    <div className="col-md-6">
+	                        <Link to={`/places/actions/create`}>Create new</Link>
+	                        <br/>
+	                    </div>
+	                    <div className="col-md-6">
+	                        <PlacesSearch />
+	                    </div>
+	                </div>					
                     <CategoryList />
                     <br/>
                     <div className="alert alert-info" role="alert">No places found</div>
