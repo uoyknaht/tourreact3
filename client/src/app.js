@@ -1,6 +1,5 @@
 // TODO
 
-//  - getCategoriesFilterUrl paremovint kur nereikia, geriau naudot filter.act
 // - sortinti categories list in place view in js. - place.categories db yra ne List(), reikia perdaryti. Immutable ordered list?
 // - create place sutvarkyt
 // - issaugoti i state place lista pagal ivairu filtravima kad nedaryt tokiu paciu requestu
@@ -279,6 +278,7 @@ ReactDOM.render((
     <Router history={browserHistory}>
       <Route path="/" component={App}>
         <Route path="places(?categories=***)" component={PlaceList}/>
+        <Route path="places(?search=***)" component={PlaceList}/>
         <Route name="placeView" path="places/:id" component={PlaceView}/>
         <Route name="placeCreate" path="places/actions/create" component={PlaceAddOrEdit}/>
         <Route name="placeEdit" path="places/:id/edit" component={PlaceAddOrEdit}/>

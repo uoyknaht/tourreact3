@@ -4,12 +4,13 @@ import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { getPlaces } from '../../../actions/placeActions';
 import { setCategoriesFilter, setSearchFilter } from '../../../actions/filters.act';
-import { getFilterFromQuery } from '../../../services/categories.srv';
+import { getFilterFromQuery } from '../../../services/filters.srv';
 import { connect }            from 'react-redux';
 // import { routeActions } from 'react-router-redux'
 import Loader from '../../loader/loader.cmp';
 import CategoryList from '../../categories/categoryList/categoryList.cmp';
 import CategoriesTitlesList from '../../categories/categoriesTitlesList/categoriesTitlesList.cmp.js'
+import PlacesFilter from '../placesFilter/placesFilter.cmp'
 import PlacesSearch from '../placesSearch/placesSearch.cmp'
 
 //@connect(state => ({ places: state.places }))
@@ -23,6 +24,10 @@ class PlaceList extends React.Component {
     }
 
     componentWillMount() {
+
+    }
+
+    componentDidMount() {  
         let doesFilterExist = false;
 
         if (this.props.categoriesQuery) {
@@ -31,18 +36,17 @@ class PlaceList extends React.Component {
             doesFilterExist = true;
         }
 
-		if (this.props.searchQuery) {
-			this.props.setSearchFilter(this.props.searchQuery);
+        if (this.props.searchQuery) {
+            this.props.setSearchFilter(this.props.searchQuery);
             doesFilterExist = true;
-		}
-
-        if (!doesFilterExist) {
-            this.props.getPlaces();
         }
-    }
 
-    componentDidMount() {  
-		
+
+        console.log(this.props.searchFilter);
+        if (!doesFilterExist) {
+            console.log(555);
+            this.props.getPlaces();
+        }		
     }
 
     componentWillReceiveProps(newProps) {
@@ -67,23 +71,30 @@ class PlaceList extends React.Component {
     }
 
     render() {
-      let places = this.props.places;
-
-      if (!places) {
-        return (
-          <Loader />
+        let places = this.props.places;
+        let filterCmp = (
+            <PlacesFilter query={this.props.query} />
         );
-      }
 
-      if (!places.size) {
-        return (
-            <div>
-                <CategoryList />
-                <br/>
-                <div className="alert alert-info" role="alert">No places found</div>
-            </div>
-        );
-      }
+        if (!places) {
+            return (
+                <div>
+                    {filterCmp}
+                    <Loader />
+                </div>
+            );
+        }
+
+        if (!places.size) {
+            return (
+                <div>
+                    {filterCmp}
+                    <CategoryList />
+                    <br/>
+                    <div className="alert alert-info" role="alert">No places found</div>
+                </div>
+            );
+        }
 
       var placesHtml = [];
 
@@ -110,6 +121,7 @@ class PlaceList extends React.Component {
 
         return (
             <div>
+                {filterCmp}
                 <div className="row">
                     <div className="col-md-6">
                         <Link to={`/places/actions/create`}>Create new</Link>
@@ -134,6 +146,7 @@ class PlaceList extends React.Component {
 function mapStateToProps(state, ownProps) {
 	return {
 	    places: state.getIn(['places', 'places']),
+        query: ownProps.location.query,
         categoriesQuery: ownProps.location.query.categories,
 		searchQuery: ownProps.location.query.search,
         selectedCategoriesFilter: state.getIn(['filters', 'selectedCategoriesFilter']),

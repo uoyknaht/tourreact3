@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect } from 'react-redux';
-import { getCategoriesFilterUrl } from '../../services/categories.srv';
+import { getPlaceListFilterQuery } from '../../services/filters.srv';
 
 class Nav extends React.Component {
 
@@ -12,8 +12,8 @@ class Nav extends React.Component {
     }
 
     render() {
-		let categoriesFilterUrlPart = getCategoriesFilterUrl(this.props.selectedCategoriesFilter)
-		let fullAllPlacesUrl = `/places${categoriesFilterUrlPart}`;
+		let query = getPlaceListFilterQuery(this.props.selectedCategoriesFilter, this.props.searchFilter)
+		let fullAllPlacesUrl = `/places${query}`;
 
         return (
 
@@ -121,7 +121,8 @@ class Nav extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-	    selectedCategoriesFilter: state.getIn(['filters', 'selectedCategoriesFilter'])
+	    selectedCategoriesFilter: state.getIn(['filters', 'selectedCategoriesFilter']),
+        searchFilter: state.getIn(['filters', 'searchFilter'])
 	}
 }
 

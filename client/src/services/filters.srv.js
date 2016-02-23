@@ -1,20 +1,15 @@
-import { getCategoriesFilterUrl } from './categories.srv'
 
 export function getPlaceListFilterQuery(categoriesFilter, searchFilter) {
 
     let query = '';
-    let categoriesFilterUrl = getCategoriesFilterUrl(categoriesFilter);
+    let categoriesQuery = getQueryFromFilter(categoriesFilter);
 
-    if (categoriesFilterUrl && categoriesFilterUrl.charAt(0) === '?') {
-        categoriesFilterUrl = categoriesFilterUrl.substr(1);
-    }
-
-    if (categoriesFilter) {
-        query += 'categories=' + categoriesFilter;
+    if (categoriesQuery) {
+        query += 'categories=' + categoriesQuery;
     }
 
     if (searchFilter) {
-        if (categoriesFilter) {
+        if (categoriesQuery) {
             query += '&';
         }
 
@@ -27,4 +22,21 @@ export function getPlaceListFilterQuery(categoriesFilter, searchFilter) {
 
     return query;
 
+}
+
+export function getFilterFromQuery(query) {
+    return query.split(',');
+}
+
+function getQueryFromFilter(filter) {
+    if (!filter || !filter.size) {
+        return '';
+    }
+
+    return filter.toJS().join(',');
+}
+
+
+function isCategoriesFilterEmpty(categoriesFilter) {
+    return categoriesFilter.size === 0;
 }

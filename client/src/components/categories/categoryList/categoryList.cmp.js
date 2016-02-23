@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { getCategories } from '../../../actions/category.act';
 import { changeCategoriesFilter } from '../../../actions/filters.act';
-import { getCategoriesFilterUrl, isCategoryChecked } from '../../../services/categories.srv';
+import { isCategoryChecked } from '../../../services/categories.srv';
 import { connect }            from 'react-redux';
 import { routeActions } from 'react-router-redux';
 
@@ -15,19 +15,8 @@ class CategoryList extends React.Component {
     }
 
     componentDidMount() {
-      this.props.getCategories();
-    }
-
-	componentWillReceiveProps(newProps) {
-        if (newProps.selectedCategoriesFilter
-            && this.props.selectedCategoriesFilter !== newProps.selectedCategoriesFilter) {
-
-			let categoriesFilterUrlPart = getCategoriesFilterUrl(newProps.selectedCategoriesFilter)
-			let fullUrl = `/places${categoriesFilterUrlPart}`;
-
-			this.props.dispatch(routeActions.push(fullUrl));
-        }
-    }
+        this.props.getCategories();
+    } 
 
 	_onCategoryClick(categorySlug, e) {
 		this.props.changeCategoriesFilter(categorySlug);

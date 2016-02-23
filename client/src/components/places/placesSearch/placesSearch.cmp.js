@@ -102,8 +102,8 @@ class PlacesSearch extends React.Component {
         };
 
         return (
-
             <Autocomplete
+                initialValue ={this.props.searchFilter}
                 inputProps={inputProps}
                 ref="autocomplete"
                 items={this.state.places}
@@ -117,9 +117,9 @@ class PlacesSearch extends React.Component {
 }
 
 
-function mapStateToProps(state,ownProps) {
-
+function mapStateToProps(state) {
     return {
+        searchFilter: state.getIn(['filters', 'searchFilter'])
     }
 }
 
