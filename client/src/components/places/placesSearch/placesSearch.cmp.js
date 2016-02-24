@@ -17,7 +17,13 @@ class PlacesSearch extends React.Component {
 
     componentWillReceiveProps(newProps) {
         if (newProps.searchFilter !== this.props.searchFilter) {
-            ReactDOM.findDOMNode(this.refs.placeSearch).value = newProps.searchFilter;
+            var value = newProps.searchFilter;
+
+            if (!value) {
+                value = '';
+            }
+
+            ReactDOM.findDOMNode(this.refs.placeSearch).value = value
         }
     }    
 
