@@ -66,7 +66,7 @@ class PlaceView extends React.Component {
         let addressApproximateText = '';
 
         if (place.get('isAddressApproximate')) {
-            addressApproximateText = (<p className="help-block">Address is approximate. Learn more...</p>);
+            addressApproximateText = (<p className="help-block">Address is approximate. <span data-toggle="popover" data-content="And here's some amazing content. It's very engaging. Right?">Learn more...</span></p>);
         }
 
 		return (

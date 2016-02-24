@@ -1,5 +1,6 @@
 // TODO
 
+// add js vendors bundle
 // edit formoj pakeitus koordinates, markeris pasikeicia
 // set coordinates from address
 // - sortinti categories list in place view in js. - place.categories db yra ne List(), reikia perdaryti. Immutable ordered list?
@@ -256,6 +257,10 @@
 // var style= {...a, ...c}
 //
 // console.log(style);
+
+import jQuery from 'jquery';
+import bootstrap from './vendors/bootstrap.min';
+import misc from './misc/misc';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
