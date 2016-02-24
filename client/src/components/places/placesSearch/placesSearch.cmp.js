@@ -15,6 +15,12 @@ class PlacesSearch extends React.Component {
 		this._previousValue = null;
     }
 
+    componentWillReceiveProps(newProps) {
+        if (newProps.searchFilter !== this.props.searchFilter) {
+            ReactDOM.findDOMNode(this.refs.placeSearch).value = newProps.searchFilter;
+        }
+    }    
+
 	_onKeyUp(e) {
 		if (e.key !== 'Enter') {
 			return;
@@ -24,7 +30,7 @@ class PlacesSearch extends React.Component {
 	}
 
 	_onBlur() {
-
+        this._search();
 	}
 
 	_search() {
