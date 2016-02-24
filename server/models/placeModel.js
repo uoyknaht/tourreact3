@@ -6,6 +6,7 @@ var PlaceSchema = new Schema({
   // _creator : { type: Schema.Types.ObjectId, ref: 'Category' },
   title: String,
   address: String,
+  isAddressApproximate: Boolean,
   latitude: {
     type: Number
     // default: 0

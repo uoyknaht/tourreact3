@@ -115,7 +115,8 @@ class PlaceAddOrEdit extends React.Component {
 
 		var place = {
 		  title: ReactDOM.findDOMNode(this.refs.title).value.trim(),
-		  address: ReactDOM.findDOMNode(this.refs.address).value.trim(),
+          address: ReactDOM.findDOMNode(this.refs.address).value.trim(),
+		  isAddressApproximate: ReactDOM.findDOMNode(this.refs.isAddressApproximate).checked,
 		  latitude: ReactDOM.findDOMNode(this.refs.latitude).value.trim(),
 		  longitude: ReactDOM.findDOMNode(this.refs.longitude).value.trim()
 		}
@@ -143,11 +144,13 @@ class PlaceAddOrEdit extends React.Component {
         if (place) {
             ReactDOM.findDOMNode(this.refs.title).value = place.get('title');
             ReactDOM.findDOMNode(this.refs.address).value = place.get('address');
+            ReactDOM.findDOMNode(this.refs.isAddressApproximate).checked = place.get('isAddressApproximate');
             ReactDOM.findDOMNode(this.refs.latitude).value = place.get('latitude');
             ReactDOM.findDOMNode(this.refs.longitude).value = place.get('longitude');
         } else {
             ReactDOM.findDOMNode(this.refs.title).value = '';
             ReactDOM.findDOMNode(this.refs.address).value = '';
+            ReactDOM.findDOMNode(this.refs.isAddressApproximate).checked = false;
             ReactDOM.findDOMNode(this.refs.latitude).value = '';
             ReactDOM.findDOMNode(this.refs.longitude).value = '';
         }
@@ -198,7 +201,6 @@ class PlaceAddOrEdit extends React.Component {
             });
         }
 
-
 		let categoriesHtml = [];
 
 		this.props.categories.forEach((category) => {
@@ -236,6 +238,16 @@ class PlaceAddOrEdit extends React.Component {
                       id="place-form-address"
                       placeholder="Address"
                       className="form-control" />
+
+                <div className="checkbox">
+                    <label>
+                        <input
+                            type="checkbox"
+                            ref="isAddressApproximate" />
+
+                        Address is approximate
+                    </label>
+                </div>                        
 
 				  <br/>
 					<a href="#" onClick={this._setAdressFromCoordinates}>Set address from coordinates</a>

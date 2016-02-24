@@ -63,6 +63,12 @@ class PlaceView extends React.Component {
 			);
 		}
 
+        let addressApproximateText = '';
+
+        if (place.get('isAddressApproximate')) {
+            addressApproximateText = (<p className="help-block">Address is approximate. Learn more...</p>);
+        }
+
 		return (
 			<div>
 				<div className="page-header">
@@ -74,6 +80,7 @@ class PlaceView extends React.Component {
 				<br/>
 
 				<p>Address: {place.get('address')}</p>
+                {addressApproximateText}
 				<p>Latitude: {place.get('latitude')}</p>
                 <p>Longitude: {place.get('longitude')}</p>
 				<p>

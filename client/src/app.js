@@ -1,11 +1,10 @@
 // TODO
 
-// search works except initial load
+// edit formoj pakeitus koordinates, markeris pasikeicia
+// set coordinates from address
 // - sortinti categories list in place view in js. - place.categories db yra ne List(), reikia perdaryti. Immutable ordered list?
-// - create place sutvarkyt
 // - issaugoti i state place lista pagal ivairu filtravima kad nedaryt tokiu paciu requestu
 // - // TODO: places can receive new category, but in place list this wont be reflected
-// - place edit formoje checkboxas kad adresas apytikslis
 
 // check:
 // GraphQL
