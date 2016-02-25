@@ -251,3 +251,16 @@ export function responseDeletePlaceError(error) {
     error
   }
 }
+
+
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+/////////////////////////////////////////////
+
+export function onChangePlaceCoords(placeId, latLng) {
+    return {
+        type: 'CHANGED_PLACE_COORDS',
+        placeId,
+        latLng
+    }
+}

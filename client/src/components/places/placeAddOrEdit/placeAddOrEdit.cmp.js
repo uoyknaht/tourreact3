@@ -16,7 +16,8 @@ import {
   openPlaceCreateForm,
   openPlaceUpdateForm,
   closePlaceCreateForm,
-  closePlaceUpdateForm
+  closePlaceUpdateForm,
+  onChangePlaceCoords
 } from '../../../actions/placeActions';
 import Loader from '../../loader/loader.cmp';
 import notifierService from '../../../services/notifier.srv';
@@ -29,11 +30,15 @@ class PlaceAddOrEdit extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
         this._updateForm = this._updateForm.bind(this);
         this._setAdressFromCoordinates = this._setAdressFromCoordinates.bind(this);
+        this._onCoordsFocus = this._onCoordsFocus.bind(this);
+        this._onCoordsBlur = this._onCoordsBlur.bind(this);
         this.render = this.render.bind(this);
 
 		this.state = {
 			shouldAddMarkerOnMapClick: false
 		};
+
+        this._prevCoordsValue = null;
     }
 
     componentDidMount() {
@@ -183,6 +188,26 @@ class PlaceAddOrEdit extends React.Component {
         });
 	}
 
+    _onCoordsFocus(e) {
+        this._prevCoordsValue = e.target.value;
+    }
+
+    _onCoordsBlur(e) {
+        let value = e.target.value;
+        
+        if (value !== this._prevCoordsValue) {
+            let newLatLng = {
+                lat: parseFloat(ReactDOM.findDOMNode(this.refs.latitude).value, 10),
+                lng: parseFloat(ReactDOM.findDOMNode(this.refs.longitude).value, 10)
+            }
+
+            this.props.onChangePlaceCoords(this.props.place.get('_id'), newLatLng)
+            panMapToLatLng(newLatLng, window.map);
+        }
+
+        this._prevCoordsValue = null;
+    }
+
     render() {
 
         if (this.props.isLoading) {
@@ -259,7 +284,9 @@ class PlaceAddOrEdit extends React.Component {
                       ref="latitude"
                       id="place-form-latitude"
                       placeholder="Address"
-                      className="form-control" />
+                      className="form-control"
+                      onFocus={this._onCoordsFocus}
+                      onBlur={this._onCoordsBlur} />
             </div>
 
             <div className="form-group">
@@ -268,7 +295,9 @@ class PlaceAddOrEdit extends React.Component {
                       ref="longitude"
                       id="place-form-longitude"
                       placeholder="Address"
-                      className="form-control" />
+                      className="form-control"
+                      onFocus={this._onCoordsFocus}
+                      onBlur={this._onCoordsBlur} />
             </div>
 
             <div className="form-group">
@@ -323,6 +352,7 @@ function mapDispatchToProps(dispatch) {
     closePlaceCreateForm: () => dispatch(closePlaceCreateForm()),
     openPlaceUpdateForm: (placeId) => dispatch(openPlaceUpdateForm(placeId)),
     closePlaceUpdateForm: (placeId) => dispatch(closePlaceUpdateForm(placeId)),
+    onChangePlaceCoords : (placeId, newlatLng) => dispatch(onChangePlaceCoords (placeId, newlatLng)),
     dispatch: dispatch
   }
 }

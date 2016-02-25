@@ -1,10 +1,13 @@
 // TODO
 
-// edit formoj pakeitus koordinates, markeris pasikeicia
+//  kad place edit url refresh butu galima daryti
+// cancel mygtuka place edit formoj ir tada revertint visus changus
+// on place list load, zoom google map and pan it to cover all markers
 // set coordinates from address
 // - sortinti categories list in place view in js. - place.categories db yra ne List(), reikia perdaryti. Immutable ordered list?
 // - issaugoti i state place lista pagal ivairu filtravima kad nedaryt tokiu paciu requestu
 // - // TODO: places can receive new category, but in place list this wont be reflected
+// suvienodint visur kad latlng naudotu
 
 // check:
 // GraphQL

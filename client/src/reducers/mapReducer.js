@@ -45,6 +45,7 @@ export default function mapReducer(state = defaultState, action) {
 	let markerInEditMode;
 	let markerId;
 	let index;
+    let newLatLng;
 
     switch(action.type) {
 
@@ -136,17 +137,31 @@ export default function mapReducer(state = defaultState, action) {
 		return newState;
 
     case 'CLICK_MAP':
+
 		return state.set('latLngOnMapClick', Immutable.Map(action.latLng));
 
     case 'MARKER_DRAG_END':
-		let newLatLng = Immutable.Map({
-			lat: action.lat,
-			lng: action.lng
-		});
+        newLatLng = Immutable.Map({
+            lat: action.lat,
+            lng: action.lng
+        });
 
-		return state.set('latLngOnDragEnd', newLatLng);
+        return state.set('latLngOnDragEnd', newLatLng);
+
+
+    case 'CHANGED_PLACE_COORDS':
+
+        newState = updateMarkerProperty(state, action.placeId, 'lat', action.latLng.lat);
+        newState = updateMarkerProperty(newState, action.placeId, 'lng', action.latLng.lng);
+
+        // console.log(action.placeId);
+        // console.log(action.latLng);
+        // console.log(newState.toJS());
+
+        return newState;
 
     default:
+
       return state;
   }
 

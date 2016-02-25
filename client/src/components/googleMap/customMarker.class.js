@@ -72,6 +72,11 @@ CustomMarker.prototype.getPosition = function() {
     return this.latlng;
 };
 
+CustomMarker.prototype.setPosition = function(latLng) {
+    this.latlng = new google.maps.LatLng(latLng.lat, latLng.lng);
+    this.draw();
+};
+
 CustomMarker.prototype.setDraggable = function(isDraggable) {
 	if (isDraggable) {
 		enableDragging.call(this);

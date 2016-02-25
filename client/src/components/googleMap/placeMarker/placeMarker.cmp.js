@@ -61,6 +61,10 @@ class PlaceMarker extends React.Component {
 
 			this.state.marker.animate(newProps.options.animation);
         }
+
+        if (this.props.latLng !== newProps.latLng) {
+            this.state.marker.setPosition(newProps.latLng)
+        }        
     }
 
   render() {
