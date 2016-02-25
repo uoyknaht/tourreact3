@@ -11,7 +11,7 @@ module.exports = {
       'webpack/hot/only-dev-server',
       './src/app.js'
     ],
-    //vendors: './src/css/bootstrap.css'
+    vendors: ['jquery', 'react']
   },
   output: {
     filename: '[name].js',
@@ -24,7 +24,9 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new webpack.ProvidePlugin({ $: "jquery", jQuery: "jquery", "window.jQuery": "jquery" }),
+    new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js')
   ],
   module: {
     loaders: [

@@ -258,10 +258,6 @@
 //
 // console.log(style);
 
-import jQuery from 'jquery';
-import bootstrap from './vendors/bootstrap.min';
-import misc from './misc/misc';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom'
