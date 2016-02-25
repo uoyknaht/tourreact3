@@ -1,6 +1,5 @@
 // TODO
 
-// add js vendors bundle
 // edit formoj pakeitus koordinates, markeris pasikeicia
 // set coordinates from address
 // - sortinti categories list in place view in js. - place.categories db yra ne List(), reikia perdaryti. Immutable ordered list?

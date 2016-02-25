@@ -8,7 +8,6 @@ import { routeActions } from 'react-router-redux';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 // import GoogleMap from 'google-map-react';
 import GoogleMap from '../../googleMap/map/map.cmp.js';
-import Marker from '../../googleMap/marker/marker.cmp.js';
 import PlaceMarker from '../../googleMap/placeMarker/placeMarker.cmp';
 
 class MapContainer extends React.Component {
