@@ -19,6 +19,7 @@ import {
   closePlaceUpdateForm,
   onChangePlaceCoords
 } from '../../../actions/placeActions';
+import Upload from '../../upload/upload.cmp';
 import Loader from '../../loader/loader.cmp';
 import notifierService from '../../../services/notifier.srv';
 import { createMarker, getCurrentCenter, panMapToLatLng } from '../../../services/map.srv';
@@ -326,17 +327,17 @@ class PlaceAddOrEdit extends React.Component {
 		  		</CheckboxGroup>
             </div>
 
+            <div className="form-group">
+                <label>Upload files</label>
+                <Upload />
+            </div>            
+
 			<br/>
 
             <input type="submit"
               className="btn btn-default"
               value="Save"
               onClick={this.onSubmit} />
-
-
-
-
-
 
           </form>
 
