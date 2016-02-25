@@ -65,7 +65,7 @@ class PlaceMarker extends React.Component {
 
   render() {
     return (
-       <div>{this.props.options.text}</div>
+       <div></div>
     );
   }
 }
