@@ -69,6 +69,10 @@ class MapContainer extends React.Component {
 		);
 	}
 
+    let style = {
+        width: '100%',
+        height: $(window).height() - 75
+    };
 
 
     let markersHtml = this.props.markers.map(marker => {
@@ -102,7 +106,7 @@ class MapContainer extends React.Component {
     });
 
     return (
-        <div style={{width: 500 + 'px', height: 500 + 'px'}}>
+        <div style={style}>
 
             <GoogleMap
                 initialCenter={[54.95,23.8]}

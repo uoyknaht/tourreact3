@@ -65,7 +65,7 @@ class GoogleMap extends React.Component {
         // }
 
         return (
-            <div>
+            <div className="google-map">
                 <div id="google-map" className="google-map"></div>
                 {this.props.children}
             </div>
