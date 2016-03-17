@@ -31,10 +31,10 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         loaders: ['react-hot', 'babel?presets[]=react,presets[]=es2015,presets[]=stage-2']
-      },
+      },      
       {
         test: /\.scss$/,
         loader: 'style!css!sass'
