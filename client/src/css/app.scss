@@ -28,6 +28,7 @@ body {
     // margin-left: -40px;
     // margin-top: -30px;
 
+    &.is-active,
     &:hover {
         transform: scale(1.4, 1.4);
     }

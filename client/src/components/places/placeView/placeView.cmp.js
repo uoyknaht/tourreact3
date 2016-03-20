@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect } from 'react-redux';
-import { getPlace, cleanActivePlace, deletePlace } from '../../../actions/placeActions';
+import { getPlace, cleanActivePlace, deletePlace, setActivePlace } from '../../../actions/placeActions';
 import { routeActions } from 'react-router-redux';
 import Loader from '../../loader/loader.cmp';
 import { panMapToLatLng } from '../../../services/map.srv';
@@ -28,6 +28,7 @@ class PlaceView extends React.Component {
 	componentWillReceiveProps(newProps) {
 		if (newProps.placeId !== this.props.placeId) {
 			this.props.getPlace(newProps.placeId);
+            
 		}
 		else if (newProps.isDeleted && !this.props.isDeleted) {
 			this.props.dispatch(routeActions.push('/places'));
@@ -40,7 +41,8 @@ class PlaceView extends React.Component {
             };
 
             panMapToLatLng(latLng, window.map);
-        }
+            this.props.setActivePlace(newProps.place.get('_id'));
+        }       
 	}
 
 	onDelete() {
@@ -110,11 +112,11 @@ function mapStateToProps(state,ownProps) {
 function mapDispatchToProps(dispatch) {
 	return {
 		getPlace: (placeId) => dispatch(getPlace(placeId)),
+		setActivePlace: (placeId) => dispatch(setActivePlace(placeId)),
 		cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit)),
 		deletePlace: (placeId) => dispatch(deletePlace(placeId)),
 		dispatch: dispatch
 	}
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceView);

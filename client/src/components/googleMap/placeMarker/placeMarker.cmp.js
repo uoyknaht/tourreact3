@@ -33,7 +33,13 @@ class PlaceMarker extends React.Component {
                 setTimeout(() => {
                     marker.setDraggable(options.draggable);
                 })
-            }            
+            }    
+            
+            if (options.className) {
+                setTimeout(() => {
+                    marker.setClassName(options.className);
+                })
+            }                      
 		}
 
 	    this.setState({
@@ -55,6 +61,10 @@ class PlaceMarker extends React.Component {
         if (this.props.options.draggable !== newProps.options.draggable) {
             this.state.marker.setDraggable(newProps.options.draggable);
         }
+
+        if (this.props.options.className !== newProps.options.className) {
+            this.state.marker.setClassName(newProps.options.className);
+        }        
 
         if (newProps.options.animation
 			&& this.props.options.animation !== newProps.options.animation) {

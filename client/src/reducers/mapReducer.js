@@ -17,7 +17,7 @@ let defaultState = Immutable.fromJS({
     isDraggable: true,
     areMarkersDraggable: false,
     markers: Immutable.List(),
-	activeMarker: null,
+	activeMarkerId: null,
 	markerInEditMode: null,
 	latLngOnDragEnd: {
 		lat: null,
@@ -32,18 +32,8 @@ function getMarkerFromPlace(place) {
         title: place.title,
         lat: place.latitude,
         lng: place.longitude,
-        className: getMarkerClassName(place)
+        category: place.categories && place.categories[0] ? place.categories[0].className : null
     };
-}
-
-function getMarkerClassName(place) {
-    let className = 'tr-marker'
-    
-    if (place.categories && place.categories[0]) {
-        className += ' tr-marker-category-' + place.categories[0].className;
-    }
-    
-    return className;
 }
 
 export default function mapReducer(state = defaultState, action) {
@@ -53,6 +43,8 @@ export default function mapReducer(state = defaultState, action) {
 	let markers;
 	let marker;
 	let activeMarker;
+    let activeMarkerId;
+	let newActiveMarker;
 	let markerInEditMode;
 	let markerId;
 	let index;
@@ -69,6 +61,22 @@ export default function mapReducer(state = defaultState, action) {
 		});
 
       return state.set('markers', markers);
+      
+    case 'SET_ACTIVE_PLACE':
+        newState = unsetActiveMarkerId(state);
+        newActiveMarker = newState.get('markers').find((marker) => {
+            return marker.get('id') === action.placeId;
+        })
+        if (!newActiveMarker) {
+            return newState;
+        }
+        newState = updateMarkerProperty(state, newActiveMarker.get('id'), 'isActive', true);    
+        newState = newState.set('activeMarkerId', newActiveMarker.get('id'));
+        console.log(newState.toJS());
+        return newState;     
+      
+    case 'CLEAN_ACTIVE_PLACE':
+        return unsetActiveMarkerId(state);
 
 	case 'CREATE_TEMP_PLACE':
 
@@ -190,4 +198,14 @@ function updateMarkerProperty(state, markerId, key, value) {
 	});
 
 	return state.set('markers', markers);
+}
+
+function unsetActiveMarkerId(state) {
+    let activeMarkerId = state.get('activeMarkerId')
+    if (!activeMarkerId) {
+        return state;
+    }
+    state = updateMarkerProperty(state, activeMarkerId, 'isActive', false);
+    state = state.set('activeMarkerId', null);
+    return state;             
 }

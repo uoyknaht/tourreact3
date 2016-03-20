@@ -22,3 +22,16 @@ export function markerDragEnd(lat, lng) {
 		lng
 	}
 }
+
+export function setActiveMarker(placeId) {
+	return {
+		type: 'SET_ACTIVE_MARKER',
+        placeId
+	}
+}
+
+export function unsetActiveMarker() {
+	return {
+		type: 'UNSET_ACTIVE_MARKER'
+	}
+}

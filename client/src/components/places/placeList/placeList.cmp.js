@@ -59,6 +59,16 @@ class PlaceList extends React.Component {
       // let url = getThumbUrl()
 
       places.forEach((place) => {
+          
+          let style = {};
+          let categories = place.get('categories')
+
+          if (categories && categories.get(0)) {
+            style = {
+                borderLeft: '5px solid ' + categories.getIn([0, 'color'])
+            }
+          }
+          
 
         // let image = '';
         // let images = place.get('images');
@@ -75,7 +85,7 @@ class PlaceList extends React.Component {
         // <img src={url} />
 
         placesHtml.push(
-          <div to className="list-group-item" key={place.get('_id')}>
+          <div to className="list-group-item" key={place.get('_id')} style={style}>
 
             <Link
                 to={`/places/${place.get('_id')}`}

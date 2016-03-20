@@ -56,6 +56,22 @@ class MapContainer extends React.Component {
       // marker.lat = a.lat;
       // marker.lng = a.lng;
   }
+  
+    _getMarkerClassName(marker) {
+        let className = 'tr-marker'
+        
+        if (marker.get('category')) {
+            className += ' tr-marker-category-' + marker.get('category');
+        }
+        
+        if (marker.get('isActive')) {
+            console.log(555);
+            className += ' is-active';
+        }
+        
+        return className;
+    }  
+    
 
   render() {
 
@@ -89,7 +105,7 @@ class MapContainer extends React.Component {
 			animation: marker.get('animation'),
 			onClick: this._onMarkerClick,
 			onDragEnd: this.props.markerDragEnd,
-			className: marker.get('className'),
+			className: this._getMarkerClassName(marker),
 			width: 40,
 			height: 40,
 		    markerEdgeOffsetLeft: 20,

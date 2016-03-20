@@ -223,7 +223,7 @@ class PlaceAddOrEdit extends React.Component {
 
         if (place) {
             placeCategories = place.get('categories').map((category) => {
-                return category._id
+                return category.get('_id')
             });
         }
 

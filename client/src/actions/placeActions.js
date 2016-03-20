@@ -97,6 +97,13 @@ function responseGetPlaceError(error) {
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
+export function setActivePlace(placeId) {
+  return {
+    type: 'SET_ACTIVE_PLACE',
+    placeId
+  }
+}
+
 export function cleanActivePlace(isForEdit) {
   return {
     type: 'CLEAN_ACTIVE_PLACE',

@@ -28,8 +28,8 @@ CustomMarker.prototype.onAdd = function() {
 	}
 
     div = this.div = document.createElement('div');
-    div.className = this.args.className || 'marker';
-	div.classList.add('animated');
+    this.setClassName(this.args.className || 'marker')
+    div.className = this.args.className || 'marker';	
     div.style.position = 'absolute';
     div.style.width = this.width + 'px';
     div.style.height = this.height + 'px';
@@ -84,6 +84,14 @@ CustomMarker.prototype.setDraggable = function(isDraggable) {
 	else {
 		disableDragging.call(this);
 	}
+};
+
+CustomMarker.prototype.setClassName = function(className) {
+    if (!this.div) {
+        return;
+    }
+    this.div.className = className;
+    this.div.classList.add('animated');
 };
 
 CustomMarker.prototype.animate = function(animation) {
