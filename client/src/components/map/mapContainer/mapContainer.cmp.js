@@ -57,7 +57,6 @@ class MapContainer extends React.Component {
       // marker.lng = a.lng;
   }
 
-
   render() {
 
     const defaultMapCenter = {lat: 55.44251502256722, lng: 23.74947999804681};
@@ -76,7 +75,6 @@ class MapContainer extends React.Component {
 
 
     let markersHtml = this.props.markers.map(marker => {
-
 		let latLng = {
 			lat: marker.get('lat'),
 			lng: marker.get('lng')
@@ -91,7 +89,7 @@ class MapContainer extends React.Component {
 			animation: marker.get('animation'),
 			onClick: this._onMarkerClick,
 			onDragEnd: this.props.markerDragEnd,
-			className: 'tr-marker',
+			className: marker.get('className'),
 			width: 40,
 			height: 40,
 		    markerEdgeOffsetLeft: 20,

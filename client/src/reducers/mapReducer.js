@@ -31,8 +31,13 @@ function getMarkerFromPlace(place) {
         id: place._id,
         title: place.title,
         lat: place.latitude,
-        lng: place.longitude
+        lng: place.longitude,
+        className: getMarkerClassName(place)
     };
+}
+
+function getMarkerClassName(place) {
+    return 'tr-marker tr-marker-category-' + place.categories[0].className;
 }
 
 export default function mapReducer(state = defaultState, action) {
