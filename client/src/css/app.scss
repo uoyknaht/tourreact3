@@ -32,7 +32,145 @@ body {
     &:hover {
         transform: scale(1.4, 1.4);
     }
+
+    // &.is-active {
+    //     animation: pulse2 1s linear infinite;
+    // }
+    
+    // animation: pulse 3s ease-out;
+    
+    
+    // animation: pulse1 1s linear infinite;
+    // animation-iteration-count: infinite;
+    
+    
 }
+
+
+@-webkit-keyframes "pulse2" {
+ 0% {
+    -webkit-transform: scale(1.4);
+   	-moz-transform: scale(1.4);
+   	-o-transform: scale(1.4);
+   	-ms-transform: scale(1.4);
+   	transform: scale(1.4);
+ }
+ 50% {
+    -webkit-transform: scale(2);
+   	-moz-transform: scale(2);
+   	-o-transform: scale(2);
+   	-ms-transform: scale(2);
+   	transform: scale(2);
+ }
+ 100% {
+    -webkit-transform: scale(1.4);
+   	-moz-transform: scale(1.4);
+   	-o-transform: scale(1.4);
+   	-ms-transform: scale(1.4);
+   	transform: scale(1.4);
+ }
+
+}
+
+
+
+#container {
+  margin-top: 20px;
+  margin-left: 30px;
+  position: relative;
+  background: #45453f;
+}
+
+.pulse {
+  width: 10px;
+  height: 10px;
+  border: 5px solid #f7f14c;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  background-color: #716f42;
+  z-index: 10;
+  position: absolute;
+}
+
+.dot {
+  border: 10px solid #fff601;
+  background: transparent;
+  -webkit-border-radius: 60px;
+  -moz-border-radius: 60px;
+  border-radius: 60px;
+  height: 50px;
+  width: 50px;
+  -webkit-animation: pulse 3s ease-out;
+  -moz-animation: pulse 3s ease-out;
+  animation: pulse 3s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  position: absolute;
+  top: -25px;
+  left: -25px;
+  z-index: 1;
+  opacity: 0;
+}
+
+// @-moz-keyframes pulse {
+//  0% {
+//     -moz-transform: scale(0);
+//     opacity: 0.0;
+//  }
+//  25% {
+//     -moz-transform: scale(0);
+//     opacity: 0.1;
+//  }
+//  50% {
+//     -moz-transform: scale(0.1);
+//     opacity: 0.3;
+//  }
+//  75% {
+//     -moz-transform: scale(0.5);
+//     opacity: 0.5;
+//  }
+//  100% {
+//     -moz-transform: scale(1);
+//     opacity: 0.0;
+//  }
+// }
+
+// @-webkit-keyframes "pulse" {
+//  0% {
+//     // -webkit-transform: scale(0);
+//     transform: scale(1.4, 1.4);
+//     //opacity: 0.0;
+//  }
+//  25% {
+//     transform: scale(1.6, 1.6);
+//    // opacity: 0.1;
+//  }
+//  50% {
+//     transform: scale(1.8, 1.8);
+//     //opacity: 0.3;
+//  }
+//  75% {
+//     transform: scale(2, 2);
+//    // opacity: 0.5;
+//  }
+//  100% {
+//     transform: scale(3.5, 3.5);
+//    // opacity: 0.0;
+//  }
+// }
+
+
+
+
+
+
+
+
+
+
+
 
 // mound #7f3f00
 // nature-monument #007f3f
