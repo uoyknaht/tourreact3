@@ -17,7 +17,8 @@ body {
 .tr-marker {
     // background: green;
     // background-image: url('../assets/icons/map_icons/map_icon_text_red.svg');
-    background-image: url('img/place-marker.svg');
+     background-image: url('img/place-marker.svg');
+    
     background-size: contain;
     transform: scale(1, 1);
     -webkit-filter: contrast(1);
@@ -31,6 +32,27 @@ body {
         transform: scale(1.4, 1.4);
     }
 }
+
+$categories: beach mound castle nature-monument panorama;
+
+@each $category in $categories {
+    .tr-marker-category-#{$category} { 
+        background-image: url('img/markers/#{$category}.svg');
+    }
+}
+
+// .tr-marker-category-beach {
+//     background-image: url('img/markers/beach.svg');
+// }
+
+// .tr-marker-category-mound {
+//     background-image: url('img/markers/mound.svg');
+// }
+
+// .tr-marker-category-nature-monument {
+//     background-image: url('img/markers/nature-monument.svg');
+// }
+
 
 .list-group-item-heading {
     color: #333333;
