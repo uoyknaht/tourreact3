@@ -33,6 +33,12 @@ body {
     }
 }
 
+// mound #7f3f00
+// nature-monument #007f3f
+// panorama #26b6ff
+// castle #bf0000
+// beach #086ad3
+
 $categories: beach mound castle nature-monument panorama;
 
 @each $category in $categories {
@@ -40,19 +46,6 @@ $categories: beach mound castle nature-monument panorama;
         background-image: url('img/markers/#{$category}.svg');
     }
 }
-
-// .tr-marker-category-beach {
-//     background-image: url('img/markers/beach.svg');
-// }
-
-// .tr-marker-category-mound {
-//     background-image: url('img/markers/mound.svg');
-// }
-
-// .tr-marker-category-nature-monument {
-//     background-image: url('img/markers/nature-monument.svg');
-// }
-
 
 .list-group-item-heading {
     color: #333333;

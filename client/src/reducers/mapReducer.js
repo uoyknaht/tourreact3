@@ -37,7 +37,13 @@ function getMarkerFromPlace(place) {
 }
 
 function getMarkerClassName(place) {
-    return 'tr-marker tr-marker-category-' + place.categories[0].className;
+    let className = 'tr-marker'
+    
+    if (place.categories && place.categories[0]) {
+        className += ' tr-marker-category-' + place.categories[0].className;
+    }
+    
+    return className;
 }
 
 export default function mapReducer(state = defaultState, action) {

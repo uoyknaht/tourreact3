@@ -3,8 +3,10 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Category = mongoose.model('Category');
 var Place = mongoose.model('Place');
+var doCustomQueries = require('../queries/customQueries')
 
 router.get('/api/places', function(req, res, next) {
+    doCustomQueries(req, res, next);
 
     var query = {};
 
@@ -25,8 +27,7 @@ router.get('/api/places', function(req, res, next) {
         query.title = { 
             $regex: new RegExp('.*' + req.query.search + '.*', 'i')
         }
-    }
-
+    }   
 
   Place
     .find(query)
@@ -35,9 +36,10 @@ router.get('/api/places', function(req, res, next) {
         if (err) {
             return next(err);
         }
-
+        
         res.json(places);
   });
+  
 });
 
 router.get('/api/places/:id', function(req, res, next) {
