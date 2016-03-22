@@ -63,17 +63,16 @@ export default function mapReducer(state = defaultState, action) {
       return state.set('markers', markers);
       
     case 'SET_ACTIVE_PLACE':
-        newState = unsetActiveMarkerId(state);
-        newActiveMarker = newState.get('markers').find((marker) => {
+        state = unsetActiveMarkerId(state);
+        newActiveMarker = state.get('markers').find((marker) => {
             return marker.get('id') === action.placeId;
         })
         if (!newActiveMarker) {
-            return newState;
+            return state;
         }
-        newState = updateMarkerProperty(state, newActiveMarker.get('id'), 'isActive', true);    
-        newState = newState.set('activeMarkerId', newActiveMarker.get('id'));
-        console.log(newState.toJS());
-        return newState;     
+        state = updateMarkerProperty(state, newActiveMarker.get('id'), 'isActive', true);    
+        state = state.set('activeMarkerId', newActiveMarker.get('id'));
+        return state;     
       
     case 'CLEAN_ACTIVE_PLACE':
         return unsetActiveMarkerId(state);
