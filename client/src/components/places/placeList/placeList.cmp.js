@@ -27,7 +27,7 @@ class PlaceList extends React.Component {
 
         if (!places) {
             return (
-                <div>
+                <div className="tr-main-block">
                     {filterCmp}
                     <Loader />
                 </div>
@@ -36,7 +36,7 @@ class PlaceList extends React.Component {
 
         if (!places.size) {
             return (
-                <div>
+                <div className="tr-main-block">
                     {filterCmp}
 					<div className="row">
 	                    <div className="col-md-6">
@@ -106,7 +106,7 @@ class PlaceList extends React.Component {
       });
 
         return (
-            <div>
+            <div className="tr-main-block">
                 {filterCmp}
                 <div className="row">
                     <div className="col-md-6">
@@ -123,6 +123,7 @@ class PlaceList extends React.Component {
                   <div className="list-group">
                     {placesHtml}
                   </div>
+                  {this.props.children}
             </div>
         );
     }

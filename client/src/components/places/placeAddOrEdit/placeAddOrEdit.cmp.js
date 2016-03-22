@@ -213,7 +213,9 @@ class PlaceAddOrEdit extends React.Component {
 
         if (this.props.isLoading) {
             return (
-              <Loader />
+                <div className="tr-main-block">
+                    <Loader />
+                </div>
             );
         }
 
@@ -245,7 +247,7 @@ class PlaceAddOrEdit extends React.Component {
 		});
 
         return (
-
+            <div className="tr-main-block">
           <form>
 
             <div className="form-group">
@@ -340,7 +342,7 @@ class PlaceAddOrEdit extends React.Component {
               onClick={this.onSubmit} />
 
           </form>
-
+          </div>
         );
     }
 

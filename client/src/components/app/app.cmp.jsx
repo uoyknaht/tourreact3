@@ -16,16 +16,10 @@ export default class App extends React.Component {
       return (
         <div>
             <Nav />
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-md-6">
-                        <PageTitle />
-                        {this.props.children}
-                    </div>
-                    <div className="col-md-6">
-						<MapContainer />
-                    </div>
-                </div>
+            <div className="tr-main-wrap">
+                // <PageTitle />
+                {this.props.children}
+                <MapContainer />
             </div>
         </div>
       )

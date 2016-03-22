@@ -279,6 +279,7 @@ import App from './components/app/app.cmp';
 import PlaceList from './components/places/placeList/placeList.cmp';
 import PlaceView from './components/places/placeView/placeView.cmp';
 import PlaceAddOrEdit from './components/places/placeAddOrEdit/placeAddOrEdit.cmp';
+import PlaceContainer from './components/places/placeContainer/placeContainer.cmp';
 import './css/bootstrap.css';
 import './css/animate.css';
 import './css/toastr.scss';
@@ -300,15 +301,19 @@ const store = createStore(appReducer, initialState, applyMiddleware(reduxRouterM
 // });
 
 
+// <Route path="places(?categories=***)" component={PlaceList}>
+       
 ReactDOM.render((
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path="/" component={App}>
-        <Route path="places(?categories=***)" component={PlaceList}/>
-        <Route path="places(?search=***)" component={PlaceList}/>
-        <Route name="placeView" path="places/:id" component={PlaceView}/>
-        <Route name="placeCreate" path="places/actions/create" component={PlaceAddOrEdit}/>
-        <Route name="placeEdit" path="places/:id/edit" component={PlaceAddOrEdit}/>
+      
+      <Route path="places(?search=***)" component={PlaceList}>
+        <Route path=":id" component={PlaceView} />
+        <Route name="placeCreate" path="actions/create" component={PlaceAddOrEdit}/>
+        <Route name="placeEdit" path=":id/edit" component={PlaceAddOrEdit}/>
+      </Route>
+
       </Route>
     </Router>
   </Provider>

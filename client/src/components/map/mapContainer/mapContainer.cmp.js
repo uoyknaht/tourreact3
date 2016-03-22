@@ -120,7 +120,7 @@ class MapContainer extends React.Component {
     });
 
     return (
-        <div style={style}>
+        <div className="tr-map-container">
 
             <GoogleMap
                 initialCenter={[54.95,23.8]}

@@ -2,8 +2,37 @@
 @import "_toastrOverride";
 // @import "map_marker";
 
+$navHeight: 50px;
+$leftColWidth: 500px;
+
 body {
       padding-top: 70px;
+      overflow: hidden;
+}
+
+
+.tr-main-block {
+    position: fixed;
+    top: $navHeight;
+    left: 0;
+    bottom: 0;
+    width: $leftColWidth;
+    background: #fff;
+    padding: 20px;
+    overflow-y: auto;
+    
+    .tr-main-block {
+        // top: 0;
+    }
+}
+
+.tr-map-container {
+    position: absolute;
+    top: $navHeight;
+    left: $leftColWidth;
+    bottom: 0;
+    right: 0;
+    background: #fff;
 }
 
 .google-map {
