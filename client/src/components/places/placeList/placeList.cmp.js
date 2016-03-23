@@ -22,7 +22,7 @@ class PlaceList extends React.Component {
     render() {
         let places = this.props.places;
         let filterCmp = (
-            <PlacesFilter routeParams={this.props.location} />
+            <PlacesFilter routeLocation={this.props.location} routeParams={this.props.params} />
         );
 
         if (!places) {

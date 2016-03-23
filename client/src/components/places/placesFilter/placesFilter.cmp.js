@@ -20,19 +20,20 @@ class PlaceFilter extends React.Component {
 	 * and initial get of places according to current route query
 	 */
 	componentDidMount() {
-		let query = this.props.routeParams.query
+		let query = this.props.routeLocation.query
         let selectedCategoriesFilter = getFilterFromQuery(query.categories);
 
 		this.props.setCategoriesFilter(selectedCategoriesFilter);
         this.props.setSearchFilter(query.search);
 
 		console.log('initial get');
-		this.props.getPlaces(this.props.routeParams.search);
+		this.props.getPlaces(this.props.routeLocation.search);
     }
 
 	/**
 	 * Method responsible for updating route query when filters state changes
 	 * If filter state is the same, but route query changed, then get of places is executed
+     * except if new route is of single place view
 	 */
     componentWillReceiveProps(newProps) {
 		// TODO: places can receive new category, but in place list this wont be reflected
@@ -49,28 +50,39 @@ class PlaceFilter extends React.Component {
 		  hasCategoriesQueryChanged, hasSearchQueryChanged } = this._getNewPropsParams(newProps);
 
 		if (hasCategoriesFilterChanged || hasSearchFilterChanged) {
-			console.log('change route')
+            
+            if (newProps.routeParams.id) {
+                return;
+            }
+            
 			changeRoute();
 		} else if (hasCategoriesQueryChanged || hasSearchQueryChanged) {
-			let query = newProps.routeParams.query
+			let query = newProps.routeLocation.query
 			let selectedCategoriesFilter = getFilterFromQuery(query.categories);
 
 			this.props.setCategoriesFilter(selectedCategoriesFilter);
 	        this.props.setSearchFilter(query.search);
 
 			console.log('get on route query change');
-			// console.log(this.props.routeParams.search);
-			this.props.getPlaces(newProps.routeParams.search);
+			this.props.getPlaces(newProps.routeLocation.search);
 		}
     }
 
 	_getNewPropsParams(newProps) {
 		return {
-			hasCategoriesFilterChanged: this.props.selectedCategoriesFilter !== newProps.selectedCategoriesFilter,
-	        hasSearchFilterChanged: this.props.searchFilter !== newProps.searchFilter,
-			hasCategoriesQueryChanged: this.props.routeParams.query.categories !== newProps.routeParams.query.categories,
-	        hasSearchQueryChanged: this.props.routeParams.query.search !== newProps.routeParams.query.search
+			hasCategoriesFilterChanged: hasChanged(this.props.selectedCategoriesFilter, newProps.selectedCategoriesFilter),
+	        hasSearchFilterChanged: hasChanged(this.props.searchFilter, newProps.searchFilter),
+			hasCategoriesQueryChanged: hasChanged(this.props.routeLocation.query.categories, newProps.routeLocation.query.categories),
+	        hasSearchQueryChanged: hasChanged(this.props.routeLocation.query.search, newProps.routeLocation.query.search)
 		}
+        
+        function hasChanged(currentProp, newProp) {
+            if (!currentProp && !newProp) {
+                return false;
+            }
+            
+            return currentProp !== newProp;
+        }
 	}
 
     render() {
