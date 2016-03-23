@@ -63,7 +63,12 @@ class PlaceMarker extends React.Component {
         }
 
         if (this.props.options.className !== newProps.options.className) {
-            this.state.marker.setClassName(newProps.options.className);
+            // on page load, marker does not get active without a timeout
+            this.state.marker.setClassName(newProps.options.className);     
+            setTimeout(() => {
+                this.state.marker.setClassName(newProps.options.className);     
+            }, 500)
+            
         }        
 
         if (newProps.options.animation
@@ -72,7 +77,9 @@ class PlaceMarker extends React.Component {
 			this.state.marker.animate(newProps.options.animation);
         }
 
-        if (this.props.latLng !== newProps.latLng) {
+        if (this.props.latLng.lat !== newProps.latLng.lat 
+            || this.props.latLng.lng !== newProps.latLng.lng) {
+                
             this.state.marker.setPosition(newProps.latLng)
         }        
     }

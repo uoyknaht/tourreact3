@@ -65,7 +65,6 @@ class MapContainer extends React.Component {
         }
         
         if (marker.get('isActive')) {
-            console.log(555);
             className += ' is-active';
         }
         

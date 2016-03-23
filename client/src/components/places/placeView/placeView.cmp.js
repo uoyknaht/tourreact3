@@ -17,7 +17,6 @@ class PlaceView extends React.Component {
 	}
 
 	componentDidMount() {
-        console.log(999)
 		const placeId = this.props.placeId;
 		this.props.getPlace(placeId);
 	}
@@ -40,7 +39,6 @@ class PlaceView extends React.Component {
                 lat: newProps.place.get('latitude'),
                 lng: newProps.place.get('longitude')
             };
-
             panMapToLatLng(latLng, window.map);
             this.props.setActivePlace(newProps.place.get('_id'));
         }       
