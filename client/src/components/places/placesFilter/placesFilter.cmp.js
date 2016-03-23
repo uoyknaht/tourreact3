@@ -1,7 +1,7 @@
 import React from 'react';
 import { getPlaces } from '../../../actions/placeActions';
 import { setCategoriesFilter, setSearchFilter } from '../../../actions/filters.act';
-import { getFilterFromQuery } from '../../../services/filters.srv';
+import { getFilterFromQuery, getPlaceListFilterQuery } from '../../../services/filters.srv';
 import { goToPlaceList } from '../../../services/router.srv';
 import { connect }            from 'react-redux';
 // import { routeActions } from 'react-router-redux'
@@ -22,11 +22,8 @@ class PlaceFilter extends React.Component {
 	componentDidMount() {
 		let query = this.props.routeLocation.query
         let selectedCategoriesFilter = getFilterFromQuery(query.categories);
-
 		this.props.setCategoriesFilter(selectedCategoriesFilter);
         this.props.setSearchFilter(query.search);
-
-		console.log('initial get');
 		this.props.getPlaces(this.props.routeLocation.search);
     }
 
@@ -38,34 +35,36 @@ class PlaceFilter extends React.Component {
     componentWillReceiveProps(newProps) {
 		// TODO: places can receive new category, but in place list this wont be reflected
 
-        let changeRoute = () => {
-            goToPlaceList(this.props.dispatch, newProps.selectedCategoriesFilter, newProps.searchFilter);
+        if (!isInPlaceListRoute(newProps)) {
+            console.log('not in place list. Place list filtering stops');
+            return;
         }
 
-        let getPlaces = () => {
-            this.props.getPlaces(newProps.selectedCategoriesFilter, newProps.searchFilter);
-        }
-
-		let { hasCategoriesFilterChanged, hasSearchFilterChanged,
-		  hasCategoriesQueryChanged, hasSearchQueryChanged } = this._getNewPropsParams(newProps);
+		let { 
+            hasCategoriesFilterChanged, 
+            hasSearchFilterChanged,
+		    hasCategoriesQueryChanged, 
+            hasSearchQueryChanged 
+        } = this._getNewPropsParams(newProps);
 
 		if (hasCategoriesFilterChanged || hasSearchFilterChanged) {
-            
-            if (newProps.routeParams.id) {
-                return;
-            }
-            
-			changeRoute();
+            goToPlaceList(this.props.dispatch, newProps.selectedCategoriesFilter, newProps.searchFilter); 
 		} else if (hasCategoriesQueryChanged || hasSearchQueryChanged) {
 			let query = newProps.routeLocation.query
 			let selectedCategoriesFilter = getFilterFromQuery(query.categories);
-
 			this.props.setCategoriesFilter(selectedCategoriesFilter);
 	        this.props.setSearchFilter(query.search);
-
 			console.log('get on route query change');
 			this.props.getPlaces(newProps.routeLocation.search);
 		}
+        
+        function isInPlaceListRoute(props) {
+            if (props.routeParams.id) {
+                return false;
+            }      
+            
+            return true;      
+        }
     }
 
 	_getNewPropsParams(newProps) {

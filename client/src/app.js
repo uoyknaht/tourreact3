@@ -260,6 +260,16 @@
 //
 // console.log(style);
 
+// if (!getPlaceListFilterQuery(newProps.selectedCategoriesFilter, newProps.searchFilter)
+//     && !newProps.routeLocation.query.categories 
+//     && !newProps.routeLocation.query.search) {
+    
+//     console.log('edge case. same route as already is. get places instead of change route');
+//     this.props.getPlaces(newProps.routeLocation.search);
+// } else {
+    // goToPlaceList(this.props.dispatch, newProps.selectedCategoriesFilter, newProps.searchFilter); 
+// }
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render } from 'react-dom'
@@ -308,7 +318,7 @@ ReactDOM.render((
     <Router history={browserHistory}>
       <Route path="/" component={App}>
       
-      <Route path="places(?search=***)" component={PlaceList}>
+      <Route path="places(?categories=***)" component={PlaceList}>
         <Route path=":id" component={PlaceView} />
         <Route name="placeCreate" path="actions/create" component={PlaceAddOrEdit}/>
         <Route name="placeEdit" path=":id/edit" component={PlaceAddOrEdit}/>

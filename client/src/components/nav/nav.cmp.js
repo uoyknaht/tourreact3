@@ -2,15 +2,25 @@ import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect } from 'react-redux';
+import { getPlaceListFilterQuery } from '../../services/filters.srv';
+import { goToPlaceList } from '../../services/router.srv';
 
 class Nav extends React.Component {
 
     constructor() {
         super();
+        this._onPlacesLinkClick = this._onPlacesLinkClick.bind(this);
         this.render = this.render.bind(this);
+    }
+    
+    _onPlacesLinkClick(e) {
+        goToPlaceList(this.props.dispatch, this.props.selectedCategoriesFilter, this.props.searchFilter)
     }
 
     render() {
+        // <li><Link to={placeListUrl} onClick={this._onPlacesLinkClick}>Places</Link></li>
+        
+        let placeListUrl = '/places' + getPlaceListFilterQuery(this.props.selectedCategoriesFilter, this.props.searchFilter);
 
         return (
 
@@ -30,7 +40,7 @@ class Nav extends React.Component {
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav">
                   <li><Link to="/">Home</Link></li>
-                  <li><Link to="/places">Places</Link></li>
+                  <li><a href="#" onClick={this._onPlacesLinkClick}>Places</a></li>
                   <li><Link to="/places/add">Add new place</Link></li>
 
                 </ul>
@@ -117,8 +127,16 @@ class Nav extends React.Component {
 }
 
 function mapStateToProps(state) {
-	return {
-	}
+    return {
+        selectedCategoriesFilter: state.getIn(['filters', 'selectedCategoriesFilter']),
+        searchFilter: state.getIn(['filters', 'searchFilter'])
+    }
 }
 
-export default connect(mapStateToProps)(Nav);
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch: dispatch
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);
