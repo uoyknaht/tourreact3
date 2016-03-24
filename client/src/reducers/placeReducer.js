@@ -9,6 +9,7 @@ let defaultState = Immutable.Map({
 	isFetchingPlaces: false,
 	arePlacesFetched: false,
 	places: Immutable.List(),
+	visiblePlaces: Immutable.List(),
 	activeItemId: null,
 	activeItem: null,
 	isFetchingPlace: false,
@@ -34,10 +35,14 @@ export default function placeReducer(state = defaultState, action) {
 		case 'REQUEST_GET_PLACES':
 			return state.set('isFetchingPlaces', true);
 
+		case 'RESPONSE_FETCH_PLACES':
+			state = state.set('arePlacesFetched', true);
+			state = state.set('places', Immutable.fromJS(action.places));
+			return state;
+
 		case 'RESPONSE_GET_PLACES':
 			state = state.set('isFetchingPlaces', false);
-			state = state.set('areItemsFetched', true);
-			state = state.set('places', Immutable.fromJS(action.places));
+			state = state.set('visiblePlaces', Immutable.fromJS(action.places));
 			return state;
 
 		case 'RESPONSE_GET_PLACES_ERROR':

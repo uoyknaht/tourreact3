@@ -1,30 +1,57 @@
 import fetch from 'isomorphic-fetch'
 import apiService from '../services/api.srv'
-import { getPlaceListFilterQuery } from '../services/filters.srv'
+import { getFilteredPlaces } from '../services/places.srv'
 
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
 export function getPlaces(filterQuery) {
-  return function (dispatch, getState) {
-    if (!shouldGetPlaces(getState())) {
-      return;
-    }
-
-    dispatch(requestGetPlaces());
-
-    return apiService.get(`http://localhost:8081/api/places${filterQuery}`)
-        .then(
-            json => dispatch(responseGetPlaces(json)),
+    return function (dispatch, getState) {
+        dispatch(requestGetPlaces());
+        
+        let state = getState();
+        let areFetched = state.getIn(['places', 'arePlacesFetched'])
+        let isFetching = state.getIn(['places', 'isFetchingPlaces'])
+        
+        
+        
+        
+        
+        if (!areFetched) {
+            // return apiService.get(`http://localhost:8081/api/places${filterQuery}`)
+            return apiService.get(`http://localhost:8081/api/places`)
+            .then(
+                places => {
+                    dispatch(responseFetchPlaces(places))
+                    dispatchFilteredPlaces(places)
+                },
             error => dispatch(responseGetPlacesError(error))
-        )
-  }
+            )
+        } else {
+            let places = state.getIn(['places', 'places']).toJS()
+            dispatchFilteredPlaces(places)
+        } 
+        
+        function dispatchFilteredPlaces(places) {
+            let searchFilter = state.getIn(['filters', 'searchFilter'])
+            let categoriesFilter = state.getIn(['filters', 'selectedCategoriesFilter']).toJS()
+            let visiblePlaces = getFilteredPlaces(places, searchFilter, categoriesFilter)
+            dispatch(responseGetPlaces(visiblePlaces))            
+        }
+    }
 }
 
 function requestGetPlaces() {
   return {
     type: 'REQUEST_GET_PLACES'
+  }
+}
+
+function responseFetchPlaces(places) {
+  return {
+    type: 'RESPONSE_FETCH_PLACES',
+    places
   }
 }
 
@@ -40,18 +67,6 @@ function responseGetPlacesError(error) {
     type: 'RESPONSE_GET_PLACES_ERROR',
     error
   }
-}
-
-function shouldGetPlaces(state) {
-  if (state.getIn(['places', 'isFetchingPlaces'])) {
-    return false;
-  }
-
-  if (state.getIn(['places', 'arePlacesFetched'])) {
-    // return false;
-  }
-
-  return true;
 }
 
 /////////////////////////////////////////////

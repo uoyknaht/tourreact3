@@ -32,7 +32,7 @@ class PlacesContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
 	return {
-	    places: state.getIn(['places', 'places']),
+	    places: state.getIn(['places', 'visiblePlaces']),
         location: ownProps.location
 	}
 }
