@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import apiService from '../services/api.srv'
-import { getFilteredPlaces } from '../services/places.srv'
+import { getFilteredPlaces, getPlaceById } from '../services/places.srv'
 
 /////////////////////////////////////////////
 /////////////////////////////////////////////
@@ -9,14 +9,13 @@ import { getFilteredPlaces } from '../services/places.srv'
 export function getPlaces(filterQuery) {
     return function (dispatch, getState) {
         dispatch(requestGetPlaces());
-        
         let state = getState();
         let areFetched = state.getIn(['places', 'arePlacesFetched'])
         let isFetching = state.getIn(['places', 'isFetchingPlaces'])
         
-        
-        
-        
+        if (!areFetched && isFetching) {
+            return;
+        }
         
         if (!areFetched) {
             // return apiService.get(`http://localhost:8081/api/places${filterQuery}`)
@@ -32,7 +31,6 @@ export function getPlaces(filterQuery) {
             let places = state.getIn(['places', 'places']).toJS()
             dispatchFilteredPlaces(places)
         } 
-        
         function dispatchFilteredPlaces(places) {
             let searchFilter = state.getIn(['filters', 'searchFilter'])
             let categoriesFilter = state.getIn(['filters', 'selectedCategoriesFilter']).toJS()
@@ -74,15 +72,18 @@ function responseGetPlacesError(error) {
 /////////////////////////////////////////////
 
 export function getPlace(placeId, isForEdit) {
-  return function (dispatch) {
-    dispatch(requestGetPlace(isForEdit));
-
-    return apiService.get(`http://localhost:8081/api/places/${placeId}`)
-        .then(
-			json => dispatch(responseGetPlace(json, isForEdit)),
-			error => dispatch(responseGetPlaceError(error))
-		)
-  }
+    return function (dispatch, getState) {
+        dispatch(requestGetPlace(isForEdit));
+        let state = getState();
+        let places = state.getIn(['places', 'places']).toJS()
+        let place = getPlaceById(places, placeId);
+        dispatch(responseGetPlace(place, isForEdit))
+        // return apiService.get(`http://localhost:8081/api/places/${placeId}`)
+        //     .then(
+        // 		json => dispatch(responseGetPlace(json, isForEdit)),
+        // 		error => dispatch(responseGetPlaceError(error))
+        // 	)
+    }
 }
 
 function requestGetPlace(placeId, isForEdit) {

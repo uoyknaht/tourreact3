@@ -32,3 +32,7 @@ export function getFilteredPlaces(allPlaces, searchFilter, categoriesFilter) {
     }
     return places;
 }
+
+export function getPlaceById(places, placeId) {
+    return find(places, { _id: placeId });
+}
