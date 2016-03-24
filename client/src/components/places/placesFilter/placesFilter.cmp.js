@@ -4,6 +4,10 @@ import { setCategoriesFilter, setSearchFilter } from '../../../actions/filters.a
 import { getFilterFromQuery, getPlaceListFilterQuery } from '../../../services/filters.srv';
 import { goToPlaceList } from '../../../services/router.srv';
 import { connect }            from 'react-redux';
+import CategoryList from '../../categories/categoryList/categoryList.cmp';
+import CategoriesTitlesList from '../../categories/categoriesTitlesList/categoriesTitlesList.cmp.js'
+import PlacesFilter from '../placesFilter/placesFilter.cmp'
+import PlacesSearch from '../placesSearch/placesSearch.cmp'
 // import { routeActions } from 'react-router-redux'
 
 class PlaceFilter extends React.Component {
@@ -13,6 +17,7 @@ class PlaceFilter extends React.Component {
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
         this._getNewPropsParams = this._getNewPropsParams.bind(this);
+        this._onResetFiltersClick = this._onResetFiltersClick.bind(this);
     }
 
 	/**
@@ -83,10 +88,19 @@ class PlaceFilter extends React.Component {
             return currentProp !== newProp;
         }
 	}
+    
+    _onResetFiltersClick() {
+        this.props.setSearchFilter('');
+        this.props.setCategoriesFilter([]);
+    }    
 
     render() {
         return (
-            <div></div>
+            <div>
+                <PlacesSearch />
+                <button type="button" className="btn btn-default" onClick={this._onResetFiltersClick}>Reset all filters</button>
+                <CategoryList />
+            </div>
         );
     }
 

@@ -15,7 +15,7 @@ import getThumbUrl from '../../../services/images.srv'
 class PlaceList extends React.Component {
 
     constructor() {
-        super();
+        super();        
         this.render = this.render.bind(this);
     }
 
@@ -37,18 +37,8 @@ class PlaceList extends React.Component {
         if (!places.size) {
             return (
                 <div className="tr-main-block">
+                    <Link to={`/places/actions/create`}>Create new</Link>
                     {filterCmp}
-					<div className="row">
-	                    <div className="col-md-6">
-	                        <Link to={`/places/actions/create`}>Create new</Link>
-	                        <br/>
-	                    </div>
-	                    <div className="col-md-6">
-	                        <PlacesSearch />
-	                    </div>
-	                </div>					
-                    <CategoryList />
-                    <br/>
                     <div className="alert alert-info" role="alert">No places found</div>
                 </div>
             );
@@ -107,23 +97,13 @@ class PlaceList extends React.Component {
 
         return (
             <div className="tr-main-block">
+                <Link to={`/places/actions/create`}>Create new</Link>
                 {filterCmp}
-                <div className="row">
-                    <div className="col-md-6">
-                        <Link to={`/places/actions/create`}>Create new</Link>
-                        <br/>
-                    </div>
-                    <div className="col-md-6">
-                        <PlacesSearch />
-                    </div>
-                </div>
-
-                <CategoryList />
                 <br/>
-                  <div className="list-group">
+                <div className="list-group">
                     {placesHtml}
-                  </div>
-                  {this.props.children}
+                </div>
+                {this.props.children}                
             </div>
         );
     }
