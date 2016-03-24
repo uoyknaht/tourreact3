@@ -1,17 +1,8 @@
 import React from 'react';
-import Router from 'react-router';
-import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
-import { bindActionCreators } from 'redux';
-import { getPlaces } from '../../../actions/placeActions';
-import { connect }            from 'react-redux';
+import { Link } from 'react-router';
 import Loader from '../../loader/loader.cmp';
-import CategoryList from '../../categories/categoryList/categoryList.cmp';
 import CategoriesTitlesList from '../../categories/categoriesTitlesList/categoriesTitlesList.cmp.js'
-import PlacesFilter from '../placesFilter/placesFilter.cmp'
-import PlacesSearch from '../placesSearch/placesSearch.cmp'
-import getThumbUrl from '../../../services/images.srv'
 
-//@connect(state => ({ places: state.places }))
 class PlaceList extends React.Component {
 
     constructor() {
@@ -21,32 +12,20 @@ class PlaceList extends React.Component {
 
     render() {
         let places = this.props.places;
-        let filterCmp = (
-            <PlacesFilter routeLocation={this.props.location} routeParams={this.props.params} />
-        );
 
         if (!places) {
             return (
-                <div className="tr-main-block">
-                    {filterCmp}
-                    <Loader />
-                </div>
+                <Loader />
             );
         }
 
         if (!places.size) {
             return (
-                <div className="tr-main-block">
-                    <Link to={`/places/actions/create`}>Create new</Link>
-                    {filterCmp}
-                    <div className="alert alert-info" role="alert">No places found</div>
-                </div>
+                <div className="alert alert-info" role="alert">No places found</div>
             );
         }
 
       var placesHtml = [];
-
-      // let url = getThumbUrl()
 
       places.forEach((place) => {
           
@@ -58,21 +37,6 @@ class PlaceList extends React.Component {
                 borderLeft: '5px solid ' + categories.getIn([0, 'color'])
             }
           }
-          
-
-        // let image = '';
-        // let images = place.get('images');
-        
-
-        // if (images) {
-        //     // let url = getThumbUrl(images.get(0))
-        //     // url = getThumbUrl()
-        //     // let url = images.get(0)
-        //     // console.log(url);
-        //     // image = <img src={url} />;
-        //     // image = <img src="' + url + '" />;
-        //     // image = '<img src="' + images.get(0) + '" />';
-        // <img src={url} />
 
         placesHtml.push(
           <div to className="list-group-item" key={place.get('_id')} style={style}>
@@ -96,30 +60,12 @@ class PlaceList extends React.Component {
       });
 
         return (
-            <div className="tr-main-block">
-                <Link to={`/places/actions/create`}>Create new</Link>
-                {filterCmp}
-                <br/>
-                <div className="list-group">
-                    {placesHtml}
-                </div>
-                {this.props.children}                
+            <div className="list-group">
+                {placesHtml}
             </div>
         );
     }
 
 }
 
-function mapStateToProps(state, ownProps) {
-	return {
-	    places: state.getIn(['places', 'places']),
-        location: ownProps.location
-	}
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PlaceList);
+export default PlaceList

@@ -98,7 +98,11 @@ class PlaceFilter extends React.Component {
         return (
             <div>
                 <PlacesSearch />
-                <button type="button" className="btn btn-default" onClick={this._onResetFiltersClick}>Reset all filters</button>
+                <button type="button" 
+                    className="btn btn-default" 
+                    onClick={this._onResetFiltersClick}>
+                    Reset all filters
+                </button>
                 <CategoryList />
             </div>
         );

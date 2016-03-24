@@ -286,10 +286,9 @@ import { fromJS }                       from 'immutable';
 import { DefaultRoute, Route, Router, browserHistory } from 'react-router';
 import Immutable from 'immutable';
 import App from './components/app/app.cmp';
-import PlaceList from './components/places/placeList/placeList.cmp';
+import PlacesContainer from './components/places/placesContainer/placesContainer.cmp';
 import PlaceView from './components/places/placeView/placeView.cmp';
 import PlaceAddOrEdit from './components/places/placeAddOrEdit/placeAddOrEdit.cmp';
-import PlaceContainer from './components/places/placeContainer/placeContainer.cmp';
 import './css/bootstrap.css';
 import './css/animate.css';
 import './css/toastr.scss';
@@ -318,7 +317,7 @@ ReactDOM.render((
     <Router history={browserHistory}>
       <Route path="/" component={App}>
       
-      <Route path="places(?categories=***)" component={PlaceList}>
+      <Route path="places(?categories=***)" component={PlacesContainer}>
         <Route path=":id" component={PlaceView} />
         <Route name="placeCreate" path="actions/create" component={PlaceAddOrEdit}/>
         <Route name="placeEdit" path=":id/edit" component={PlaceAddOrEdit}/>
