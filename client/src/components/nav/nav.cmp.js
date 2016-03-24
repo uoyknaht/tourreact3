@@ -14,6 +14,7 @@ class Nav extends React.Component {
     }
     
     _onPlacesLinkClick(e) {
+        e.preventDefault()
         goToPlaceList(this.props.dispatch, this.props.selectedCategoriesFilter, this.props.searchFilter)
     }
 
@@ -40,7 +41,7 @@ class Nav extends React.Component {
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav">
                   <li><Link to="/">Home</Link></li>
-                  <li><a href="#" onClick={this._onPlacesLinkClick}>Places</a></li>
+                  <li><a href={placeListUrl} onClick={this._onPlacesLinkClick}>Places</a></li>
                   <li><Link to="/places/add">Add new place</Link></li>
 
                 </ul>
