@@ -43,11 +43,11 @@ function responseGetPlacesError(error) {
 }
 
 function shouldGetPlaces(state) {
-  if (state.getIn(['places', 'isFetchingItems'])) {
+  if (state.getIn(['places', 'isFetchingPlaces'])) {
     return false;
   }
 
-  if (state.getIn(['places', 'areItemsFetched'])) {
+  if (state.getIn(['places', 'arePlacesFetched'])) {
     // return false;
   }
 

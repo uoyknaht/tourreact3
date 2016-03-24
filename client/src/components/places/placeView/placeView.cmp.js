@@ -102,7 +102,7 @@ class PlaceView extends React.Component {
 function mapStateToProps(state,ownProps) {
 
 	return {
-		isLoading: state.getIn(['places', 'isFetchingItem']),
+		isLoading: state.getIn(['places', 'isFetchingPlace']),
 		isDeleting: state.getIn(['places', 'isDeletingItem']),
 		isDeleted: state.getIn(['places', 'isItemDeleted']),
 		placeId: ownProps.params.id,

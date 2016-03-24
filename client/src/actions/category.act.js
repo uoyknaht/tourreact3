@@ -42,11 +42,11 @@ function responseGetCategoriesError(error) {
 }
 
 function shouldGetCategories(state) {
-  if (state.getIn(['categories', 'isFetchingItems'])) {
+  if (state.getIn(['categories', 'isFetchingCategories'])) {
     return false;
   }
 
-  if (state.getIn(['categories', 'areItemsFetched'])) {
+  if (state.getIn(['categories', 'areCategoriesFetched'])) {
     return false;
   }
 
