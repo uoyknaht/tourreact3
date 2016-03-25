@@ -8,22 +8,27 @@ import { getFilteredPlaces, getPlaceById } from '../services/places.srv'
 
 export function getPlaces(filterQuery) {
     return function (dispatch, getState) {
+        if (!areFetched && isFetching) {
+            return;
+        }
         dispatch(requestGetPlaces());
         let state = getState();
         let areFetched = state.getIn(['places', 'arePlacesFetched'])
         let isFetching = state.getIn(['places', 'isFetchingPlaces'])
-        
-        if (!areFetched && isFetching) {
-            return;
-        }
         
         if (!areFetched) {
             // return apiService.get(`http://localhost:8081/api/places${filterQuery}`)
             return apiService.get(`http://localhost:8081/api/places`)
             .then(
                 places => {
+                    state = getState();
+                    let placeIdInQueue = state.getIn(['places', 'placeIdInQueue'])
                     dispatch(responseFetchPlaces(places))
                     dispatchFilteredPlaces(places)
+                    if (placeIdInQueue) {
+                        dispatch(removePlaceFromQueue())
+                        dispatch(getPlace(placeIdInQueue, false))
+                    }
                 },
             error => dispatch(responseGetPlacesError(error))
             )
@@ -73,10 +78,15 @@ function responseGetPlacesError(error) {
 
 export function getPlace(placeId, isForEdit) {
     return function (dispatch, getState) {
-        dispatch(requestGetPlace(isForEdit));
-        let state = getState();
+        dispatch(requestGetPlace(isForEdit))
+        let state = getState()
+        let areFetched = state.getIn(['places', 'arePlacesFetched'])
+        if (!areFetched) {
+            dispatch(addPlaceToQueue(placeId))
+            return
+        }
         let places = state.getIn(['places', 'places']).toJS()
-        let place = getPlaceById(places, placeId);
+        let place = getPlaceById(places, placeId)
         dispatch(responseGetPlace(place, isForEdit))
         // return apiService.get(`http://localhost:8081/api/places/${placeId}`)
         //     .then(
@@ -106,6 +116,19 @@ function responseGetPlaceError(error) {
   return {
     type: 'RESPONSE_GET_PLACE_ERROR',
     error
+  }
+}
+
+function addPlaceToQueue(placeId) {
+  return {
+    type: 'ADD_PLACE_TO_QUEUE',
+    placeId
+  }
+}
+
+function removePlaceFromQueue() {
+  return {
+    type: 'REMOVE_PLACE_FROM_QUEUE'
   }
 }
 

@@ -28,7 +28,6 @@ class PlaceView extends React.Component {
 	componentWillReceiveProps(newProps) {
 		if (newProps.placeId !== this.props.placeId) {
 			this.props.getPlace(newProps.placeId);
-            
 		}
 		else if (newProps.isDeleted && !this.props.isDeleted) {
 			this.props.dispatch(routeActions.push('/places'));

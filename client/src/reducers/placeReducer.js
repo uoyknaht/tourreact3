@@ -18,7 +18,8 @@ let defaultState = Immutable.Map({
 	lastCreatedItemId: null,
 	lastUpdatedItemId: null,
 	isDeletingItem: false,
-	isItemDeleted: false
+	isItemDeleted: false,
+	placeIdInQueue: null
 });
 
 export default function placeReducer(state = defaultState, action) {
@@ -48,6 +49,12 @@ export default function placeReducer(state = defaultState, action) {
 		case 'RESPONSE_GET_PLACES_ERROR':
 			notifierService.error('error RESPONSE_GET_PLACES_ERROR');
 			return state.set('isFetchingPlaces', false);
+
+		case 'ADD_PLACE_TO_QUEUE':
+			return state.set('placeIdInQueue', action.placeId);
+
+		case 'REMOVE_PLACE_FROM_QUEUE':
+			return state.set('placeIdInQueue', null);
 
 /////////////////////////////////////////////
 
