@@ -24,13 +24,9 @@ class MapContainer extends React.Component {
     this._draggableMarker = null;
   }
 
-	_onMarkerClick(markerId, marker, map) {
-		// TODO: decide where this should be handled
-		this.props.dispatch(routeActions.push(`/places/${markerId}`));
-		// this.props.clickMarker(markerId, marker);
+	_onMarkerClick(markerOptions) {
+		this.props.dispatch(routeActions.push(`/places/${markerOptions.slug}`));
 	}
-
-
 
   _onBoundsChange(center, zoom, bounds, marginBounds) {
     // console.log(`new center: ${center}`);
@@ -99,6 +95,7 @@ class MapContainer extends React.Component {
 
 		let options = {
 			id: marker.get('id'),
+            slug: marker.get('slug'),
 			text: marker.get('title'),
 			draggable: marker.get('draggable'),
 			animation: marker.get('animation'),

@@ -29,6 +29,7 @@ let defaultState = Immutable.fromJS({
 function getMarkerFromPlace(place) {
     return {
         id: place._id,
+        slug: place.slug,
         title: place.title,
         lat: place.latitude,
         lng: place.longitude,

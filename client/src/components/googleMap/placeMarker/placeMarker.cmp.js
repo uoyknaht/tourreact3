@@ -21,7 +21,7 @@ class PlaceMarker extends React.Component {
 	    let marker = new CustomMarker(latLng, map, options);
 
 	    marker.addListener('click', () => {
-	        this.props.options.onClick(options.id, marker, map);
+	        this.props.options.onClick(options);
 	    });
 
 		if (marker) {
