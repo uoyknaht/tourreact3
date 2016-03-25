@@ -36,3 +36,14 @@ export function getFilteredPlaces(allPlaces, searchFilter, categoriesFilter) {
 export function getPlaceById(places, placeId) {
     return find(places, { _id: placeId });
 }
+
+export function getPlaceIdFromSlug(state, slug) {
+    if (!slug) {
+        return null
+    }
+    const map = state.getIn(['places', 'placesSlugsIdsMap'])
+    if (!map) {
+        return null
+    }
+    return map.get(slug)
+}

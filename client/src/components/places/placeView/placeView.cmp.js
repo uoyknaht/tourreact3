@@ -6,6 +6,7 @@ import { getPlace, cleanActivePlace, deletePlace, setActivePlace } from '../../.
 import { routeActions } from 'react-router-redux';
 import Loader from '../../loader/loader.cmp';
 import { panMapToLatLng } from '../../../services/map.srv';
+import { getPlaceIdFromSlug } from '../../../services/places.srv';
 import CategoriesTitlesList from '../../categories/categoriesTitlesList/categoriesTitlesList.cmp.js'
 
 class PlaceView extends React.Component {
@@ -98,13 +99,13 @@ class PlaceView extends React.Component {
 
 }
 
-function mapStateToProps(state,ownProps) {
+function mapStateToProps(state, ownProps) {
 
 	return {
 		isLoading: state.getIn(['places', 'isFetchingPlace']),
 		isDeleting: state.getIn(['places', 'isDeletingItem']),
 		isDeleted: state.getIn(['places', 'isItemDeleted']),
-		placeId: ownProps.params.id,
+		placeId: getPlaceIdFromSlug(state, ownProps.params.slug),
 		place: state.getIn(['places', 'activeItem'])
 	}
 }

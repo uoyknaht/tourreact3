@@ -318,7 +318,7 @@ ReactDOM.render((
       <Route path="/" component={App}>
       
       <Route path="places(?categories=***)" component={PlacesContainer}>
-        <Route path=":id" component={PlaceView} />
+        <Route path=":slug" component={PlaceView} />
         <Route name="placeCreate" path="actions/create" component={PlaceAddOrEdit}/>
         <Route name="placeEdit" path=":id/edit" component={PlaceAddOrEdit}/>
       </Route>

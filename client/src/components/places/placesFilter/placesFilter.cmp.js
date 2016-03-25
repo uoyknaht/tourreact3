@@ -8,7 +8,6 @@ import CategoryList from '../../categories/categoryList/categoryList.cmp';
 import CategoriesTitlesList from '../../categories/categoriesTitlesList/categoriesTitlesList.cmp.js'
 import PlacesFilter from '../placesFilter/placesFilter.cmp'
 import PlacesSearch from '../placesSearch/placesSearch.cmp'
-// import { routeActions } from 'react-router-redux'
 
 class PlaceFilter extends React.Component {
 
@@ -64,7 +63,7 @@ class PlaceFilter extends React.Component {
 		}
         
         function isInPlaceListRoute(props) {
-            if (props.routeParams.id) {
+            if (props.routeParams.slug) {
                 return false;
             }      
             

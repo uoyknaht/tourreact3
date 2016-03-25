@@ -5,6 +5,7 @@ var CategorySchema = require('./categoryModel');
 var PlaceSchema = new Schema({
   // _creator : { type: Schema.Types.ObjectId, ref: 'Category' },
   title: String,
+  slug: String,
   address: String,
   isAddressApproximate: Boolean,
   latitude: {

@@ -1,6 +1,7 @@
 import Immutable from 'immutable';
 import remove from 'lodash/remove';
 import find from 'lodash/find';
+import forEach from 'lodash/forEach';
 import indexOf from 'lodash/indexOf';
 import getMergedState from './reducerHelpers';
 import notifierService from '../services/notifier.srv';
@@ -10,6 +11,7 @@ let defaultState = Immutable.Map({
 	arePlacesFetched: false,
 	places: Immutable.List(),
 	visiblePlaces: Immutable.List(),
+	placesSlugsIdsMap: null,
 	activeItemId: null,
 	activeItem: null,
 	isFetchingPlace: false,
@@ -30,6 +32,7 @@ export default function placeReducer(state = defaultState, action) {
 	let place;
 	let newPlace;
 	let index;
+    let placesSlugsIdsMap;
 
 	switch(action.type) {
 
@@ -39,6 +42,11 @@ export default function placeReducer(state = defaultState, action) {
 		case 'RESPONSE_FETCH_PLACES':
 			state = state.set('arePlacesFetched', true);
 			state = state.set('places', Immutable.fromJS(action.places));
+            placesSlugsIdsMap = {};
+            forEach(action.places, (place) => {
+                placesSlugsIdsMap[place.slug] = place._id;
+            })
+            state = state.set('placesSlugsIdsMap', Immutable.Map(placesSlugsIdsMap));
 			return state;
 
 		case 'RESPONSE_GET_PLACES':

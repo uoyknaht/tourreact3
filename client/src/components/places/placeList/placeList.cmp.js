@@ -42,7 +42,7 @@ class PlaceList extends React.Component {
           <div to className="list-group-item" key={place.get('_id')} style={style}>
 
             <Link
-                to={`/places/${place.get('_id')}`}
+                to={`/places/${place.get('slug')}`}
                 className="list-group-item-heading">
 
                 {place.get('title')}
