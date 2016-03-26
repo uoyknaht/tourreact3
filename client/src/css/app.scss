@@ -44,6 +44,16 @@ body {
     border-top: 1px solid #ccc;
 }
 
+.tr-place-view-container {
+    z-index: 2;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.tr-place-view-title {
+    margin-top: 0;
+}
+
 .tr-map-container {
     position: absolute;
     top: $navHeight;
