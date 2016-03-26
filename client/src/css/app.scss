@@ -54,6 +54,23 @@ body {
     margin-top: 0;
 }
 
+.tr-categories-filter {
+    margin-top: 20px;
+    -moz-column-count: 2;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 20px;    
+    
+    .checkbox {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        
+        & + .checkbox {
+            margin-top: 5px;
+        }
+    }
+}
+
 .tr-map-container {
     position: absolute;
     top: $navHeight;

@@ -51,7 +51,7 @@ class CategoryList extends React.Component {
 	    });
 
         return (
-	        <form>
+	        <form className="tr-categories-filter">
 	            {html}
 			</form>
         );
