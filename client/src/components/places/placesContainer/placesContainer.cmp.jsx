@@ -16,13 +16,14 @@ class PlacesContainer extends React.Component {
     render() {
         let places = this.props.places;
 
-
         return (
             <div className="tr-main-block">
-                <Link to={`/places/actions/create`}>Create new</Link>
-                <PlacesFilter routeLocation={this.props.location} routeParams={this.props.params} />
-                <br/>
-                <PlaceList places={this.props.places} />
+                <div className="tr-places-filter-container">
+                    <PlacesFilter routeLocation={this.props.location} routeParams={this.props.params} />
+                </div>
+                <div className="tr-place-list-container">
+                    <PlaceList places={this.props.places} />
+                </div>
                 {this.props.children}                
             </div>
         );

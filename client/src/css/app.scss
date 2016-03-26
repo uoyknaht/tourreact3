@@ -18,12 +18,30 @@ body {
     bottom: 0;
     width: $leftColWidth;
     background: #fff;
-    padding: 20px;
-    overflow-y: auto;
-    
+     
     .tr-main-block {
         // top: 0;
     }
+}
+
+.tr-places-filter-container {
+    padding: 20px;
+}
+
+.tr-btn-reset-filters {
+    float: right;
+}
+
+.tr-place-list-container {
+    position: fixed;
+    top: 280px;
+    left: 0;
+    bottom: 0;
+    width: $leftColWidth;
+    padding: 20px;
+    overflow-y: auto;
+    // background: green;
+    border-top: 1px solid #ccc;
 }
 
 .tr-map-container {

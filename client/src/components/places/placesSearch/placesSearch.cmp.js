@@ -50,13 +50,19 @@ class PlacesSearch extends React.Component {
 
     render() {
         return (
-			<input
-				type="text"
-				placeholder="Search..."
-				ref="placeSearch"
-				defaultValue={this.props.searchFilter}
-				onKeyUp={this._onKeyUp}
-				onBlur={this._onBlur} />
+            <div className="input-group">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search..."
+                    ref="placeSearch"
+                    defaultValue={this.props.searchFilter}
+                    onKeyUp={this._onKeyUp}
+                    onBlur={this._onBlur} />                
+                <span className="input-group-btn">
+                    <button className="btn btn-default" type="button">Go!</button>
+                </span>
+            </div>         
         );
     }
 

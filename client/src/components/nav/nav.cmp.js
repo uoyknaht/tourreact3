@@ -42,7 +42,7 @@ class Nav extends React.Component {
                 <ul className="nav navbar-nav">
                   <li><Link to="/">Home</Link></li>
                   <li><a href={placeListUrl} onClick={this._onPlacesLinkClick}>Places</a></li>
-                  <li><Link to="/places/add">Add new place</Link></li>
+                  <li><Link to="/places/actions/create">Add new place</Link></li>
 
                 </ul>
               </div>
