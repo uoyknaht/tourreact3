@@ -26,6 +26,7 @@ import Loader from '../../loader/loader.cmp';
 import notifierService from '../../../services/notifier.srv';
 import { createMarker, getCurrentCenter, panMapToLatLng } from '../../../services/map.srv';
 import { getPlaceIdFromSlug } from '../../../services/places.srv';
+import { goToPlaceView } from '../../../services/router.srv'
 
 class PlaceAddOrEdit extends React.Component {
 
@@ -87,8 +88,34 @@ class PlaceAddOrEdit extends React.Component {
         }
         // redirecting after edit place
         else if (newProps.lastUpdatedItemId && newProps.lastUpdatedItemId !== this.props.lastUpdatedItemId) {
-           this.props.dispatch(routeActions.push(`/places/${newProps.lastCreatedItemId}`));
+            //
+            //
+            //
+            //
+            // TODO: redirect to correct slug (not id) after changing slugs map
+            console.log(555);
+            // TODO: slug here is not updated. 
+            console.log(newProps.place.get('slug'));
+            goToPlaceView(this.props.dispatch, newProps.place.get('slug'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+           // this.props.dispatch(routeActions.push(`/places/${newProps.lastCreatedItemId}`));
         }
+
+
+
+
         // prefilling form data in after opening edit place
         else if (!this.props.place && newProps.place) {
         	this._updateForm(newProps.place);
@@ -126,7 +153,8 @@ class PlaceAddOrEdit extends React.Component {
 		var _this = this;
 
 		var place = {
-		  title: ReactDOM.findDOMNode(this.refs.title).value.trim(),
+          title: ReactDOM.findDOMNode(this.refs.title).value.trim(),
+		  slug: ReactDOM.findDOMNode(this.refs.slug).value.trim(),
           address: ReactDOM.findDOMNode(this.refs.address).value.trim(),
 		  isAddressApproximate: ReactDOM.findDOMNode(this.refs.isAddressApproximate).checked,
 		  latitude: ReactDOM.findDOMNode(this.refs.latitude).value.trim(),
@@ -378,6 +406,7 @@ function mapStateToProps(state, ownProps) {
     placeId: getPlaceIdFromSlug(state, ownProps.params.slug),
     isLoading: state.getIn(['places', 'isCreatingOrUpdatingItem']),
     lastCreatedItemId: state.getIn(['places', 'lastCreatedItemId']),
+    lastUpdatedItemId: state.getIn(['places', 'lastUpdatedItemId']),
 	latLngOnDragEnd: state.getIn(['map', 'latLngOnDragEnd']),
 	latLngOnMapClick: state.getIn(['map', 'latLngOnMapClick']),
 	markerInEditMode: state.getIn(['map', 'markerInEditMode']),

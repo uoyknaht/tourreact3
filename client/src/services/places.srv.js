@@ -1,3 +1,4 @@
+import Immutable from 'immutable';
 import find from 'lodash/find'
 import filter from 'lodash/filter'
 import forEach from 'lodash/forEach'
@@ -45,5 +46,17 @@ export function getPlaceIdFromSlug(state, slug) {
     if (!map) {
         return null
     }
+    // console.log(map.get(slug));
+    // if (!map.get(slug)) {
+    //     debugger;
+    // }
     return map.get(slug)
+}
+
+export function getPlacesSlugsIdsMap(places) {
+    let map = {};
+    places.forEach((place) => {
+        map[place.get('slug')] = place.get('_id');
+    })
+    return Immutable.Map(map);
 }
