@@ -76,7 +76,7 @@ class PlaceView extends React.Component {
 			<div className="tr-main-block tr-place-view-container">
 		        <h2 className="tr-place-view-title">{place.get('title')}</h2>
 				<div>
-					<Link to={`/places/${place.get('_id')}/edit`}>Edit</Link> | <a href="#" onClick={this.onDelete}>Delete</a>
+					<Link to={`/places/${place.get('slug')}/edit`}>Edit</Link> | <a href="#" onClick={this.onDelete}>Delete</a>
 				</div>
 				<br/>
 

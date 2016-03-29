@@ -8,6 +8,7 @@ import CheckboxGroup from 'react-checkbox-group';
 import find from 'lodash/find'
 import {
   getPlace,
+  setActivePlace,
   cleanActivePlace,
   createTempPlace,
   deleteTempPlace,
@@ -23,6 +24,7 @@ import Upload from '../../upload/upload.cmp';
 import Loader from '../../loader/loader.cmp';
 import notifierService from '../../../services/notifier.srv';
 import { createMarker, getCurrentCenter, panMapToLatLng } from '../../../services/map.srv';
+import { getPlaceIdFromSlug } from '../../../services/places.srv';
 
 class PlaceAddOrEdit extends React.Component {
 
@@ -43,6 +45,7 @@ class PlaceAddOrEdit extends React.Component {
     }
 
     componentDidMount() {
+
     	const placeId = this.props.placeId;
 
     	if (placeId) {
@@ -60,7 +63,7 @@ class PlaceAddOrEdit extends React.Component {
 		}
     }
 
-	componentWillUnmount() {
+	componentWillUnmount() {        
 		const placeId = this.props.placeId;
 
 		if (placeId) {
@@ -94,6 +97,7 @@ class PlaceAddOrEdit extends React.Component {
 			};
 
 			panMapToLatLng(latLng, window.map);
+            this.props.setActivePlace(newProps.place.get('_id'));
         }
 
 		if (this.props.latLngOnDragEnd !== newProps.latLngOnDragEnd) {
@@ -112,7 +116,7 @@ class PlaceAddOrEdit extends React.Component {
 			}
 		}
 
-     }
+    }
 
     onSubmit(e) {
 		e.preventDefault();
@@ -351,7 +355,7 @@ class PlaceAddOrEdit extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     place: state.getIn(['places', 'itemInEditMode']),
-    placeId: ownProps.params.id,
+    placeId: getPlaceIdFromSlug(state, ownProps.params.slug),
     isLoading: state.getIn(['places', 'isCreatingOrUpdatingItem']),
     lastCreatedItemId: state.getIn(['places', 'lastCreatedItemId']),
 	latLngOnDragEnd: state.getIn(['map', 'latLngOnDragEnd']),
@@ -364,6 +368,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     getPlace: (placeId, isForEdit) => dispatch(getPlace(placeId, isForEdit)),
+    setActivePlace: (placeId) => dispatch(setActivePlace(placeId)),
     cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit)),
     createTempPlace: (latLng) => dispatch(createTempPlace(latLng)),
     createPlace: (place) => dispatch(createPlace(place)),
