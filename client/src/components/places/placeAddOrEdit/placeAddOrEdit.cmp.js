@@ -6,6 +6,7 @@ import { connect }            from 'react-redux';
 import { routeActions } from 'react-router-redux';
 import CheckboxGroup from 'react-checkbox-group';
 import find from 'lodash/find'
+import slug from 'slug'
 import {
   getPlace,
   setActivePlace,
@@ -35,6 +36,7 @@ class PlaceAddOrEdit extends React.Component {
         this._setAdressFromCoordinates = this._setAdressFromCoordinates.bind(this);
         this._onCoordsFocus = this._onCoordsFocus.bind(this);
         this._onCoordsBlur = this._onCoordsBlur.bind(this);
+        this._onTitleBlur = this._onTitleBlur.bind(this);
         this.render = this.render.bind(this);
 
 		this.state = {
@@ -153,12 +155,14 @@ class PlaceAddOrEdit extends React.Component {
     _updateForm(place) {
         if (place) {
             ReactDOM.findDOMNode(this.refs.title).value = place.get('title');
+            ReactDOM.findDOMNode(this.refs.slug).value = place.get('slug');
             ReactDOM.findDOMNode(this.refs.address).value = place.get('address');
             ReactDOM.findDOMNode(this.refs.isAddressApproximate).checked = place.get('isAddressApproximate');
             ReactDOM.findDOMNode(this.refs.latitude).value = place.get('latitude');
             ReactDOM.findDOMNode(this.refs.longitude).value = place.get('longitude');
         } else {
             ReactDOM.findDOMNode(this.refs.title).value = '';
+            ReactDOM.findDOMNode(this.refs.slug).value = '';
             ReactDOM.findDOMNode(this.refs.address).value = '';
             ReactDOM.findDOMNode(this.refs.isAddressApproximate).checked = false;
             ReactDOM.findDOMNode(this.refs.latitude).value = '';
@@ -213,6 +217,12 @@ class PlaceAddOrEdit extends React.Component {
         this._prevCoordsValue = null;
     }
 
+    _onTitleBlur() {
+        const title = ReactDOM.findDOMNode(this.refs.title).value;
+        const titleSlug = slug(title, { lower: true })
+        ReactDOM.findDOMNode(this.refs.slug).value = titleSlug
+    }
+
     render() {
 
         if (this.props.isLoading) {
@@ -251,7 +261,7 @@ class PlaceAddOrEdit extends React.Component {
 		});
 
         return (
-            <div className="tr-main-block">
+            <div className="tr-main-block tr-place-view-container">
           <form>
 
             <div className="form-group">
@@ -260,8 +270,18 @@ class PlaceAddOrEdit extends React.Component {
                       ref="title"
                       id="place-form-title"
                       placeholder="Title"
-                      className="form-control" />
+                      className="form-control"
+                      onBlur={this._onTitleBlur} />
             </div>
+
+            <div className="form-group">
+              <label>Slug</label>
+                <input type="text"
+                      ref="slug"
+                      id="place-form-slug"
+                      placeholder="Slug"
+                      className="form-control" />
+            </div>            
 
             <div className="form-group">
               <label>Address</label>
