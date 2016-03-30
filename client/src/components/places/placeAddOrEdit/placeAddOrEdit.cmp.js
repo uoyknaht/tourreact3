@@ -68,7 +68,7 @@ class PlaceAddOrEdit extends React.Component {
 		}
     }
 
-	componentWillUnmount() {        
+	componentWillUnmount() {   
 		const placeId = this.props.placeId;
 
 		if (placeId) {
@@ -90,37 +90,9 @@ class PlaceAddOrEdit extends React.Component {
         }
         // redirecting after edit place
         else if (newProps.lastUpdatedItemId && newProps.lastUpdatedItemId !== this.props.lastUpdatedItemId) {
-            // var slug = ReactDOM.findDOMNode(this.refs.title).value
-            // console.log(666);
-            // debugger;
-            // //
-            // //
-            // //
-            // //
-            // // TODO: redirect to correct slug (not id) after changing slugs map
-            // // newProps.place slug is not updated. For now, getting it from DOM node
-            
-            // console.log(slug);
-            // goToPlaceView(this.props.dispatch, slug)
-
-
-
-
-
-
-
-
-
-
-
-
-
-           // this.props.dispatch(routeActions.push(`/places/${newProps.lastCreatedItemId}`));
+            var slug = ReactDOM.findDOMNode(this.refs.slug).value
+            goToPlaceView(this.props.dispatch, slug)
         }
-
-
-
-
         // prefilling form data in after opening edit place
         else if (!this.props.place && newProps.place) {
         	this._updateForm(newProps.place);
@@ -257,13 +229,10 @@ class PlaceAddOrEdit extends React.Component {
     }
 
     render() {
+        let loader = '';
 
         if (this.props.isLoading) {
-            return (
-                <div className="tr-main-block">
-                    <Loader />
-                </div>
-            );
+            loader = <Loader />
         }
 
         let place = this.props.place;
@@ -278,23 +247,28 @@ class PlaceAddOrEdit extends React.Component {
 
 		let categoriesHtml = [];
 
-		this.props.categories.forEach((category) => {
+        if (this.props.categories) {
+            this.props.categories.forEach((category) => {
 
-			categoriesHtml.push(
-				<div className="checkbox" key={category.get('_id')} >
-					<label>
-						<input
-							type="checkbox"
-							value={category.get('_id')} />
+                categoriesHtml.push(
+                    <div className="checkbox" key={category.get('_id')} >
+                        <label>
+                            <input
+                                type="checkbox"
+                                value={category.get('_id')} />
 
-						{category.get('title')}
-					</label>
-				</div>
-			);
-		});
+                            {category.get('title')}
+                        </label>
+                    </div>
+                );
+            });            
+        }
+
+
 
         return (
             <div className="tr-main-block tr-place-view-container">
+            aaaa
           <form>
 
             <div className="form-group">
@@ -399,6 +373,8 @@ class PlaceAddOrEdit extends React.Component {
               onClick={this.onSubmit} />
 
           </form>
+
+            {loader}
           </div>
         );
     }
