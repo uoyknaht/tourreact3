@@ -8,6 +8,7 @@ import CheckboxGroup from 'react-checkbox-group';
 import find from 'lodash/find'
 import slug from 'slug'
 import {
+  getPlaces,
   getPlace,
   setActivePlace,
   cleanActivePlace,
@@ -49,8 +50,6 @@ class PlaceAddOrEdit extends React.Component {
     }
 
     componentDidMount() {
-        console.log('mounted');
-
     	const placeId = this.props.placeId;
 
     	if (placeId) {
@@ -86,7 +85,10 @@ class PlaceAddOrEdit extends React.Component {
 
         // redirecting after create place
         if (newProps.lastCreatedItemId && newProps.lastCreatedItemId !== this.props.lastCreatedItemId) {
-           this.props.dispatch(routeActions.push(`/places/${newProps.lastCreatedItemId}`));
+            // update visible places
+            this.props.getPlaces();
+            var slug = ReactDOM.findDOMNode(this.refs.slug).value
+            goToPlaceView(this.props.dispatch, slug)           
         }
         // redirecting after edit place
         else if (newProps.lastUpdatedItemId && newProps.lastUpdatedItemId !== this.props.lastUpdatedItemId) {
@@ -264,11 +266,8 @@ class PlaceAddOrEdit extends React.Component {
             });            
         }
 
-
-
         return (
             <div className="tr-main-block tr-place-view-container">
-            aaaa
           <form>
 
             <div className="form-group">
@@ -397,6 +396,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    getPlaces: () => dispatch(getPlaces()),
     getPlace: (placeId, isForEdit) => dispatch(getPlace(placeId, isForEdit)),
     setActivePlace: (placeId) => dispatch(setActivePlace(placeId)),
     cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit)),

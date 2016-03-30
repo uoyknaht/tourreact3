@@ -117,6 +117,7 @@ export default function placeReducer(state = defaultState, action) {
 			state = state.set('isCreatingOrUpdatingItem', false);
 			state = state.set('lastCreatedItemId', action.createdPlace._id);
 			state = state.update('places', places => places.push(Immutable.fromJS(action.createdPlace)));
+            state = state.set('placesSlugsIdsMap', getPlacesSlugsIdsMap(state.get('places')));
 			return state;
 
 		case 'RESPONSE_CREATE_PLACE_ERROR':

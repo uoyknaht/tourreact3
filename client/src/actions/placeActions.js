@@ -202,8 +202,8 @@ export function createPlace(newPlace) {
     dispatch(requestCreatePlace());
 
     return apiService.post(`http://localhost:8081/api/places`, newPlace)
-        .then(json => dispatch(responseCreatePlace(json)))
-        .catch((error) => dispatch(responseCreatePlaceError(error)));
+        .then(json => dispatch(responseCreatePlace(json)),
+            error => dispatch(responseCreatePlace(error)))
   }
 }
 
