@@ -153,12 +153,21 @@ export default function placeReducer(state = defaultState, action) {
 			var removePlaceId = action.placeId;
 			state = state.set('isDeletingItem', false);
 			state = state.set('isItemDeleted', true);
+
 			index = state.get('places').findIndex(place => {
 				return place.get('_id') === removePlaceId;
 			});
 			places = state.get('places');
 			places = places.remove(index);
 			state = state.set('places', places);
+
+            index = state.get('visiblePlaces').findIndex(place => {
+                return place.get('_id') === removePlaceId;
+            });
+            places = state.get('visiblePlaces');
+            places = places.remove(index);
+            state = state.set('visiblePlaces', places);
+
 			return state;
 
 		case 'RESPONSE_DELETE_PLACE_ERROR':
