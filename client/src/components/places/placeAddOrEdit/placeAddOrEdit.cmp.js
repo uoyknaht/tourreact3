@@ -32,6 +32,7 @@ class PlaceAddOrEdit extends React.Component {
 
     constructor() {
         super();
+        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this._updateForm = this._updateForm.bind(this);
         this._setAdressFromCoordinates = this._setAdressFromCoordinates.bind(this);
@@ -48,6 +49,7 @@ class PlaceAddOrEdit extends React.Component {
     }
 
     componentDidMount() {
+        console.log('mounted');
 
     	const placeId = this.props.placeId;
 
@@ -88,15 +90,18 @@ class PlaceAddOrEdit extends React.Component {
         }
         // redirecting after edit place
         else if (newProps.lastUpdatedItemId && newProps.lastUpdatedItemId !== this.props.lastUpdatedItemId) {
-            //
-            //
-            //
-            //
-            // TODO: redirect to correct slug (not id) after changing slugs map
-            console.log(555);
-            // TODO: slug here is not updated. 
-            console.log(newProps.place.get('slug'));
-            goToPlaceView(this.props.dispatch, newProps.place.get('slug'))
+            // var slug = ReactDOM.findDOMNode(this.refs.title).value
+            // console.log(666);
+            // debugger;
+            // //
+            // //
+            // //
+            // //
+            // // TODO: redirect to correct slug (not id) after changing slugs map
+            // // newProps.place slug is not updated. For now, getting it from DOM node
+            
+            // console.log(slug);
+            // goToPlaceView(this.props.dispatch, slug)
 
 
 

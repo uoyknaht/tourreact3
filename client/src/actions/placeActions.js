@@ -237,8 +237,10 @@ export function updatePlace(newPlace) {
 
     // return apiService.put(`http://localhost:8081/api/places/${newPlace._id}`, newPlace)
     return apiService.post(`http://localhost:8081/api/places/${newPlace._id}/edit`, newPlace)
-        .then(json => dispatch(responseUpdatePlace(json)))
-        .catch(error => dispatch(responseUpdatePlaceError(error)));
+        .then(
+            json => dispatch(responseUpdatePlace(json)),
+            error => dispatch(responseUpdatePlaceError(error))
+        );
   }
 }
 
