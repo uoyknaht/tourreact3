@@ -297,51 +297,53 @@ class PlaceAddOrEdit extends React.Component {
                       placeholder="Address"
                       className="form-control" />
 
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="checkbox">
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    ref="isAddressApproximate" />
+                <div className="container tr-fake-container">
+                    <div className="row">
+                        <div className="col-xs-6">
+                            <div className="checkbox">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        ref="isAddressApproximate" />
 
-                                Address is approximate
-                            </label>
-                        </div>               
-                    </div>
+                                    Address is approximate
+                                </label>
+                            </div>               
+                        </div>
 
-                    <div className="col-md-6">
+                        <div className="col-xs-6">
 
-                        <div className="checkbox">
-                            <label>
-                                <a href="#" onClick={this._setAdressFromCoordinates}>Set address from coordinates</a>
-                            </label>
-                        </div>                      
-                       
+                            <div className="checkbox">
+                                <label>
+                                    <a href="#" onClick={this._setAdressFromCoordinates}>Set address from coordinates</a>
+                                </label>
+                            </div>                      
+                           
+                        </div>
                     </div>
                 </div>
 
             </div>
 
-            <div className="form-group">
+            <div className="form-group container tr-fake-container">
                 <label>Latitude / Longitude</label>
 
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-xs-6">
                         <input type="text"
                               ref="latitude"
                               id="place-form-latitude"
-                              placeholder="Address"
+                              placeholder="Latitude"
                               className="form-control"
                               onFocus={this._onCoordsFocus}
                               onBlur={this._onCoordsBlur} />                
                     </div>
 
-                    <div className="col-md-6">
+                    <div className="col-xs-6">
                         <input type="text"
                               ref="longitude"
                               id="place-form-longitude"
-                              placeholder="Address"
+                              placeholder="Longitude"
                               className="form-control"
                               onFocus={this._onCoordsFocus}
                               onBlur={this._onCoordsBlur} />
@@ -349,7 +351,6 @@ class PlaceAddOrEdit extends React.Component {
                 </div>
 
             </div>
-
 
             <div className="form-group">
             	<label>Categories</label>
