@@ -8,6 +8,7 @@ import notifierService from '../services/notifier.srv';
 import { getPlacesSlugsIdsMap } from '../services/places.srv';
 
 let defaultState = Immutable.Map({
+    isLoading: false,
 	isFetchingPlaces: false,
 	arePlacesFetched: false,
 	places: Immutable.List(),
@@ -37,6 +38,7 @@ export default function placeReducer(state = defaultState, action) {
 	switch(action.type) {
 
 		case 'REQUEST_GET_PLACES':
+            return state.set('isLoading', true);
 			return state.set('isFetchingPlaces', true);
 
 		case 'RESPONSE_FETCH_PLACES':
@@ -46,13 +48,16 @@ export default function placeReducer(state = defaultState, action) {
 			return state;
 
 		case 'RESPONSE_GET_PLACES':
+            state = state.set('isLoading', false);
 			state = state.set('isFetchingPlaces', false);
 			state = state.set('visiblePlaces', Immutable.fromJS(action.places));
 			return state;
 
 		case 'RESPONSE_GET_PLACES_ERROR':
 			notifierService.error('error RESPONSE_GET_PLACES_ERROR');
-			return state.set('isFetchingPlaces', false);
+            state = state.set('isLoading', false);
+			state = state.set('isFetchingPlaces', false);
+            return state
 
 		case 'ADD_PLACE_TO_QUEUE':
 			return state.set('placeIdInQueue', action.placeId);

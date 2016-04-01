@@ -50,9 +50,10 @@ class PlaceView extends React.Component {
 	}
 
 	render() {
+
 		if (this.props.isLoading || this.props.isDeleting) {
 			return (
-                <div className="tr-main-block">
+                <div className="tr-main-block tr-place-view-container">
 				    <Loader />
                 </div>
 			);
@@ -62,7 +63,10 @@ class PlaceView extends React.Component {
 
 		if (!place) {
 			return (
-				<div className="tr-main-block">No place</div>
+				<div className="tr-main-block tr-place-view-container">
+                    No place
+                    <Loader />
+                </div>
 			);
 		}
 
@@ -91,6 +95,7 @@ class PlaceView extends React.Component {
                         placeId={place.get('_id')} 
                         categories={place.get('categories')} />
                 </p>
+                <Loader />
 			</div>
 		);
 	}
