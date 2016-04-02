@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect } from 'react-redux';
@@ -75,18 +76,18 @@ class PlaceView extends React.Component {
         }
 
 		return (
-			<div className="tr-main-block tr-place-view-container">
-		        <h2 className="tr-place-view-title">{place.get('title')}</h2>
-				<div>
-					<Link to={`/places/${place.get('slug')}/edit`}>Edit</Link> | <a href="#" onClick={this.onDelete}>Delete</a>
-				</div>
-				<br/>
+            <div className="tr-main-block tr-place-view-container" key="labas">
+                <h2 className="tr-place-view-title">{place.get('title')}</h2>
+                <div>
+                    <Link to={`/places/${place.get('slug')}/edit`}>Edit</Link> | <a href="#" onClick={this.onDelete}>Delete</a>
+                </div>
+                <br/>
 
-				<p>Address: {place.get('address')}</p>
+                <p>Address: {place.get('address')}</p>
                 {addressApproximateText}
-				<p>Latitude: {place.get('latitude')}</p>
+                <p>Latitude: {place.get('latitude')}</p>
                 <p>Longitude: {place.get('longitude')}</p>
-				<p>
+                <p>
                     Categories:&nbsp;
 
                     <CategoriesTitlesList 
@@ -94,7 +95,7 @@ class PlaceView extends React.Component {
                         categories={place.get('categories')} />
                 </p>
                 <Loader />
-			</div>
+            </div>           
 		);
 	}
 
