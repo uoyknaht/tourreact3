@@ -1,8 +1,8 @@
 import { routeActions } from 'react-router-redux';
 import { getPlaceListFilterQuery } from './filters.srv'
 
-export function goToPlaceView(dispatch, placeId) {
-    dispatch(routeActions.push(`/places/${placeId}`));
+export function goToPlaceView(dispatch, placeSlug) {
+    dispatch(routeActions.push(`/places/${placeSlug}`));
 }
 
 export function goToPlaceList(dispatch, categoriesFilter, searchFilter) {

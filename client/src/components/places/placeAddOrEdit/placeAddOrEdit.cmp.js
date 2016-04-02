@@ -6,8 +6,11 @@ import { connect }            from 'react-redux';
 import { routeActions } from 'react-router-redux';
 import CheckboxGroup from 'react-checkbox-group';
 import find from 'lodash/find'
+import slug from 'slug'
 import {
+  getPlaces,
   getPlace,
+  setActivePlace,
   cleanActivePlace,
   createTempPlace,
   deleteTempPlace,
@@ -23,16 +26,20 @@ import Upload from '../../upload/upload.cmp';
 import Loader from '../../loader/loader.cmp';
 import notifierService from '../../../services/notifier.srv';
 import { createMarker, getCurrentCenter, panMapToLatLng } from '../../../services/map.srv';
+import { getPlaceIdFromSlug } from '../../../services/places.srv';
+import { goToPlaceView } from '../../../services/router.srv'
 
 class PlaceAddOrEdit extends React.Component {
 
     constructor() {
         super();
+        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this._updateForm = this._updateForm.bind(this);
         this._setAdressFromCoordinates = this._setAdressFromCoordinates.bind(this);
         this._onCoordsFocus = this._onCoordsFocus.bind(this);
         this._onCoordsBlur = this._onCoordsBlur.bind(this);
+        this._onTitleBlur = this._onTitleBlur.bind(this);
         this.render = this.render.bind(this);
 
 		this.state = {
@@ -60,7 +67,7 @@ class PlaceAddOrEdit extends React.Component {
 		}
     }
 
-	componentWillUnmount() {
+	componentWillUnmount() {   
 		const placeId = this.props.placeId;
 
 		if (placeId) {
@@ -78,11 +85,15 @@ class PlaceAddOrEdit extends React.Component {
 
         // redirecting after create place
         if (newProps.lastCreatedItemId && newProps.lastCreatedItemId !== this.props.lastCreatedItemId) {
-           this.props.dispatch(routeActions.push(`/places/${newProps.lastCreatedItemId}`));
+            // update visible places
+            this.props.getPlaces();
+            var slug = ReactDOM.findDOMNode(this.refs.slug).value
+            goToPlaceView(this.props.dispatch, slug)           
         }
         // redirecting after edit place
         else if (newProps.lastUpdatedItemId && newProps.lastUpdatedItemId !== this.props.lastUpdatedItemId) {
-           this.props.dispatch(routeActions.push(`/places/${newProps.lastCreatedItemId}`));
+            var slug = ReactDOM.findDOMNode(this.refs.slug).value
+            goToPlaceView(this.props.dispatch, slug)
         }
         // prefilling form data in after opening edit place
         else if (!this.props.place && newProps.place) {
@@ -94,6 +105,7 @@ class PlaceAddOrEdit extends React.Component {
 			};
 
 			panMapToLatLng(latLng, window.map);
+            this.props.setActivePlace(newProps.place.get('_id'));
         }
 
 		if (this.props.latLngOnDragEnd !== newProps.latLngOnDragEnd) {
@@ -112,7 +124,7 @@ class PlaceAddOrEdit extends React.Component {
 			}
 		}
 
-     }
+    }
 
     onSubmit(e) {
 		e.preventDefault();
@@ -120,7 +132,8 @@ class PlaceAddOrEdit extends React.Component {
 		var _this = this;
 
 		var place = {
-		  title: ReactDOM.findDOMNode(this.refs.title).value.trim(),
+          title: ReactDOM.findDOMNode(this.refs.title).value.trim(),
+		  slug: ReactDOM.findDOMNode(this.refs.slug).value.trim(),
           address: ReactDOM.findDOMNode(this.refs.address).value.trim(),
 		  isAddressApproximate: ReactDOM.findDOMNode(this.refs.isAddressApproximate).checked,
 		  latitude: ReactDOM.findDOMNode(this.refs.latitude).value.trim(),
@@ -149,12 +162,14 @@ class PlaceAddOrEdit extends React.Component {
     _updateForm(place) {
         if (place) {
             ReactDOM.findDOMNode(this.refs.title).value = place.get('title');
+            ReactDOM.findDOMNode(this.refs.slug).value = place.get('slug');
             ReactDOM.findDOMNode(this.refs.address).value = place.get('address');
             ReactDOM.findDOMNode(this.refs.isAddressApproximate).checked = place.get('isAddressApproximate');
             ReactDOM.findDOMNode(this.refs.latitude).value = place.get('latitude');
             ReactDOM.findDOMNode(this.refs.longitude).value = place.get('longitude');
         } else {
             ReactDOM.findDOMNode(this.refs.title).value = '';
+            ReactDOM.findDOMNode(this.refs.slug).value = '';
             ReactDOM.findDOMNode(this.refs.address).value = '';
             ReactDOM.findDOMNode(this.refs.isAddressApproximate).checked = false;
             ReactDOM.findDOMNode(this.refs.latitude).value = '';
@@ -209,14 +224,17 @@ class PlaceAddOrEdit extends React.Component {
         this._prevCoordsValue = null;
     }
 
+    _onTitleBlur() {
+        const title = ReactDOM.findDOMNode(this.refs.title).value;
+        const titleSlug = slug(title, { lower: true })
+        ReactDOM.findDOMNode(this.refs.slug).value = titleSlug
+    }
+
     render() {
+        let loader = '';
 
         if (this.props.isLoading) {
-            return (
-                <div className="tr-main-block">
-                    <Loader />
-                </div>
-            );
+            loader = <Loader />
         }
 
         let place = this.props.place;
@@ -231,23 +249,25 @@ class PlaceAddOrEdit extends React.Component {
 
 		let categoriesHtml = [];
 
-		this.props.categories.forEach((category) => {
+        if (this.props.categories) {
+            this.props.categories.forEach((category) => {
 
-			categoriesHtml.push(
-				<div className="checkbox" key={category.get('_id')} >
-					<label>
-						<input
-							type="checkbox"
-							value={category.get('_id')} />
+                categoriesHtml.push(
+                    <div className="checkbox" key={category.get('_id')} >
+                        <label>
+                            <input
+                                type="checkbox"
+                                value={category.get('_id')} />
 
-						{category.get('title')}
-					</label>
-				</div>
-			);
-		});
+                            {category.get('title')}
+                        </label>
+                    </div>
+                );
+            });            
+        }
 
         return (
-            <div className="tr-main-block">
+            <div className="tr-main-block tr-place-view-container">
           <form>
 
             <div className="form-group">
@@ -256,8 +276,18 @@ class PlaceAddOrEdit extends React.Component {
                       ref="title"
                       id="place-form-title"
                       placeholder="Title"
-                      className="form-control" />
+                      className="form-control"
+                      onBlur={this._onTitleBlur} />
             </div>
+
+            <div className="form-group">
+              <label>Slug</label>
+                <input type="text"
+                      ref="slug"
+                      id="place-form-slug"
+                      placeholder="Slug"
+                      className="form-control" />
+            </div>            
 
             <div className="form-group">
               <label>Address</label>
@@ -267,51 +297,53 @@ class PlaceAddOrEdit extends React.Component {
                       placeholder="Address"
                       className="form-control" />
 
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="checkbox">
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    ref="isAddressApproximate" />
+                <div className="container tr-fake-container">
+                    <div className="row">
+                        <div className="col-xs-6">
+                            <div className="checkbox">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        ref="isAddressApproximate" />
 
-                                Address is approximate
-                            </label>
-                        </div>               
-                    </div>
+                                    Address is approximate
+                                </label>
+                            </div>               
+                        </div>
 
-                    <div className="col-md-6">
+                        <div className="col-xs-6">
 
-                        <div className="checkbox">
-                            <label>
-                                <a href="#" onClick={this._setAdressFromCoordinates}>Set address from coordinates</a>
-                            </label>
-                        </div>                      
-                       
+                            <div className="checkbox">
+                                <label>
+                                    <a href="#" onClick={this._setAdressFromCoordinates}>Set address from coordinates</a>
+                                </label>
+                            </div>                      
+                           
+                        </div>
                     </div>
                 </div>
 
             </div>
 
-            <div className="form-group">
+            <div className="form-group container tr-fake-container">
                 <label>Latitude / Longitude</label>
 
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-xs-6">
                         <input type="text"
                               ref="latitude"
                               id="place-form-latitude"
-                              placeholder="Address"
+                              placeholder="Latitude"
                               className="form-control"
                               onFocus={this._onCoordsFocus}
                               onBlur={this._onCoordsBlur} />                
                     </div>
 
-                    <div className="col-md-6">
+                    <div className="col-xs-6">
                         <input type="text"
                               ref="longitude"
                               id="place-form-longitude"
-                              placeholder="Address"
+                              placeholder="Longitude"
                               className="form-control"
                               onFocus={this._onCoordsFocus}
                               onBlur={this._onCoordsBlur} />
@@ -319,7 +351,6 @@ class PlaceAddOrEdit extends React.Component {
                 </div>
 
             </div>
-
 
             <div className="form-group">
             	<label>Categories</label>
@@ -342,6 +373,8 @@ class PlaceAddOrEdit extends React.Component {
               onClick={this.onSubmit} />
 
           </form>
+
+            {loader}
           </div>
         );
     }
@@ -351,9 +384,10 @@ class PlaceAddOrEdit extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     place: state.getIn(['places', 'itemInEditMode']),
-    placeId: ownProps.params.id,
+    placeId: getPlaceIdFromSlug(state, ownProps.params.slug),
     isLoading: state.getIn(['places', 'isCreatingOrUpdatingItem']),
     lastCreatedItemId: state.getIn(['places', 'lastCreatedItemId']),
+    lastUpdatedItemId: state.getIn(['places', 'lastUpdatedItemId']),
 	latLngOnDragEnd: state.getIn(['map', 'latLngOnDragEnd']),
 	latLngOnMapClick: state.getIn(['map', 'latLngOnMapClick']),
 	markerInEditMode: state.getIn(['map', 'markerInEditMode']),
@@ -363,7 +397,9 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    getPlaces: () => dispatch(getPlaces()),
     getPlace: (placeId, isForEdit) => dispatch(getPlace(placeId, isForEdit)),
+    setActivePlace: (placeId) => dispatch(setActivePlace(placeId)),
     cleanActivePlace: (isForEdit) => dispatch(cleanActivePlace(isForEdit)),
     createTempPlace: (latLng) => dispatch(createTempPlace(latLng)),
     createPlace: (place) => dispatch(createPlace(place)),

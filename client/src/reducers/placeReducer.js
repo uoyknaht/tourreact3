@@ -5,8 +5,10 @@ import forEach from 'lodash/forEach';
 import indexOf from 'lodash/indexOf';
 import getMergedState from './reducerHelpers';
 import notifierService from '../services/notifier.srv';
+import { getPlacesSlugsIdsMap } from '../services/places.srv';
 
 let defaultState = Immutable.Map({
+    isLoading: false,
 	isFetchingPlaces: false,
 	arePlacesFetched: false,
 	places: Immutable.List(),
@@ -32,31 +34,30 @@ export default function placeReducer(state = defaultState, action) {
 	let place;
 	let newPlace;
 	let index;
-    let placesSlugsIdsMap;
 
 	switch(action.type) {
 
 		case 'REQUEST_GET_PLACES':
+            return state.set('isLoading', true);
 			return state.set('isFetchingPlaces', true);
 
 		case 'RESPONSE_FETCH_PLACES':
 			state = state.set('arePlacesFetched', true);
 			state = state.set('places', Immutable.fromJS(action.places));
-            placesSlugsIdsMap = {};
-            forEach(action.places, (place) => {
-                placesSlugsIdsMap[place.slug] = place._id;
-            })
-            state = state.set('placesSlugsIdsMap', Immutable.Map(placesSlugsIdsMap));
+            state = state.set('placesSlugsIdsMap', getPlacesSlugsIdsMap(state.get('places')));
 			return state;
 
 		case 'RESPONSE_GET_PLACES':
+            state = state.set('isLoading', false);
 			state = state.set('isFetchingPlaces', false);
 			state = state.set('visiblePlaces', Immutable.fromJS(action.places));
 			return state;
 
 		case 'RESPONSE_GET_PLACES_ERROR':
 			notifierService.error('error RESPONSE_GET_PLACES_ERROR');
-			return state.set('isFetchingPlaces', false);
+            state = state.set('isLoading', false);
+			state = state.set('isFetchingPlaces', false);
+            return state
 
 		case 'ADD_PLACE_TO_QUEUE':
 			return state.set('placeIdInQueue', action.placeId);
@@ -121,6 +122,7 @@ export default function placeReducer(state = defaultState, action) {
 			state = state.set('isCreatingOrUpdatingItem', false);
 			state = state.set('lastCreatedItemId', action.createdPlace._id);
 			state = state.update('places', places => places.push(Immutable.fromJS(action.createdPlace)));
+            state = state.set('placesSlugsIdsMap', getPlacesSlugsIdsMap(state.get('places')));
 			return state;
 
 		case 'RESPONSE_CREATE_PLACE_ERROR':
@@ -135,11 +137,13 @@ export default function placeReducer(state = defaultState, action) {
 		case 'RESPONSE_UPDATE_PLACE':
 			let placeId = action.updatedPlace._id;
 			state = state.set('isCreatingOrUpdatingItem', false);
-			state = state.set('lastCreatedItemId', placeId);
+			state = state.set('lastUpdatedItemId', placeId);
 			places = state.get('places');
 			index = places.findIndex(place => place.get('_id') === placeId);
 			places = places.update(index, place => Immutable.Map(action.updatedPlace));
-			return state.set('places', places);
+			state = state.set('places', places);
+            state = state.set('placesSlugsIdsMap', getPlacesSlugsIdsMap(state.get('places')));
+            return state
 
 		case 'RESPONSE_UPDATE_PLACE_ERROR':
 			notifierService.error('error RESPONSE_UPDATE_PLACE_ERROR');
@@ -154,12 +158,21 @@ export default function placeReducer(state = defaultState, action) {
 			var removePlaceId = action.placeId;
 			state = state.set('isDeletingItem', false);
 			state = state.set('isItemDeleted', true);
+
 			index = state.get('places').findIndex(place => {
 				return place.get('_id') === removePlaceId;
 			});
 			places = state.get('places');
 			places = places.remove(index);
 			state = state.set('places', places);
+
+            index = state.get('visiblePlaces').findIndex(place => {
+                return place.get('_id') === removePlaceId;
+            });
+            places = state.get('visiblePlaces');
+            places = places.remove(index);
+            state = state.set('visiblePlaces', places);
+
 			return state;
 
 		case 'RESPONSE_DELETE_PLACE_ERROR':

@@ -68,10 +68,11 @@ export default function mapReducer(state = defaultState, action) {
         newActiveMarker = state.get('markers').find((marker) => {
             return marker.get('id') === action.placeId;
         })
+        // TODO: on place view page load on init, markers are not yet ready and active marker is not highlighted. Related with placeIdInQueue
         if (!newActiveMarker) {
             return state;
         }
-        state = updateMarkerProperty(state, newActiveMarker.get('id'), 'isActive', true);    
+        state = updateMarkerProperty(state, newActiveMarker.get('id'), 'isActive', true);   
         state = state.set('activeMarkerId', newActiveMarker.get('id'));
         return state;     
       
