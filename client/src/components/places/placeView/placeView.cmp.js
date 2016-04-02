@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { getPlace, cleanActivePlace, deletePlace, setActivePlace } from '../../../actions/placeActions';
 import { routeActions } from 'react-router-redux';
 import Loader from '../../loader/loader.cmp';
+import NotFound from '../../notFound/notFound.cmp';
 import { panMapToLatLng } from '../../../services/map.srv';
 import { getPlaceIdFromSlug } from '../../../services/places.srv';
 import CategoriesTitlesList from '../../categories/categoriesTitlesList/categoriesTitlesList.cmp.js'
@@ -26,7 +27,7 @@ class PlaceView extends React.Component {
 		this.props.cleanActivePlace();
 	}
 
-	componentWillReceiveProps(newProps) {
+	componentWillReceiveProps(newProps) {      
 		if (newProps.placeId !== this.props.placeId) {
 			this.props.getPlace(newProps.placeId);
 		}
@@ -34,7 +35,7 @@ class PlaceView extends React.Component {
 			this.props.dispatch(routeActions.push('/places'));
 		}
         // received data of place which has to be shown
-        else if (this.props.place !== newProps.place) {
+        else if (this.props.place !== newProps.place && newProps.place) {
             let latLng = {
                 lat: newProps.place.get('latitude'),
                 lng: newProps.place.get('longitude')
@@ -63,10 +64,7 @@ class PlaceView extends React.Component {
 
 		if (!place) {
 			return (
-				<div className="tr-main-block tr-place-view-container">
-                    No place
-                    <Loader />
-                </div>
+				<NotFound />
 			);
 		}
 

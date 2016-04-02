@@ -286,6 +286,7 @@ import { fromJS }                       from 'immutable';
 import { DefaultRoute, Route, Router, browserHistory } from 'react-router';
 import Immutable from 'immutable';
 import App from './components/app/app.cmp';
+import NotFound from './components/notFound/notFound.cmp';
 import PlacesContainer from './components/places/placesContainer/placesContainer.cmp';
 import PlaceView from './components/places/placeView/placeView.cmp';
 import PlaceAddOrEdit from './components/places/placeAddOrEdit/placeAddOrEdit.cmp';
@@ -322,6 +323,8 @@ ReactDOM.render((
         <Route name="placeCreate" path="actions/create" component={PlaceAddOrEdit}/>
         <Route name="placeEdit" path=":slug/edit" component={PlaceAddOrEdit}/>
       </Route>
+      
+      <Route path="*" component={NotFound} />
 
       </Route>
     </Router>

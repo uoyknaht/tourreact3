@@ -17,7 +17,6 @@ export default class App extends React.Component {
         <div>
             <Nav />
             <div className="tr-main-wrap">
-                // <PageTitle />
                 {this.props.children}
                 <MapContainer />
             </div>
