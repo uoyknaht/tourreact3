@@ -268,10 +268,38 @@ $categories: beach mound castle nature-monument panorama;
     }
 }
 
+.list-group-item {
+    &:hover {
+        background: #eee;
+    }
+}
+
+.list-group-item-cover-link {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
 .list-group-item-heading {
+    position: relative;
     color: #333333;
     font-size: 16px;
+    &:hover,
+    &:focus {
+        color: inherit;
+    }
 }
+
+.list-group-item-text {
+    position: relative;
+    display: inline-block;
+}
+
+
+
+
 
 .help-block {
     font-size: 12px;

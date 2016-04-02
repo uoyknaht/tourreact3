@@ -43,11 +43,15 @@ class PlaceList extends React.Component {
 
             <Link
                 to={`/places/${place.get('slug')}`}
-                className="list-group-item-heading">
-
-                {place.get('title')}
+                className="list-group-item-cover-link">
             </Link>
 
+            <Link 
+                to={`/places/${place.get('slug')}`} 
+                className="list-group-item-heading">
+                {place.get('title')}
+            </Link>
+            <br/>
             <p className="list-group-item-text">
                 Categories:&nbsp;
                 <CategoriesTitlesList
