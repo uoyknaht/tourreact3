@@ -27,7 +27,7 @@ class CategoryList extends React.Component {
 
 		if (!categories || !categories.size) {
 			return (
-				<div>Loading categories...</div>
+				<form className="tr-categories-filter">Loading categories...</form>
 			);
 		}
 

@@ -38,7 +38,6 @@ export default function placeReducer(state = defaultState, action) {
 	switch(action.type) {
 
 		case 'REQUEST_GET_PLACES':
-            return state.set('isLoading', true);
 			return state.set('isFetchingPlaces', true);
 
 		case 'RESPONSE_FETCH_PLACES':

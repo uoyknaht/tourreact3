@@ -13,9 +13,9 @@ class PlaceList extends React.Component {
     render() {
         let places = this.props.places;
 
-        if (!places) {
+        if (this.props.isFetchingPlaces) {
             return (
-                <Loader />
+                <div>Loading places...</div>
             );
         }
 
