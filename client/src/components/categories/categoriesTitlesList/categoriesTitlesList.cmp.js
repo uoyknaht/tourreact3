@@ -28,7 +28,7 @@ class CategoriesTitlesList extends React.Component {
                 return (
                     <span key={key1}>
                         <Link 
-                            to={`/places?categories=${category.get('slug')}`} >
+                            to={`/?categories=${category.get('slug')}`} >
 
                             {title}
                         </Link>

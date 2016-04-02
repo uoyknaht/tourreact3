@@ -9,19 +9,21 @@ class Nav extends React.Component {
 
     constructor() {
         super();
-        this._onPlacesLinkClick = this._onPlacesLinkClick.bind(this);
+        this._onHomeLinkClick = this._onHomeLinkClick.bind(this);
         this.render = this.render.bind(this);
     }
     
-    _onPlacesLinkClick(e) {
+    _onHomeLinkClick(e) {
         e.preventDefault()
         goToPlaceList(this.props.dispatch, this.props.selectedCategoriesFilter, this.props.searchFilter)
     }
 
     render() {
         // <li><Link to={placeListUrl} onClick={this._onPlacesLinkClick}>Places</Link></li>
+        // <li><Link to="/">Home</Link></li>
+        // <li><a href={placeListUrl} onClick={this._onHomeLinkClick}>Home</a></li>
         
-        let placeListUrl = '/places' + getPlaceListFilterQuery(this.props.selectedCategoriesFilter, this.props.searchFilter);
+        let placeListUrl = '/' + getPlaceListFilterQuery(this.props.selectedCategoriesFilter, this.props.searchFilter);
 
         return (
 
@@ -35,15 +37,12 @@ class Nav extends React.Component {
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
                 </button>
-                <a className="navbar-brand" href="#">Login dropdown</a>
+                <a className="navbar-brand" href={placeListUrl} onClick={this._onHomeLinkClick}>Login dropdown</a>
               </div>
 
               <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav">
-                  <li><Link to="/">Home</Link></li>
-                  <li><a href={placeListUrl} onClick={this._onPlacesLinkClick}>Places</a></li>
                   <li><Link to="/places/actions/create">Add new place</Link></li>
-
                 </ul>
               </div>
             </div>

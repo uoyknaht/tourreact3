@@ -7,5 +7,5 @@ export function goToPlaceView(dispatch, placeSlug) {
 
 export function goToPlaceList(dispatch, categoriesFilter, searchFilter) {
     let filterQuery = getPlaceListFilterQuery(categoriesFilter, searchFilter);
-    dispatch(routeActions.push(`/places${filterQuery}`));
+    dispatch(routeActions.push(`/${filterQuery}`));
 }

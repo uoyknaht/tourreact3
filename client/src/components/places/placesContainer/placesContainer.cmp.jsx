@@ -19,7 +19,7 @@ class PlacesContainer extends React.Component {
         return (
             <div className="tr-main-block">
                 <div className="tr-places-filter-container">
-                    <PlacesFilter routeLocation={this.props.location} routeParams={this.props.params} />
+                    <PlacesFilter routeLocation={this.props.routeLocation} routeParams={this.props.routeParams} />
                 </div>
                 <div className="tr-place-list-container">
                     <PlaceList places={this.props.places}
@@ -32,11 +32,10 @@ class PlacesContainer extends React.Component {
 
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
 	return {
 	    isFetchingPlaces: state.getIn(['places', 'isFetchingPlaces']),
-	    places: state.getIn(['places', 'visiblePlaces']),
-        location: ownProps.location
+	    places: state.getIn(['places', 'visiblePlaces'])
 	}
 }
 
