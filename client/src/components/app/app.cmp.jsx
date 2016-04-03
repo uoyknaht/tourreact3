@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import { connect }            from 'react-redux';
@@ -21,15 +20,7 @@ class App extends React.Component {
             <Nav />
             <div className="tr-main-wrap">
                 <PlacesContainer routeLocation={this.props.location} routeParams={this.props.params} />
-                <ReactCSSTransitionGroup 
-                    transitionName="example"
-                    transitionEnterTimeout={500} 
-                    transitionLeaveTimeout={300}
-                    transitionAppearTimeout={300}
-                    transitionLeaveTimeout={300}
-                    transitionAppear={true}>                
-                    {this.props.children}
-                </ReactCSSTransitionGroup>  
+                {this.props.children}
                 <MapContainer />
             </div>
         </div>

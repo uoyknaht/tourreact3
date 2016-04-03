@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { Link } from 'react-router';
 import { getPlaces } from '../../../actions/placeActions';
 import { connect }            from 'react-redux';
@@ -26,15 +25,7 @@ class PlacesContainer extends React.Component {
                     <PlaceList places={this.props.places}
                         isFetchingPlaces={this.props.isFetchingPlaces} />
                 </div>
-                <ReactCSSTransitionGroup 
-                    transitionName="example"
-                    transitionEnterTimeout={500} 
-                    transitionLeaveTimeout={300}
-                    transitionAppearTimeout={300}
-                    transitionLeaveTimeout={300}
-                    transitionAppear={true}>                
-                    {this.props.children}
-                </ReactCSSTransitionGroup>               
+                {this.props.children}                
             </div>
         );
     }

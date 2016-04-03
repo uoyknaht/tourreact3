@@ -1,4 +1,5 @@
 import Immutable from 'immutable';
+import update from 'react-addons-update';
 import remove from 'lodash/remove';
 import find from 'lodash/find';
 import indexOf from 'lodash/indexOf';
