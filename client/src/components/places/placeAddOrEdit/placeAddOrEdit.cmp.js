@@ -25,7 +25,7 @@ import {
 import Upload from '../../upload/upload.cmp';
 import Loader from '../../loader/loader.cmp';
 import notifierService from '../../../services/notifier.srv';
-import { createMarker, getCurrentCenter, panMapToLatLng } from '../../../services/map.srv';
+import { createMarker, getCurrentCenter, panMapToLatLng, getAdjustedCoord } from '../../../services/map.srv';
 import { getPlaceIdFromSlug } from '../../../services/places.srv';
 import { goToPlaceView } from '../../../services/router.srv'
 
@@ -210,6 +210,11 @@ class PlaceAddOrEdit extends React.Component {
 
     _onCoordsBlur(e) {
         let value = e.target.value;
+        
+        if (value !== getAdjustedCoord(value)) {
+            notifierService.error('Wrong coordinate format. Must be 6 decimal places')
+            return
+        }
         
         if (value !== this._prevCoordsValue) {
             let newLatLng = {

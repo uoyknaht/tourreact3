@@ -20,6 +20,10 @@ export function panMapToLatLng(latLng, map) {
     map.panTo(latLng);
 }
 
+export function getAdjustedCoord(coord) {
+    return parseFloat(coord).toFixed(6)
+}
+
 // export function getMarkerOptionsForComponent(marker) {
 // 	return {
 // 		id: marker.get('id'),
