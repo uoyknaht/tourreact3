@@ -8,6 +8,7 @@ import Loader from '../../loader/loader.cmp';
 import NotFound from '../../notFound/notFound.cmp';
 import { panMapToLatLng } from '../../../services/map.srv';
 import { getPlaceIdFromSlug } from '../../../services/places.srv';
+import { goToPlaceList } from '../../../services/router.srv';
 import CategoriesTitlesList from '../../categories/categoriesTitlesList/categoriesTitlesList.cmp.js'
 
 class PlaceView extends React.Component {
@@ -32,7 +33,7 @@ class PlaceView extends React.Component {
 			this.props.getPlace(newProps.placeId);
 		}
 		else if (newProps.isDeleted && !this.props.isDeleted) {
-			this.props.dispatch(routeActions.push('/places'));
+			goToPlaceList(this.props.dispatch, this.props.selectedCategoriesFilter, this.props.searchFilter)
 		}
         // received data of place which has to be shown
         else if (this.props.place !== newProps.place && newProps.place) {
@@ -107,7 +108,9 @@ function mapStateToProps(state, ownProps) {
 		isDeleting: state.getIn(['places', 'isDeletingItem']),
 		isDeleted: state.getIn(['places', 'isItemDeleted']),
 		placeId: getPlaceIdFromSlug(state, ownProps.params.slug),
-		place: state.getIn(['places', 'activeItem'])
+		place: state.getIn(['places', 'activeItem']),
+        selectedCategoriesFilter: state.getIn(['filters', 'selectedCategoriesFilter']),
+        searchFilter: state.getIn(['filters', 'searchFilter'])        
 	}
 }
 
