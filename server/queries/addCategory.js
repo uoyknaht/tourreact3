@@ -8,10 +8,10 @@ function addCategoryProperty(req, res, next) {
     console.log('-------------------------------------------');
     console.log('-------------------------------------------');
     var body = {
-        title: 'Parks',
-        slug: 'parks',
-        className: '#00e000',
-        color: 'red'
+        title: 'Interesting places',
+        slug: 'interesting-places',
+        className: 'interesting-places',
+        color: '#ff7f00'
     };
 
     var category = new Category(body);
