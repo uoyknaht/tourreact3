@@ -302,7 +302,7 @@ class PlaceAddOrEdit extends React.Component {
                       placeholder="Address"
                       className="form-control" />
 
-                <div className="container tr-fake-container">
+                <div className="container-fluid tr-fake-container">
                     <div className="row">
                         <div className="col-xs-6">
                             <div className="checkbox">
@@ -330,7 +330,7 @@ class PlaceAddOrEdit extends React.Component {
 
             </div>
 
-            <div className="form-group container tr-fake-container">
+            <div className="form-group container-fluid tr-fake-container">
                 <label>Latitude / Longitude</label>
 
                 <div className="row">

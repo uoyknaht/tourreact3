@@ -96,14 +96,14 @@ class PlaceFilter extends React.Component {
     render() {
         return (
             <div>
-                <form className="form-inline">
+                <div className="tr-place-search-top-row clearfix">
                     <PlacesSearch />
                     <button type="button" 
                         className="btn btn-default tr-btn-reset-filters" 
                         onClick={this._onResetFiltersClick}>
                         Reset all filters
                     </button>
-                </form>
+                </div>
                 <CategoryList />
             </div>
         );
